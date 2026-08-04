@@ -132,13 +132,15 @@ rights. Never silent write-as-user.
 **L3 — JSH support (platform_staff role 'support').** Separate table from org
 membership — staff are not tenants. Cross-tenant READ exists only during an
 active support session (reason-stamped, expiring), enforced IN RLS via
-is_jsh_support_active(org). Tenant admins can see every JSH session touching
-their org — transparency is a sales feature ("who can see our data" has a
+is_jsh_support_active(org). Tenant admins can see every L3 support session touching
+their org (L4 owner sessions excluded) — transparency is a sales feature ("who can see our data" has a
 good answer). JSH sets org/platform-scope toggles.
 
 **L4 — Platform owner (platform_staff role 'owner').** Standing in-app read
-across tenants; service role for true root. Still audited — protects the
-founder commercially and legally.
+across tenants; service role for true root. Still audited platform-side —
+protects the founder commercially and legally — but L4 sessions are
+INVISIBLE to tenant admins (Brice, 2026-08-04). Tenant-facing transparency
+covers L3 support only.
 
 **Entitlements:** ONE table, scoped rows (platform|org|group|person) with a
 scope_shape check constraint. Resolution precedence: person > group > org >
