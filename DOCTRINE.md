@@ -94,6 +94,28 @@ taught it is noted so future-us knows these are scars, not preferences.
 - Token scopes govern what Claude CAN do; the release ritual governs what
   Claude MAY do. Widening the first never loosens the second.
 
+### 4b. Scripted-edit discipline (added 8/3/26 — two escapes in one day)
+- A verification script that fails must STOP everything after it: chain
+  edit → verify → build → commit → push with `&&`, never newlines. Both
+  8/3 escapes had passing asserts and a commit that sailed anyway.
+- Heredoc match strings use REAL characters (paste from the file), never
+  escape sequences — `\u2019` through a quoted heredoc matches nothing.
+- Anchor match strings are read from the CURRENT file immediately before
+  editing, not reconstructed from memory of writing them.
+
+### 6b. Session hygiene (added 8/3/26 — the $200/day chat-cost lesson)
+- Fresh chat per work block; BRAIN carries state between them, so session
+  amnesia is free. Marathon chats compound cost: every message re-processes
+  the entire history.
+- Breakpoint at gate-green: when a feature ships and the robot passes,
+  close the session and start the next item clean.
+- Heavy uploads (PDF dumps, agreements) get a dedicated short-lived chat:
+  distill to BRAIN, close; the intel survives without the payload riding
+  every subsequent message.
+- The product's API spend is measured separately (ai_usage pattern) and is
+  expected to be small; chat-session spend is a build cost, managed by the
+  practices above.
+
 ## 7. Culture
 - Honest assessment over cheerleading. State the caveat with the win.
 - Corrections reshape doctrine — when Brice corrects architecture or
