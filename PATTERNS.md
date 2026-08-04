@@ -175,5 +175,11 @@ row (source of truth; GitHub Issues dual-write app-side). SLA timestamps
 (first_response_at, resolved_at) captured from day one — measurement before
 enforcement. Dashboard = security_invoker stats view so tenant RLS shapes
 what each viewer sees.
+System auto-responses: acknowledgment on ticket/FR creation and on
+resolution are ticket_events with kind='auto_response' and NULL actor —
+the only actor-less kind (check-constraint enforced). RLS requires human
+inserts to carry actor=auth.uid(), so system messages can ONLY arrive via
+the service role (function layer) — humans cannot forge them. Outbound
+emails ride the comms rail; templates live in function code, never the DB.
 Cross-product: reuse for MRV; CampVault warranty/service claims are the
 same shape (tickets + events + tiers) — adopt, don't reinvent.
