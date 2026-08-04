@@ -168,5 +168,12 @@ and work ALL tickets at ALL tiers, unconditionally. Every action is a
 ticket_event with requester|internal visibility (client-visible replies vs
 worknotes). Builder L1 workers may escalate 1→2; tier >=2 is platform-staff
 only. Notifications ride the product's comms rail, never bespoke.
+Addendum (same day): tickets carry type (defect|feature_request|how_to|other)
++ intake channel (app|concierge|jsh); the AI concierge answers how-tos first
+and files tickets only on failure. Triage may CONVERT ticket→feature_requests
+row (source of truth; GitHub Issues dual-write app-side). SLA timestamps
+(first_response_at, resolved_at) captured from day one — measurement before
+enforcement. Dashboard = security_invoker stats view so tenant RLS shapes
+what each viewer sees.
 Cross-product: reuse for MRV; CampVault warranty/service claims are the
 same shape (tickets + events + tiers) — adopt, don't reinvent.
