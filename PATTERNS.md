@@ -156,3 +156,17 @@ in 002 before any dependent code.)
 
 Adoption: MyRealtyVault retrofit queued (its Mission Control/admin checks
 predate this model).
+
+## JSH Support Ticketing (canonical, 2026-08-04 — first implemented: MyBuilderVault 003)
+
+Escalation TIERS 1-3 on tickets (distinct from access-model LAYERS 1-4).
+Per-tenant routing: org_support_settings.l1_handler = builder | jsh — set by
+JSH at tenant onboarding. Rule: tenants handling their own L1 ALWAYS see
+their queue; straight-to-JSH tenants' queue visibility is an entitlement
+('support.queue_visible', org scope, default visible). Platform staff see
+and work ALL tickets at ALL tiers, unconditionally. Every action is a
+ticket_event with requester|internal visibility (client-visible replies vs
+worknotes). Builder L1 workers may escalate 1→2; tier >=2 is platform-staff
+only. Notifications ride the product's comms rail, never bespoke.
+Cross-product: reuse for MRV; CampVault warranty/service claims are the
+same shape (tickets + events + tiers) — adopt, don't reinvent.
