@@ -113,3 +113,44 @@ login. Reference: `public/about.html`, netlify.toml redirects.
 - Scope check before feature use: which licensed USE covers each feature
   (IDX display vs. Participant Listings Use vs. CRM) — don't ship on a
   squint.
+
+
+## JSH Access Model (canonical, 2026-08-04 — first implemented: MyBuilderVault 002)
+
+Four layers, one doctrine, every JSH product:
+
+**L1 — Tenant personas.** Org roles govern data via RLS (product-specific role
+sets). Optional GROUPS (departments) overlay — primarily feature-toggle
+targets, not an org chart. Clients/external parties attach via participation
+tables, never org membership.
+
+**L2 — Tenant admin.** (a) Feature toggles at group/person scope within their
+org. (b) View-as troubleshooting: read-only, reason-required, time-boxed
+(default 1h), audited, rendered as a simulation using admin's existing RLS
+rights. Never silent write-as-user.
+
+**L3 — JSH support (platform_staff role 'support').** Separate table from org
+membership — staff are not tenants. Cross-tenant READ exists only during an
+active support session (reason-stamped, expiring), enforced IN RLS via
+is_jsh_support_active(org). Tenant admins can see every JSH session touching
+their org — transparency is a sales feature ("who can see our data" has a
+good answer). JSH sets org/platform-scope toggles.
+
+**L4 — Platform owner (platform_staff role 'owner').** Standing in-app read
+across tenants; service role for true root. Still audited — protects the
+founder commercially and legally.
+
+**Entitlements:** ONE table, scoped rows (platform|org|group|person) with a
+scope_shape check constraint. Resolution precedence: person > group > org >
+tier default > platform default (resolve_entitlement fn). Builder admins
+write group/person scopes; platform staff write org/platform scopes; set_via
+recorded on every row.
+
+**Trap this pattern exists to prevent:** deriving "platform owner" from any
+tenant-role check (e.g. org role = 'owner'). Works with one tenant, becomes
+cross-tenant privilege escalation at tenant #2. Platform identity NEVER
+derives from tenant membership. (Caught latent in MyBuilderVault 001, fixed
+in 002 before any dependent code.)
+
+Adoption: MyRealtyVault retrofit queued (its Mission Control/admin checks
+predate this model).
