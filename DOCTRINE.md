@@ -84,11 +84,20 @@ taught it is noted so future-us knows these are scars, not preferences.
   attribution blocks, breach-notification clock).
 
 ## 6. Session protocol
-- Fresh fine-grained PAT per session period: repos explicitly selected;
-  **Contents RW + Issues RW + Actions RW** (Actions write adopted 8/3/26
-  so Claude can re-run/dispatch/cancel workflows — deploys happen via
-  Netlify's Git integration, not Actions, so blast radius is tests, not
-  releases). Expiry: 7 days default, 30 acceptable.
+- **One named JSH session token** (adopted 8/3/26 after a five-token
+  archaeology session): a single fine-grained PAT named recognizably
+  (e.g. `JSH-session-<month>`), covering ALL product repos, with
+  **Contents RW + Issues RW + Actions RW + Workflows RW**. Workflows
+  write is required to push `.github/workflows/*.yml` (copying CI to a
+  new product fails without it). Actions write lets Claude re-run/
+  dispatch/cancel runs — deploys happen via Netlify's Git integration,
+  not Actions, so blast radius is tests, not releases. Expiry: 7 days
+  default, 30 acceptable. Regenerate weekly; DELETE stray tokens — the
+  GitHub UI never re-shows a secret, so unnamed duplicates are
+  unidentifiable risk. One token, one paste, any product session.
+- Anthropic API keys are NOT session credentials: never paste in chat;
+  they live in Netlify env vars only. A key exposed in chat is revoked
+  at console.anthropic.com and replaced — never reused (8/3/26).
 - Read the product BRAIN first; update BRAIN in the same commits as the
   work. BRAIN wins over conversation memory for product facts.
 - Token scopes govern what Claude CAN do; the release ritual governs what
