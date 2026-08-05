@@ -186,3 +186,7 @@ sha256 noted) — never delivered as "it's in the repo, go look." Brice should
 never have to dig for something he has to run. (Standing practice, Brice
 8/5/26; mechanics per MBV LEARNINGS #14: chat copy is GENERATED from the
 committed file, never typed fresh, so drift is impossible.)
+Refinement (8/5/26, same day): the paste goes in the MESSAGE BODY as a code
+block — tool/console output can render collapsed in the chat client and
+Brice won't see it. If it was delivered via a cat command, paste it again
+as message text.
