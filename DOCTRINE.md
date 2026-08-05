@@ -140,3 +140,41 @@ taught it is noted so future-us knows these are scars, not preferences.
 - Like-for-like ("Pepsi challenge") is the quality bar for anything
   replacing a tool a customer already loves: theirs beside ours,
   customer as judge.
+
+---
+
+## §8 · The North Star and the step-back discipline (added 2026-08-05, from the MBV Phase A/B marathon)
+
+**North star:** every JSH product aims to be the most advanced platform in its
+market. What incumbents do is the BASELINE — the floor we audit against, never
+the target. We take the baseline to the next level.
+
+**The failure mode this guards against — "going through the motions":**
+building the increment the last increment implies. Canonical incident: MBV
+personas were designed as five access tiers until a forced step-back with real
+domain research grew them to 28, surfaced two missing subsystems (work orders,
+time entries), and exposed that dashboard customization — table stakes for
+decades — was absent from the design.
+
+**The discipline:**
+1. **Step-back checkpoint at every new surface or subsystem boundary.** Before
+   designing, answer in writing: what do the market leaders do here (research,
+   not memory), what is table stakes, and what is the level beyond it?
+2. **Table-stakes audit is a named design step.** Missing something the
+   industry has had for decades is a defect, not an oversight.
+3. **Rich UI experience is a requirement, not polish.** Information density,
+   motion, hierarchy — the design laws below are the accumulating bar.
+4. **The trigger signal:** when a design feels like filling in a template,
+   stop. That feeling IS the checkpoint bell. Scope: surface/subsystem
+   boundaries — not every ticket; step-back everywhere is paralysis.
+
+## §9 · Design laws (graduated from MBV LEARNINGS #11/#12, 2026-08-05)
+- **Scrolling is not your friend** (founding law; restated for completeness).
+- **No voids:** wide list rows are columnar grids filled with what the user
+  actually scans (client, location, status, recency) with a header row —
+  never content-left, lone-badge-right across a desert.
+- **Every count is a door:** any box showing a count opens onto exactly what
+  is enclosed — a drawer or detail of those items, never an adjacent page.
+- **Personas define defaults, not prescriptions:** dashboards are widget
+  catalogs; persona picks the starting layout; the seat customizes and
+  persists.
