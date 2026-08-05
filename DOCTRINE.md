@@ -222,3 +222,26 @@ memory-bank files) but JSH doctrine adds what those lack: precedence rules
 (BRAIN wins over conversation memory), same-commit write discipline,
 incident-derived LEARNINGS law, two-tier product+shared structure, and
 prove-it evidence woven into state.
+
+## §12 · The pause ritual (Brice, 8/5/26)
+A JSH product is never "abandoned" — it is paused, and a pause is an act,
+not an absence. The BRAIN is what makes pausing safe: a product with a
+current BRAIN can sleep for months and resume (by Brice, a future session,
+or a new engineer) without the archaeology tax.
+
+**Pausing a product (last session before the shelf):**
+1. Distill: STATE brought to current truth; BOARD priorities re-ranked with
+   a one-line "resume here first"; anything RUN-pending resolved or marked.
+2. Sweep the loose ends: no uncommitted work, no un-pasted scripts, CI green
+   at the resting sha (recorded in STATE).
+3. Note the keys: which infra (Supabase/Netlify/DNS/etc.) the product
+   touches, so resume day knows what access to check — names only, never
+   secrets in the repo.
+
+**Resuming:** read BRAIN first, run the quality rail against the resting
+sha before building anything new, and trust STATE only as far as its date —
+the world (deps, APIs, Twilio campaigns) moves while products sleep.
+
+**Corollary:** a product WITHOUT a BRAIN cannot be safely paused — it can
+only decay. CampVault and SiteVault remain in this state until they get the
+distillation pass; that is technical debt of the memory system, tracked here.
