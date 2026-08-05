@@ -190,3 +190,35 @@ Refinement (8/5/26, same day): the paste goes in the MESSAGE BODY as a code
 block — tool/console output can render collapsed in the chat client and
 Brice won't see it. If it was delivered via a cat command, paste it again
 as message text.
+
+## §11 · The BRAIN as a positioning asset (Brice, 8/5/26)
+The BRAIN pattern is not just internal tooling — it is Frontier Firm
+differentiation, in Brice's own words: it keeps token usage down, expands
+effective "memory" capacity, and keeps KT, key decisions, architecture, and
+domain expertise at our fingertips.
+
+**The pitch language (client-facing):**
+- "Our AI doesn't just remember your project — it maintains an auditable
+  engineering record: every architecture decision with its reasoning, every
+  incident distilled into a standing rule, versioned in your repo."
+- Token economics: a cold AI session burns its budget re-deriving old
+  decisions; a BRAIN session reads distilled state in seconds and spends the
+  entire budget on NEW work. Same context window, radically different yield.
+- Compounding: one debugging afternoon becomes forty lines of LEARNINGS that
+  nobody ever pays for again.
+- Knowledge transfer: onboarding artifacts exist from day one — institutional
+  knowledge is diffable and survives any person or session boundary. Most
+  shops' domain expertise lives in one head; a JSH build's lives in git.
+
+**The honest caveat that keeps it true (and belongs in the pitch — rigor
+sells):** a BRAIN is only as good as its write discipline. Stale memory is
+worse than no memory because it lies with confidence. The load-bearing rule
+is "update the BRAIN in the same commits as the work" — memory as a
+transaction, not an afterthought. JSH engagements ship WITH this discipline;
+that is part of what the fixed price buys.
+
+**Provenance note:** convergent with industry patterns (CLAUDE.md, AGENTS.md,
+memory-bank files) but JSH doctrine adds what those lack: precedence rules
+(BRAIN wins over conversation memory), same-commit write discipline,
+incident-derived LEARNINGS law, two-tier product+shared structure, and
+prove-it evidence woven into state.
