@@ -14,6 +14,20 @@ taught it is noted so future-us knows these are scars, not preferences.
 - Hotfix-class changes (compliance pages, static fixes) use the same
   ritual, mini-sized. No "just this once" direct pushes.
 
+### 1b. The dev branch is a release train (added 8/5/26)
+- Everything on dev ships TOGETHER. Before any merge to main, enumerate
+  the full commit range (git log main..dev --oneline) and confirm every
+  release in it is gated — "merge the hotfix" is not a thing the merge
+  button can do once other work has landed on dev.
+- When prod needs a fix while dev carries ungated work: branch the hotfix
+  FROM MAIN, merge that branch to main, then merge main back to dev.
+- "All Actions green" means every workflow CONCLUDED green at the release
+  sha — a run still in progress is not green (8/5: merged on Smoke-only;
+  prod's own E2E happened to pass; luck is not process).
+- Scar: 8/5 — a two-file PDF hotfix merge carried an ungated release
+  (schema-tolerant reads + a guarded write button kept prod safe; the
+  doctrine exists so safety never depends on those accidents).
+
 ## 2. Databases
 - Terminology: **"DB change scripts"** in all human-facing communication
   — never "migrations." Numbered SQL files in `supabase/migrations/` are
