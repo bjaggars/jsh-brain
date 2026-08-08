@@ -101,9 +101,13 @@ taught it is noted so future-us knows these are scars, not preferences.
 - **One named JSH session token** (adopted 8/3/26 after a five-token
   archaeology session): a single fine-grained PAT named recognizably
   (e.g. `JSH-session-<month>`), covering ALL product repos, with
-  **Contents RW + Issues RW + Actions RW + Workflows RW**. Workflows
-  write is required to push `.github/workflows/*.yml` (copying CI to a
-  new product fails without it). Actions write lets Claude re-run/
+  **Contents RW + Issues RW + Actions RW + Workflows RW + Pull requests
+  RW**. Workflows write is required to push `.github/workflows/*.yml`
+  (copying CI to a new product fails without it). Checks is NOT in the
+  set because fine-grained PATs cannot be granted it (GitHub offers no
+  Checks permission on PATs — learned 8/8 hunting a "missing scope");
+  check-run/annotation reads happen INSIDE workflows via GITHUB_TOKEN
+  with a `checks: read` permissions block, never from a session token. Actions write lets Claude re-run/
   dispatch/cancel runs — deploys happen via Netlify's Git integration,
   not Actions, so blast radius is tests, not releases. Expiry: 7 days
   default, 30 acceptable. Regenerate weekly; DELETE stray tokens — the
