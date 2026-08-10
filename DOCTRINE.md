@@ -263,3 +263,22 @@ the world (deps, APIs, Twilio campaigns) moves while products sleep.
 **Corollary:** a product WITHOUT a BRAIN cannot be safely paused — it can
 only decay. CampVault and SiteVault remain in this state until they get the
 distillation pass; that is technical debt of the memory system, tracked here.
+
+## §13 · Sweep precedence (Brice, 8/9/26 — standing until further notice)
+**The issue sweep is the FIRST act of every session and takes precedence
+over the session's planned agenda.** Before any build work — before even
+presenting the plan — sweep open GitHub Issues on the product repo and
+report what's there. If the sweep surfaces customer-filed bugs or verdicts
+(e.g. a Lighthouse partner confirming or failing a shipped fix), those are
+triaged with Brice BEFORE the planned work begins; the agenda yields.
+
+Why this is doctrine and not habit: customers file when something is
+broken FOR THEM, right now. A session that builds features for two hours
+on top of an unread bug report has its priorities inverted — the pipeline
+sells outcomes, and a customer waiting on a known break is the outcome
+that matters most. The Sweeper automates part of this for machine-fixable
+defects; the session sweep is the human-judgment layer above it.
+
+Scope: applies to every JSH product session, every product, until Brice
+says otherwise. The sweep result is always reported even when empty
+("no new issues") so silence is never ambiguous.
