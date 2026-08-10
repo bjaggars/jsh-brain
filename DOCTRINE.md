@@ -113,6 +113,13 @@ taught it is noted so future-us knows these are scars, not preferences.
   default, 30 acceptable. Regenerate weekly; DELETE stray tokens — the
   GitHub UI never re-shows a secret, so unnamed duplicates are
   unidentifiable risk. One token, one paste, any product session.
+  **Pasting the session PAT in chat is its normal delivery mechanism and
+  never triggers rotation** — rotation is CALENDAR-driven (the weekly
+  regenerate) or compromise-driven, never paste-driven (8/10/26: the
+  end-of-session "rotate the PAT" nag misapplied the API-key rule; killed).
+  Preferred delivery: the token lives in the Claude Project's custom
+  instructions, updated once at each weekly rotation — one paste per week,
+  not per chat.
 - Anthropic API keys are NOT session credentials: never paste in chat;
   they live in Netlify env vars only. A key exposed in chat is revoked
   at console.anthropic.com and replaced — never reused (8/3/26).
