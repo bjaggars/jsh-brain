@@ -120,6 +120,18 @@ taught it is noted so future-us knows these are scars, not preferences.
   Preferred delivery: the token lives in the Claude Project's custom
   instructions, updated once at each weekly rotation — one paste per week,
   not per chat.
+- **Walk it before the walker** (adopted 8/10/26, Brice's CDO tenet: test
+  the UAT cases BEFORE the client does — satisfaction and trust compound
+  when the client's walk finds nothing). The Testing tab is Brice's UAT;
+  every card is pre-walked by Claude before the walk is handed over:
+  smokes locally, probes against the DEPLOYED endpoints (every new
+  endpoint ships with one), and the surface's E2E golden path in CI —
+  and Claude WATCHES the Actions runs to green via the API before
+  reporting "ready to walk." The build container cannot reach the TEST
+  site directly; the Actions API is Claude's eyes on the deployed truth.
+  A red CI run means the walk is not offered, full stop. Only judgment
+  and feel remain for the human gate — machine-checkable steps arriving
+  broken to Brice is a delivery failure, not a testing failure.
 - Anthropic API keys are NOT session credentials: never paste in chat;
   they live in Netlify env vars only. A key exposed in chat is revoked
   at console.anthropic.com and replaced — never reused (8/3/26).
