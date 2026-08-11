@@ -204,6 +204,24 @@ decades — was absent from the design.
 4. **The trigger signal:** when a design feels like filling in a template,
    stop. That feeling IS the checkpoint bell. Scope: surface/subsystem
    boundaries — not every ticket; step-back everywhere is paralysis.
+5. **The parity brief is a WRITTEN artifact, and it audits the EXPERIENCE,
+   not just the artifact** (added 8/10/26 — second incident: MRV Marketing
+   Studio S3). The Studio shipped with a describe-then-render loop while
+   Flodesk — the NAMED north star — is a direct-manipulation editor; the
+   Pepsi challenge had been defined output-side only (does our render match
+   theirs) and nobody defined experience-side parity (does MAKING it feel
+   as good). Root biases, named so they can be caught: differentiator-
+   before-table-stakes (the AI door before the editor; users leave a loved
+   incumbent only for a tool that takes nothing away — the AI is why they
+   try it, the editor is why they stay); gate tunnel vision (built to pass
+   the Testing card, and the gate became the ceiling); and silent
+   sequencing-by-build-cost (the cheaper UX shipped without the trade-off
+   ever being surfaced as a founder decision). THE RULE: when a named
+   incumbent exists, every surface build OPENS with a gesture-parity table
+   — their gesture beside ours, row by row — and every row where ours is
+   worse gets explicit founder sign-off as accepted debt, or gets built.
+   Approving mockups is not approving the trade; the comparison IS the
+   decision.
 
 ## §9 · Design laws (graduated from MBV LEARNINGS #11/#12, 2026-08-05)
 - **Scrolling is not your friend** (founding law; restated for completeness).
