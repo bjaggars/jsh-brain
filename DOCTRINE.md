@@ -319,3 +319,41 @@ defects; the session sweep is the human-judgment layer above it.
 Scope: applies to every JSH product session, every product, until Brice
 says otherwise. The sweep result is always reported even when empty
 ("no new issues") so silence is never ambiguous.
+
+## §14 · The Walk Brief (Brice, 8/14/26 — founder-ratified format, all products)
+
+When a build completes and a founder walk opens, the OFFER of the walk is a
+**Walk Brief** in this exact shape. Brice: "This is the type of format I'd
+like to see when you have built something and I need to test."
+
+**Part 1 — What's new, from the USER'S perspective.** A high-level bullet
+summary written as the product's end user (the agent, the builder, the
+camper-owner) would experience it:
+- Grouped under short experience-area headers that follow the user's journey
+  (e.g. Getting started · Designing · Your audience · Sending), never the
+  system's architecture.
+- Each bullet = something they can now DO, in plain language. Gesture and
+  button names in **bold**, exactly as the surface prints them.
+- Engine words never appear (no executor, resolver, rehydrate, RLS, bundle,
+  webhook — see the agent-language riders). If a bullet can't be written
+  without an engine word, the SURFACE copy is wrong, not the brief.
+- Benefits stated as promises the walk can verify ("the facts line always
+  shows the listing's real numbers"), not implementation notes.
+
+**Part 2 — Test-execution context.** Immediately after the bullets, the
+founder gets everything needed to actually run the walk, without hunting:
+- WHERE: which environment/site and which database (named project ref),
+  and which tenant/login if it matters.
+- PRECONDITIONS: every DB change script and seed the walk depends on, each
+  with RUN/not-run status — anything not yet RUN is pasted in full with
+  checksum right there (§10: runnable scripts arrive in chat, always).
+- THE CARD: which Testing card routes the walk and where it lives; which
+  section to walk first.
+- DIVISION OF PROOF: what the robot already proved green (so the founder
+  doesn't re-walk it) vs. what only human eyes/inbox/phone can verify —
+  the founder's list is the walk.
+- CARRIED ITEMS: anything riding the walk from prior sessions (open
+  verifications, one-glance checks) named explicitly.
+
+The Walk Brief is the offer, not the checklist — the TESTING card remains
+the checklist of record. Applies to every JSH product.
