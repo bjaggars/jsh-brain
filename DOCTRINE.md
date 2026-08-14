@@ -357,3 +357,14 @@ founder gets everything needed to actually run the walk, without hunting:
 
 The Walk Brief is the offer, not the checklist — the TESTING card remains
 the checklist of record. Applies to every JSH product.
+
+## §15 · The deploy layer is inside the release perimeter (8/14/26, from the MRV branch-config incident)
+A repo can obey dev/main discipline perfectly while the deploy layer routes
+around it: MRV's prod Netlify site had PRODUCTION BRANCH = dev, so every dev
+push deployed to prod and the ship-merge to main deployed nothing. RULES,
+all products: (1) a ship is complete only when the prod site is VERIFIED to
+track main and to be serving the merge sha (build.json or equivalent);
+(2) deploy-layer config changes (branch tracking, build commands, env vars)
+are release-perimeter changes — never assumed, always verified at ritual
+time; (3) every gate's verdict must land on a surface Claude can read
+(issues/API), never only in logs Claude cannot download.
