@@ -368,3 +368,42 @@ track main and to be serving the merge sha (build.json or equivalent);
 are release-perimeter changes — never assumed, always verified at ritual
 time; (3) every gate's verdict must land on a surface Claude can read
 (issues/API), never only in logs Claude cannot download.
+
+## §16 · The size gate: BRAIN files are read bounded, or not at all (8/14/26, from the MRV three-dead-chats incident)
+
+INCIDENT: three consecutive MyRealtyVault sessions died mid-response at the
+same point — the BRAIN-first opening read. Root cause was not corruption but
+VOLUME + ORDER: STATE.md had grown to 72KB with session sections physically
+scrambled (newest entries mid-file, "supersedes above/below" pointers in both
+directions), so "read from the last closing stamp forward" was unexecutable
+without ingesting the entire ~360KB BRAIN corpus. Each session exhausted its
+context during the opening report, after its work landed — deterministic,
+reproducible, silent.
+
+RULES (all products, session-open and session-close):
+
+1. **Newest-first is law.** Every session-log/STATE file keeps its newest
+   entry at the TOP, directly under the header. The closing stamp is the
+   first section a reader meets. "Read from the stamp" means "read the top."
+2. **Size audit before any read.** Session-open runs `ls -laS` (or
+   equivalent) on the BRAIN directory BEFORE reading content. Any file over
+   ~100KB or any binary in the BRAIN read path is reported to the founder
+   before proceeding — never read wholesale.
+3. **The 20KB ceiling.** When the live STATE file passes ~20KB at session
+   close, rotation is part of the close: everything below the current arc
+   moves to a dated `STATE-ARCHIVE-*.md`, verbatim, nothing edited. Archives
+   are never read at session-open unless a live section explicitly points
+   into them.
+4. **Bounded reads for the reference files.** LEARNINGS / TESTING / BOARD /
+   BACKLOG are read by targeted grep or section at session-open, never
+   wholesale. Wholesale reads of reference files require a stated reason.
+5. **No bulk artifacts in the live log.** Pasted scripts, prove-it output,
+   screenshots-as-text, and other bulk payloads go to dedicated files
+   (intel-*.md, archive files, repo assets) — the live STATE file carries
+   pointers, not payloads. Binaries never live inside the BRAIN read path.
+6. **Consolidate same-day sprawl at close.** Multiple sections written for
+   the same session/day collapse into one coherent record at session close;
+   raw originals move to the archive.
+
+The BRAIN exists to make sessions cheap to open. A BRAIN that kills the
+session that reads it has inverted its own purpose.
