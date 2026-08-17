@@ -245,6 +245,13 @@ Refinement (8/5/26, same day): the paste goes in the MESSAGE BODY as a code
 block — tool/console output can render collapsed in the chat client and
 Brice won't see it. If it was delivered via a cat command, paste it again
 as message text.
+Refinement 2 (8/17/26, MRV FORMS arc — the violation recurred): a cat/console
+delivery does NOT count as delivered, full stop; Brice had to hunt for
+script 040. The message-body paste is the ONLY delivery that counts, it
+happens in the same message that announces the script is ready, and it
+RECURS on request — when Brice asks for a script again (new day, new
+device, lost scroll), the answer is the full body-paste again with its
+sha256, never a pointer to an earlier message or the repo.
 
 ## §11 · The BRAIN as a positioning asset (Brice, 8/5/26)
 The BRAIN pattern is not just internal tooling — it is Frontier Firm
