@@ -414,3 +414,31 @@ RULES (all products, session-open and session-close):
 
 The BRAIN exists to make sessions cheap to open. A BRAIN that kills the
 session that reads it has inverted its own purpose.
+
+## §17 · The open-loops sweep (Brice, 8/20/26 — §13's sibling)
+**Session open is three sweeps, all reported before work: STATE top-down,
+§13 open Issues, and the product's OPEN-LOOPS register.** The register
+(docs/BRAIN/OPEN-LOOPS.md in each product repo) is the single index of
+every dormant commitment: one line per loop — what · state · waiting-on ·
+next action. State vocabulary is closed: `founder-gate` (only Brice can
+advance it), `external` (a third party's clock), `ruling-open` (needs one
+founder decision), `charter-pending` (arc identified, not yet chartered),
+`queued` (ratified, awaiting a train). A loop's line DIES the moment it
+ships or gets its ruling — the register holds only what is open.
+
+The sweep report leads with founder-gates and their age ("Meta review not
+started, day N"), because those are the items only Brice can move and
+nothing else in the protocol surfaces them. The report happens even when
+nothing moved, so silence is never ambiguous (§13's rule, inherited).
+
+Why doctrine: loose ends were living in six registries (ROADMAP, BOARD,
+BACKLOG, wendy-ledger, Issues, feature_requests) and session-open read two
+of them. Items without a forcing mechanism went dormant — board 75 sat
+unmoved for weeks; external clocks (Meta review) had no start date because
+no sweep ever asked. Issues never get lost because §13 forces them into
+every open; the register gives every other commitment the same law.
+
+Rules: the register FITS ON ONE SCREEN — if it grows past that, the excess
+is a prioritization conversation, not a longer file. Detail stays in
+ROADMAP/BOARD/BACKLOG; the register points. Session close includes a
+one-minute pass updating lines that moved. Scope: every JSH product repo.
