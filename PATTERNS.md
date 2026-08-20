@@ -224,6 +224,14 @@ slots in. Google Calendar OAuth = moderate verification clock. Gmail SEND =
 restricted scope, ANNUAL paid CASA security assessment — commit in
 principle, sequence last, budget deliberately, per product.
 
+**Tenant doctrine (8/20, the GoDaddy discovery):** the company's Microsoft
+tenant must be MICROSOFT-DIRECT and company-owned — never a reseller-managed
+(GoDaddy/CSP-federated) tenant, which carries delegated reseller admin,
+federated sign-in bounces, and restricted control. Symptom that reveals it:
+partner/portal sign-in redirecting to the reseller's login page. All
+Vault-family app registrations, Partner Center enrollment, and publisher
+identity live in the direct tenant (JSH: jshinnovations.com).
+
 **Token custody doctrine:** refresh tokens = standing access to customers'
 calendars/mailboxes. Blast radius scales with adoption; encrypt at rest,
 handle revocation loudly, support surface (org admin-consent blocks, token
