@@ -183,3 +183,54 @@ the service role (function layer) — humans cannot forge them. Outbound
 emails ride the comms rail; templates live in function code, never the DB.
 Cross-product: reuse for MRV; CampVault warranty/service claims are the
 same shape (tickets + events + tiers) — adopt, don't reinvent.
+
+## Calendar reach + email identity (born MRV D9, 8/20/26 — EVERY product uses this)
+
+Charter of record: myhomevault/docs/BRAIN/d9-calendar-sendas-charter.md.
+The pattern, product-agnostic:
+
+**The ladder (evidence-gated rungs — never build a rung nobody asked for):**
+1. Per-event ICS door (download/deep links) — instant, universal, ships first.
+2. SUBSCRIBE FEED — private capability-URL ICS feed per user; subscribe once
+   in Outlook/Google/Apple, product events auto-appear. Zero per-user
+   friction, no tokens, no consent, the ONLY Apple integration that will
+   ever exist. Honest limit: pull-based, hours of refresh lag — say so.
+   Capability URL = revoke-and-regenerate control from birth.
+3. OAuth two-way sync — ONLY when evidence demands busy-awareness. Skip
+   "one-way OAuth push" permanently: all of OAuth's cost, none of its
+   distinguishing value over the feed.
+
+**Email identity (send-as):**
+- DNS domain sending is OFF THE TABLE for end users (MRV founder ruling
+  8/20: "a LOT of agents will not know how" — the N-users law). SEED KEPT:
+  org-tier domain sending ("IT sets it up once, users inherit") is a
+  Scale-phase feature per product (brokerages/builders/camp orgs have IT).
+- OAuth Mail.Send is the user-grade answer: real address, real Sent folder,
+  any address type. Scope split ruling pattern: 1:1 comms ride the user's
+  mailbox; BULK/campaign traffic stays on the platform rail (Exchange
+  throttles bulk and it burns the user's own sending reputation).
+- Interim + permanent floor: platform-rail deliverability hygiene.
+
+**One Azure app per PRODUCT (consent screen shows the product's name, not
+JSH), multi-tenant + personal accounts, INCREMENTAL consent (request scopes
+per feature, never one monolithic screen). Publisher verification (Partner
+Program + publisher domain) is a days-to-weeks third-party clock — start it
+before any OAuth build, the Meta lesson. Registration alone (~30 min)
+unblocks development; verification only gates the customer-facing consent.**
+
+**Provider law:** feed rung is provider-neutral for free. OAuth rungs:
+Microsoft first (target market's stack), provider seam kept clean so Google
+slots in. Google Calendar OAuth = moderate verification clock. Gmail SEND =
+restricted scope, ANNUAL paid CASA security assessment — commit in
+principle, sequence last, budget deliberately, per product.
+
+**Token custody doctrine:** refresh tokens = standing access to customers'
+calendars/mailboxes. Blast radius scales with adoption; encrypt at rest,
+handle revocation loudly, support surface (org admin-consent blocks, token
+expiry) is the real at-scale cost — price it into any OAuth decision.
+
+Cross-product fits already visible: MBV build-milestone/draw-schedule feeds
+to buyers' calendars + superintendent send-as; CampVault session/drop-off
+feeds to parent calendars; SiteVault inspection schedules. Adopt the
+charter's table; argue from users' verbatim words, not summaries (the D9
+lesson: the "two-way sync" ask was the BOT'S framing, not hers).
