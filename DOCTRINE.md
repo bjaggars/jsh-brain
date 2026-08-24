@@ -442,3 +442,15 @@ Rules: the register FITS ON ONE SCREEN — if it grows past that, the excess
 is a prioritization conversation, not a longer file. Detail stays in
 ROADMAP/BOARD/BACKLOG; the register points. Session close includes a
 one-minute pass updating lines that moved. Scope: every JSH product repo.
+
+## Go-live rule: PITR on every production database (founder, 8/24/26)
+The moment a product "goes live" — a real tenant with real data on its
+prod project (as MyRealtyVault is) — Point-in-Time Recovery is enabled on
+that prod database the same day. Daily snapshots mean a worst case of
+LOSING A CUSTOMER'S ENTIRE DAY; PITR makes the worst case ~one minute.
+Cost (~$100/mo per project) belongs in the Platform Care cost basis —
+an absolute operational cost, priced as such. TEST/dev projects never
+get PITR; their data is stubs and robot residue. Standing reminders:
+enable on MEAP-prod at its first real tenant; on MyBuilderVault-prod at
+its first real tenant. MyRealtyVault-prod: founder enabling 8/24/26.
+
