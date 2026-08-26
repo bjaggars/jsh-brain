@@ -252,6 +252,16 @@ happens in the same message that announces the script is ready, and it
 RECURS on request — when Brice asks for a script again (new day, new
 device, lost scroll), the answer is the full body-paste again with its
 sha256, never a pointer to an earlier message or the repo.
+Refinement 3 (8/26/26, MRV Rail C — the violation recurred a third time:
+067 was proven on scratch and announced "committed" with only its sha256;
+Brice had to ask): the scope is EVERY SQL file — DB change scripts, seeds,
+one-offs, harness fixtures he might run — and the trigger is the moment
+the file is PROVEN, not the moment Brice needs to run it. A script that
+"rides to TEST later with the train" is still pasted in full, in the body,
+in the message that reports it green, unprompted. The robot does not
+decide when the founder wants it in hand; it is in hand the moment it
+exists. A message that says "proven, sha256 …" without the body below it
+is an unfinished message.
 
 ## §11 · The BRAIN as a positioning asset (Brice, 8/5/26)
 The BRAIN pattern is not just internal tooling — it is Frontier Firm
