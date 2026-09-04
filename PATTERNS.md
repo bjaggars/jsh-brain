@@ -242,3 +242,27 @@ to buyers' calendars + superintendent send-as; CampVault session/drop-off
 feeds to parent calendars; SiteVault inspection schedules. Adopt the
 charter's table; argue from users' verbatim words, not summaries (the D9
 lesson: the "two-way sync" ask was the BOT'S framing, not hers).
+
+## The broker-is-also-an-agent truth (MRV, founder 9/4)
+Most brokers who own a brokerage are ALSO producing agents — they carry
+their own book AND run the office. Wendy is exactly this. So owner/admin is
+not a different KIND of person from an agent; it is an agent who ALSO wears
+the office hat. Consequences that govern every broker surface, present and
+future:
+- An owner/admin seat lands on the SAME agent workspace (/work · Today ·
+  Clients · Buyers · their own book) as any agent, and simply gains the
+  Office pill on top. Never route a broker "away" to an office-only screen —
+  that was a wrong model (dropped 9/4).
+- 89c holds without change: as an agent she has her private template shelf
+  (created_by = her); as broker she curates the Office shelf (role
+  owner/admin). Same person, two contexts, one RLS (082) already covers it.
+- FUTURE office knobs ("no personal templates in my office"): a broker-agent
+  toggling this constrains her OWN agent-hat too — a design nuance to surface
+  in that arc, not a blocker.
+- Testing implication: a clean "an ordinary agent can't curate the office
+  shelf" check needs a PURE agent (no owner/admin). A broker-agent can
+  curate, correctly — so she is the wrong persona for the fence test. Walk
+  the fence with plain agents; walk the both-hats truth with the broker seat.
+- Applies to the whole Vault family: builder principals (MBV) and camp
+  directors (CampVault) are likely the same both-hats shape — the office
+  layer adds to the producer layer, never replaces it.
