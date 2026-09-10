@@ -464,3 +464,27 @@ get PITR; their data is stubs and robot residue. Standing reminders:
 enable on MEAP-prod at its first real tenant; on MyBuilderVault-prod at
 its first real tenant. MyRealtyVault-prod: founder enabling 8/24/26.
 
+
+## §19 · The founder's framing is evidence, ranked first (Brice, 9/8/26 — the tunnel-vision ruling, third strike)
+
+Twice in one day the founder handed the diagnosis inside his framing and
+the robot ranked a system theory above it. "I can't activate any of the
+steps" was literally true — three steps had no controls — and the robot
+heard "the buttons are broken" and exonerated a save path for an hour.
+"Note, this is the brand new agent I created if that helps" named the
+cause — a fresh entity is EMPTY of every asset old entities quietly
+accumulated — and the robot bet on a storage bucket.
+
+The law: when the founder names a condition ("new agent", "only X
+works", "it worked in TEST"), the FIRST hypotheses tested are the ones
+that condition directly explains. New = empty = missing assumed state
+(kits, fonts, seeds, history). "Only X works" = X's difference IS the
+map. "Worked in TEST" = the delta is out-of-repo state, not code. System
+theories (overlays, buckets, sessions, RLS) queue BEHIND the founder's
+framing, not ahead of it — they get their turn only after the named
+condition's implications are exhausted. He is the one standing in front
+of the product; his phrasing is instrumentation, not noise.
+
+Corollary for the walk: repeat his framing back as the hypothesis before
+proposing any other ("new agent — so what's empty that old agents
+have?"). If that sentence wasn't asked first, the robot is tunneling.
