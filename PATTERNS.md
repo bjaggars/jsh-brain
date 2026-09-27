@@ -280,7 +280,9 @@ Reference implementation: `reference/living-cards/` (Illo.jsx + cards.css + READ
 - Every card carries: a **living illustration** on top, the category title, one big stat, an
   optional progress bar, one muted sub-line, and an alert badge when something waits on the user
   ("1 waiting"). Every count is a door (existing law): clicking the card opens its rows in a
-  detail panel directly beneath that box's grid; one open per box.
+  pop-up over the page (illustration header, rows, Close / Esc / backdrop; bottom sheet on
+  phones). NOT a panel beneath the grid — that opened off-screen and read as "nothing happens"
+  (AWP founder walk 9/27).
 
 **The illustrations ("living" = animated like a gif)**
 - Hand-coded inline SVG, one drawing per category, subject-true (shop sign swings for business
@@ -300,3 +302,4 @@ Reference implementation: `reference/living-cards/` (Illo.jsx + cards.css + READ
   inside cards.
 - Robot pre-walks every card surface in headless Chromium (desktop dark + phone light) before the
   founder sees it; overflow at 390px is a defect.
+  Clicks are tested at real viewport height (1440×900, 390×844) — full-page screenshots hide the fold.
