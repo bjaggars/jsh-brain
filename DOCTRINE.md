@@ -262,6 +262,13 @@ in the message that reports it green, unprompted. The robot does not
 decide when the founder wants it in hand; it is in hand the moment it
 exists. A message that says "proven, sha256 …" without the body below it
 is an unfinished message.
+Refinement 4 (Brice, 9/27/26, AWP — supersedes Refinement 3 for robot-applied SQL): scripts the
+robot applies ITSELF through the Supabase connector are NOT pasted in chat — seeing them made
+Brice think he had to run them (he ran AWP 001 by mistake). The chat reports them in plain words
+("added the jobs table; checks passed"). They are still committed, numbered, gridded, and their
+sha256 recorded in the product BRAIN — the audit trail moves to the BRAIN, not the chat. §10's
+paste law stands unchanged for every script BRICE must run (prod releases, anything outside the
+robot's connector scope): full body paste, sha256, and a plain "you run this" label on top.
 
 ## §11 · The BRAIN as a positioning asset (Brice, 8/5/26)
 The BRAIN pattern is not just internal tooling — it is Frontier Firm
