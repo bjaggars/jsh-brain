@@ -266,3 +266,37 @@ future:
 - Applies to the whole Vault family: builder principals (MBV) and camp
   directors (CampVault) are likely the same both-hats shape — the office
   layer adds to the producer layer, never replaces it.
+
+## Dashboard: boxes of living cards (founder 9/27/26 — standard for EVERY JSH product)
+Born in the JSH AI Workshop Platform engagement dashboard; the founder's word: "this should be
+standard for all our apps." MyRealtyVault's UI redesign (Modernist) adopts it first.
+Reference implementation: `reference/living-cards/` (Illo.jsx + cards.css + README).
+
+**The shape**
+- A page's **sections are large boxes** (rounded, bordered, titled in the display face, one-line
+  plain-language lead under the title).
+- Each **category inside a section is a card** in a grid (desktop 5–6 across, tablet 3, phone 2;
+  columns are `minmax(0,1fr)` so long titles wrap instead of overflowing).
+- Every card carries: a **living illustration** on top, the category title, one big stat, an
+  optional progress bar, one muted sub-line, and an alert badge when something waits on the user
+  ("1 waiting"). Every count is a door (existing law): clicking the card opens its rows in a
+  detail panel directly beneath that box's grid; one open per box.
+
+**The illustrations ("living" = animated like a gif)**
+- Hand-coded inline SVG, one drawing per category, subject-true (shop sign swings for business
+  context, dot travels a path for journeys, pulse crosses a line for integrations, lock opens for
+  permissions, gauge needle for performance, flag waves for assumptions, star twinkles for wishes).
+- Animated with CSS keyframes only — no GIF files, no Lottie, no remote images, no libraries.
+  Zero network, zero licensing, cannot break, weighs a few KB.
+- Colors are the product's CSS tokens (ink / blue / amber / sheet), never hex — the art re-skins
+  with the palette and flips with light/dark automatically.
+- `prefers-reduced-motion: reduce` freezes every drawing (`.illo * { animation: none }`). Law.
+- One accent at a time per drawing; loops 1–4s; nothing flashes faster than ~1Hz.
+
+**Rules**
+- Plain-language category names on cards — never internal keys or engine words
+  (AWP: "Landscape" is shown as "Today's setup"; "Non-functionals" as "Speed, security and scale").
+- The card grid is the page's overview; forms and workflows live in their own box above it, not
+  inside cards.
+- Robot pre-walks every card surface in headless Chromium (desktop dark + phone light) before the
+  founder sees it; overflow at 390px is a defect.

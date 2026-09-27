@@ -1,0 +1,61 @@
+/* Living cards — reference CSS lifted from AWP src/theme.css (9/27/26).
+   Depends on product tokens: --ink --ink-soft --paper --sheet --line --blue --amber --display. */
+.box { margin-top: 32px; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--sheet); }
+.box-title { font-family: var(--display); font-weight: 400; font-size: 30px; margin: 0; }
+.box-lead { margin: 4px 0 16px; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 640px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .cards.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } .cards.cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.card { display: flex; flex-direction: column; gap: 4px; padding: 12px; text-align: left; cursor: pointer; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line); border-radius: 8px; }
+.card:hover { border-color: var(--ink-soft); }
+.card.on { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+.illo { width: 100%; height: 88px; margin-bottom: 4px; border-radius: 6px; background: var(--sheet); }
+.card-title { font-weight: 600; font-size: 15px; line-height: 1.3; overflow-wrap: anywhere; hyphens: auto; }
+@media (max-width: 639px) { .box, .workshop { padding: 14px; } .card-title { font-size: 14px; overflow-wrap: break-word; } }
+.card-stat { font-size: 22px; font-weight: 500; }
+.card-sub { font-size: 13px; color: var(--ink-soft); }
+.alert { margin-left: 8px; font-size: 12px; padding: 1px 6px; border-radius: 4px; background: var(--amber); color: #1d2733; vertical-align: 3px; }
+.bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bar > span { display: block; height: 100%; background: var(--blue); }
+.detail { margin-top: 16px; padding: 16px; border: 1px solid var(--blue); border-radius: 8px; }
+.detail-head { display: flex; justify-content: space-between; align-items: baseline; }
+.workshop { border-radius: 12px; }
+
+/* Card animations — gif-like loops, all off under reduced motion. */
+.illo * { transform-box: fill-box; }
+.a-swing { animation: swing 2.4s ease-in-out infinite; transform-box: view-box; }
+.a-blink { animation: blink 1.8s steps(2) infinite; }
+.a-slide-r { animation: slideR 3s ease-in-out infinite; }
+.a-slide-l { animation: slideL 3s ease-in-out infinite; }
+.a-pulse { animation: pulse 2s ease-in-out infinite; }
+.a-bob { animation: bob 1.6s ease-in-out infinite; }
+.a-travel { animation: travel 4s linear infinite; }
+.a-shuttle { animation: travel 1.6s ease-in-out infinite alternate; }
+.a-scroll { animation: scroll 3s linear infinite; }
+.a-unlock { animation: unlock 3s ease-in-out infinite; transform-box: view-box; }
+.a-needle { animation: needle 2.6s ease-in-out infinite alternate; transform-box: view-box; }
+.a-swatch { animation: swatch 3.2s linear infinite; }
+.a-talk { animation: talk 1.8s ease-in-out infinite; }
+.a-dot { animation: dot 1.2s ease-in-out infinite; }
+.a-wave { animation: wave 1.4s ease-in-out infinite alternate; transform-box: view-box; }
+.a-glow { animation: glow 2s ease-in-out infinite; }
+.a-pop { animation: pop 2.4s ease-in-out infinite; transform-origin: center; }
+.a-twinkle { animation: twinkle 2.2s ease-in-out infinite; transform-box: view-box; }
+@keyframes swing { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+@keyframes blink { 50% { opacity: .15; } }
+@keyframes slideR { 0%,20% { transform: translate(0,0); } 50%,70% { transform: translate(27px,26px); opacity: 0; } 100% { transform: translate(0,0); } }
+@keyframes slideL { 0%,20% { transform: translate(0,0); } 50%,70% { transform: translate(-27px,26px); opacity: 0; } 100% { transform: translate(0,0); } }
+@keyframes bob { 50% { transform: translateY(-5px); } }
+@keyframes travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+@keyframes scroll { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+@keyframes unlock { 0%,30% { transform: translateY(0); } 50%,80% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+@keyframes needle { from { transform: rotate(-60deg); } to { transform: rotate(55deg); } }
+@keyframes swatch { 0%,100% { fill: var(--blue); } 33% { fill: var(--amber); } 66% { fill: var(--ink-soft); } }
+@keyframes talk { 0%,100% { opacity: .35; } 40%,60% { opacity: 1; } }
+@keyframes dot { 50% { transform: translateY(-5px); } }
+@keyframes wave { from { transform: skewY(-4deg); } to { transform: skewY(4deg); } }
+@keyframes glow { 50% { opacity: .55; } }
+@keyframes pop { 0%,60%,100% { transform: scale(1); } 30% { transform: scale(.75); } }
+@keyframes twinkle { 50% { transform: scale(.85) rotate(12deg); } }
+@media (prefers-reduced-motion: reduce) { .illo * { animation: none !important; } }
