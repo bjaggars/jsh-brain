@@ -303,3 +303,5 @@ Reference implementation: `reference/living-cards/` (Illo.jsx + cards.css + READ
 - Robot pre-walks every card surface in headless Chromium (desktop dark + phone light) before the
   founder sees it; overflow at 390px is a defect.
   Clicks are tested at real viewport height (1440×900, 390×844) — full-page screenshots hide the fold.
+- Card titles never break mid-word: they scale with the card (container query, `clamp(11px, 10cqi, 15px)`).
+  Fit is verified with the product's REAL font loaded (fallback fonts are wider and lie).
