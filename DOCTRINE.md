@@ -495,3 +495,47 @@ of the product; his phrasing is instrumentation, not noise.
 Corollary for the walk: repeat his framing back as the hypothesis before
 proposing any other ("new agent — so what's empty that old agents
 have?"). If that sentence wasn't asked first, the robot is tunneling.
+
+## §20 · See what he sees — founder-eye testing in Chrome (Brice, 11/3/26, all products)
+
+The founder found it in the Workshop chat: Claude in Chrome acts in HIS real Chrome, with his
+sign-ins, so the robot sees exactly the screen he sees. MRV's 11/2 walk proved the cost of not
+having it: the icon-over-title tiles, the document row Ask MRV covered, "$0 on the market",
+the card that kept its placeholder — every one reached the robot as a founder screenshot, after
+a green ring. The ring proves the code paths; only eyes on the real screen prove the screen.
+
+**The two browsers.** *Claude in Chrome* (tools `mcp__claude-in-chrome__*`) = his Chrome, his
+logins. *The built-in browser* (desktop-app pane) = separate sign-ins. The session's "Preferred
+browser" line decides the default; a named browser is used as named; if the named one isn't
+reachable, say so and ask — never switch silently. Neither present → say so and fall back to a
+headless Playwright screenshot at the widths that matter (the 11/2 390px check).
+
+**When the robot reaches for it (in this order of value):**
+1. **A founder report, reproduced first.** Before a theory (§19): open the screen he named, in
+   his session, and look. His screenshot says *what*; his browser says *why* — console errors,
+   network calls, the real data.
+2. **Every UI release, walked.** After the deploy gate (build.json = the merged sha), walk the
+   release's D line in his browser and come back with a screenshot or GIF — "seen in your
+   Chrome", never just "ring green".
+3. **Phone width.** `resize_window` to 390×844 (and 430×932) for anything a phone shows — the
+   iPhone app is the live site, so this IS the app.
+4. **Before he walks.** A pre-walk pass catches the cosmetic misses so his walk spends time on
+   taste, not on bugs the robot could see.
+
+**What it never replaces.** The E2E ring stays the release gate; Chrome is eyes, not proof of
+the paths. Bulk data entry, migrations, anything a test or SQL does better — not here.
+
+**Rules in his browser (it is his real Chrome):**
+- Load every tool needed in ONE ToolSearch; `tabs_context_mcp` first; work in a NEW tab —
+  never touch his tabs unless he points at one.
+- Read freely; WRITE only as demo/test personas (App Review accounts, TEST Testbench personas),
+  never as him on production, never on real client records.
+- Never send an email or text to a real person, never pay, never accept terms, never delete
+  real data. Anything outward-facing → stop and ask.
+- Never trigger alert()/confirm() dialogs (MRV's deletes use window.confirm) — they freeze the
+  extension. Warn first if one can't be avoided.
+- Site permission prompts are his to grant; a blocked site is not a broken browser.
+- Two or three failed attempts → stop and ask; no rabbit holes in his browser.
+- Multi-step walks → record a GIF (named for the walk) so he can replay it.
+- Report: what was seen, where (prod/TEST, which persona), the screenshot, and any console
+  error — then the fix, ring, and the same walk again after the release.
