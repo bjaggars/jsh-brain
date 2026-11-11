@@ -1,0 +1,86 @@
+[
+ {
+  "key": "hook",
+  "text": "You didn't become an agent to fight with software.",
+  "file": "vo_af_heart_hook.wav",
+  "dur": 2.4106666666666667,
+  "sr": 24000
+ },
+ {
+  "key": "chaos1",
+  "text": "One app for your contacts. Another for showings. Texts over here, emails over there...",
+  "file": "vo_af_heart_chaos1.wav",
+  "dur": 4.928,
+  "sr": 24000
+ },
+ {
+  "key": "chaos2",
+  "text": "and your deadlines? On a sticky note.",
+  "file": "vo_af_heart_chaos2.wav",
+  "dur": 2.005333333333333,
+  "sr": 24000
+ },
+ {
+  "key": "chaos3",
+  "text": "Every text you miss is a showing you lose.",
+  "file": "vo_af_heart_chaos3.wav",
+  "dur": 2.304,
+  "sr": 24000
+ },
+ {
+  "key": "turn",
+  "text": "There's a better way. Meet My Realty Vault.",
+  "file": "vo_af_heart_turn.wav",
+  "dur": 2.3466666666666667,
+  "sr": 24000
+ },
+ {
+  "key": "home",
+  "text": "Your whole business, on one screen. Built for agents on the go.",
+  "file": "vo_af_heart_home.wav",
+  "dur": 3.52,
+  "sr": 24000
+ },
+ {
+  "key": "show1",
+  "text": "A showing request comes in. One tap to confirm.",
+  "file": "vo_af_heart_show1.wav",
+  "dur": 2.816,
+  "sr": 24000
+ },
+ {
+  "key": "show2",
+  "text": "Your buyer gets a text and an email, and the seller stays in the loop. Automatically.",
+  "file": "vo_af_heart_show2.wav",
+  "dur": 4.693333333333333,
+  "sr": 24000
+ },
+ {
+  "key": "deal",
+  "text": "Every deal. Every deadline. Tracked from contract to close.",
+  "file": "vo_af_heart_deal.wav",
+  "dur": 3.4346666666666668,
+  "sr": 24000
+ },
+ {
+  "key": "brand",
+  "text": "And it wears your brand, not ours. White or dark. Your color.",
+  "file": "vo_af_heart_brand.wav",
+  "dur": 3.541333333333333,
+  "sr": 24000
+ },
+ {
+  "key": "vault",
+  "text": "Your clients get a vault of their own, so when the deal closes, you're still on their phone.",
+  "file": "vo_af_heart_vault.wav",
+  "dur": 4.373333333333333,
+  "sr": 24000
+ },
+ {
+  "key": "cta",
+  "text": "My Realty Vault. Every home. Every deal. One vault. Get it on the App Store today.",
+  "file": "vo_af_heart_cta.wav",
+  "dur": 5.056,
+  "sr": 24000
+ }
+]
