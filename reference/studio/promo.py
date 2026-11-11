@@ -157,14 +157,14 @@ def chip(label, glyph_col):
 CHIPS = [chip('Buyer texted', (34, 160, 90)), chip('Buyer emailed', (34, 160, 90)), chip('Seller notified', (34, 160, 90))]
 
 # ---------- scenes ----------
-HOUSE = Image.open('cap/house.jpg').convert('RGB')   # Pexels #8469934 (free license)
+HOUSE = Image.open('cap/house.jpg').convert('RGB')   # Pexels #210617 (free license) + composited sign — make_house.py
 _hc = {}
 def house_frame(z):
     """full-bleed vertical crop of the house photo, centred on the sign, pushed in by z"""
     k = round(z, 3)
     if k in _hc: return _hc[k]
-    hw, hh = HOUSE.size; ch = hh / z; cw = ch * W / H; cx = hw * 0.785   # centred on the sign
-    x0 = min(max(cx - cw / 2, 0), hw - cw); y0 = (hh - ch) * 0.62
+    hw, hh = HOUSE.size; ch = hh / z; cw = ch * W / H; cx = 1380 - 240 * min(1, (z - 1.15) / 0.22)   # home first, drifting onto the sign
+    x0 = min(max(cx - cw / 2, 0), hw - cw); y0 = (hh - ch) * 0.80
     im = HOUSE.resize((W, H), Image.LANCZOS, box=(x0, y0, x0 + cw, y0 + ch)).convert('RGBA')
     if len(_hc) < 60: _hc[k] = im
     return im
@@ -174,13 +174,13 @@ for y in range(520): _d.line([(0, y), (W, y)], fill=(0, 0, 0, int(150 * (1 - y /
 NEW_REQ = notif_card(('MESSAGES', '(352) 555-0171', 'Can we see 88 Heron Bend tomorrow?', (34, 197, 94)))
 
 def scene_cover(img, t):
-    img.alpha_composite(house_frame(1.0 + 0.10 * (t / COVER)))
+    img.alpha_composite(house_frame(1.15 + 0.22 * (t / COVER)))
 
 def scene_hook(img, t):
     img.alpha_composite(BG_DARK)
     q = (t - COVER) / 0.3
     if q < 1:
-        ph = house_frame(1.10 + 0.25 * eout(q)).copy(); ph.putalpha(int(255 * (1 - eout(q))))
+        ph = house_frame(1.37 + 0.25 * eout(q)).copy(); ph.putalpha(int(255 * (1 - eout(q))))
         img.alpha_composite(ph)
     s = START['hook']; words = [("You didn't become", 0.0, CREAM, 'Bold', 92), ('an agent', 0.6, CREAM, 'Bold', 92),
                                 ('to fight with', 1.0, CREAM, 'Bold', 112), ('SOFTWARE.', 1.75, RED, 'Black', 150)]

@@ -37,6 +37,7 @@ Recapturing footage: `FILMSET_PASSWORD=… python3 login.py` once, run the app l
 - Opening frame gives nothing away: no logo, no punch line. MRV first appears at "There's a better way."
 - Voice: Kokoro `af_heart` @ 1.05. Spell the brand "My Realty Vault" in VO text; avoid words she stumbles on
   ("real estate", "babysit").
-- Opening photo `cap/house.jpg` = Pexels photo #8469934 ("Home for Sale" sign by a white porch), Pexels license:
-  free commercial use, no attribution required. Never use watermarked or preview stock (iStock/Getty comps).
+- Opening photo `cap/house.jpg` = Pexels photo #210617 (Pexels license: free commercial use, no attribution) with a red
+  FOR SALE sign composited onto its yard post by `make_house.py` (founder pick 11/10/26). Never use watermarked or
+  preview stock (iStock/Getty comps).
 - Fonts: Inter Display (system `/usr/share/fonts/opentype/inter/`).
