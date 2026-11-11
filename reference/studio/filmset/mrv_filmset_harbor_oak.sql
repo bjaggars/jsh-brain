@@ -75,3 +75,10 @@ if not exists (select 1 from transaction_deadlines where transaction_id='f115000
 end if;
 update preapprovals set rate_lock_expires = current_date+40 where tenant_id=T;
 end $$;
+
+-- ============================== HOMEOWNER FILM SET (11/10/26) ==============================
+-- Agentless homeowner "Jordan Avery" — login filmset.homeowner@jshinnovations.com (auth user f1150000-…-0003,
+-- person f1150000-…-0004), created directly in auth.users like the agent (password not stored here).
+-- First-run: "Buy a home" + "Keep my home organized". Vault documents uploaded through the app UI from
+-- reference/studio/filmset/homeowner_docs/ (all marked SAMPLE / DEMO DATA). Lender share is filmed with
+-- packet-create stubbed, so no share_packets row and no email exist for it.

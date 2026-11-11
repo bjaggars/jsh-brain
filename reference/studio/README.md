@@ -41,3 +41,8 @@ Recapturing footage: `FILMSET_PASSWORD=… python3 login.py` once, run the app l
   FOR SALE sign composited onto its yard post by `make_house.py` (founder pick 11/10/26). Never use watermarked or
   preview stock (iStock/Getty comps).
 - Fonts: Inter Display (system `/usr/share/fonts/opentype/inter/`).
+
+## Homeowner promo (founder 11/10/26: its own script, homeowner-vault screens only)
+`vo/vo_home.py` → `capture_home.py` (Jordan Avery's vault; packet-create stubbed) → `promo_home.py` (reuses promo.py helpers)
+→ `MRV_PROMO=promo_home.py python3 promo_audio.py` → mux. Opening photo: Pexels #210617 without the sign (`cap_home/house_clean.jpg`).
+Closing uses the app's homeowner tagline: "Every home. Every document. For life." + "Free on the App Store today".

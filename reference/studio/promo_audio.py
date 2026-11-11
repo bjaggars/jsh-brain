@@ -1,15 +1,18 @@
 """Mix: voice-over + music bed (ducked under VO) + synthesized SFX, timed from promo.py's START table."""
-import json, sys
+import json, os, sys
 import numpy as np, soundfile as sf
 sys.argv = [sys.argv[0], 'stills'] + sys.argv[1:]
 import importlib.util
 spec = importlib.util.spec_from_file_location('promo', 'promo.py')
 SR = 48000
 # pull timing without rendering: exec the timing part only
-src = open('promo.py').read()
+src = open(os.environ.get('MRV_PROMO', 'promo.py')).read()
 ns = {}
 exec(src.split('CAP = ')[0], ns)
 START, END, DUR, VOF, CUT = ns['START'], ns['END'], ns['DUR'], ns['VOF'], ns['CUT']
+HOME = 'h_cta' in START
+if HOME:   # homeowner promo: alias its beats onto the shared mixer
+    START = dict(START); START['turn'] = START['h_turn']; START['cta'] = START['h_cta']
 n = int(DUR * SR) + SR
 t = np.arange(n) / SR
 mix_vo = np.zeros(n); music = np.zeros(n); sfx = np.zeros(n)
@@ -93,10 +96,21 @@ if 'show1' in START:
     for i in range(3): place(sfx, pop(1100 + 150 * i, 0.15), START.get('show2', START['show1'] + 2.25) + 0.45 + i * 0.55, 0.25)
 if 'brand' in START:
     for dt in [1.05, 2.15]: place(sfx, click(), START['brand'] + dt, 0.6)
-_full = CUT in ('full', '15')
+_full = CUT in ('full', '15', 'home')
 for i in range(3 if _full else 1): place(sfx, pop(700 + 120 * i), START['cta'] + (1.0 if _full else 0.85) + i * 0.42, 0.18)
 place(sfx, ding(1760), START['cta'] + 0.1, 0.15)
 
+if HOME:
+    s1, s2 = START['h_chaos1'], START['h_chaos2']
+    for i in range(6): place(sfx, pop(560 + 70 * i), s1 + 0.1 + i * 0.26 + 0.3, 0.2)
+    for i in range(4): place(sfx, whoosh(0.25), s1 + 3.0 + i * 0.22, 0.18)
+    for j in range(3): place(sfx, ding(1480 - j * 110), s1 + 1.8 + j * 0.85, 0.14)
+    place(sfx, ding(990), s2 + 0.3, 0.14); place(sfx, thud(), s2 + 1.35, 0.75)
+    for k2 in ['h_plan', 'h_afford', 'h_steps', 'h_docs', 'h_agent']: place(sfx, whoosh(0.45), START[k2] - 0.2, 0.28)
+    for dt in [0.85, 2.1]: place(sfx, click(), START['h_plan'] + dt, 0.6)
+    place(sfx, click(), START['h_docs'] + 3.55, 0.6); place(sfx, ding(1320), START['h_docs'] + 3.65, 0.16)
+    for i in range(3): place(sfx, pop(1100 + 150 * i, 0.15), START['h_docs'] + 3.9 + i * 0.45, 0.25)
+    place(sfx, click(), START['h_agent'] + 1.05, 0.6)
 out = mix_vo * 1.0 + music * 0.9 + sfx
 fade = np.ones(n); _f = int(min(2.0, DUR / 4) * SR); fade[-_f:] = np.linspace(1, 0, _f); out *= fade
 out = out[: int(DUR * SR)]

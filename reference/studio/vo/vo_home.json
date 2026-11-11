@@ -1,0 +1,72 @@
+[
+ {
+  "key": "h_open",
+  "text": "Buying a home should be exciting.",
+  "file": "vo_home_h_open.wav",
+  "dur": 1.6426666666666667,
+  "sr": 24000
+ },
+ {
+  "key": "h_chaos1",
+  "text": "Instead it's forty browser tabs, a mortgage you can't figure out, and paperwork everywhere.",
+  "file": "vo_home_h_chaos1.wav",
+  "dur": 4.949333333333334,
+  "sr": 24000
+ },
+ {
+  "key": "h_chaos2",
+  "text": "And everyone wants your documents. Again.",
+  "file": "vo_home_h_chaos2.wav",
+  "dur": 2.3893333333333335,
+  "sr": 24000
+ },
+ {
+  "key": "h_turn",
+  "text": "There's a better way. My Realty Vault. Free for homeowners.",
+  "file": "vo_home_h_turn.wav",
+  "dur": 3.1146666666666665,
+  "sr": 24000
+ },
+ {
+  "key": "h_plan",
+  "text": "Tell it what you want to do, and it builds your plan.",
+  "file": "vo_home_h_plan.wav",
+  "dur": 2.496,
+  "sr": 24000
+ },
+ {
+  "key": "h_afford",
+  "text": "Know what you can comfortably afford, before you fall in love with a house.",
+  "file": "vo_home_h_afford.wav",
+  "dur": 3.712,
+  "sr": 24000
+ },
+ {
+  "key": "h_steps",
+  "text": "Every step, in plain English. In any order, at your own pace.",
+  "file": "vo_home_h_steps.wav",
+  "dur": 3.4346666666666668,
+  "sr": 24000
+ },
+ {
+  "key": "h_docs",
+  "text": "Keep every document in one private vault, and share it with your lender in one secure link that expires.",
+  "file": "vo_home_h_docs.wav",
+  "dur": 5.952,
+  "sr": 24000
+ },
+ {
+  "key": "h_agent",
+  "text": "When you're ready, bring your agent in. They only see what you share.",
+  "file": "vo_home_h_agent.wav",
+  "dur": 3.3066666666666666,
+  "sr": 24000
+ },
+ {
+  "key": "h_cta",
+  "text": "My Realty Vault. Every home. Every document. For life. Free on the App Store today.",
+  "file": "vo_home_h_cta.wav",
+  "dur": 5.333333333333333,
+  "sr": 24000
+ }
+]
