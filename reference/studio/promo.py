@@ -1,5 +1,5 @@
 """MRV infomercial promo — 1080x1920, 30 fps, timed to the voice-over. Videos-as-code."""
-import json, math, random, subprocess, sys
+import json, math, os, random, subprocess, sys
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H, FPS = 1080, 1920, 30
@@ -14,14 +14,20 @@ def lerp(a, b, k): return a + (b - a) * k
 
 VOICE = sys.argv[2] if len(sys.argv) > 2 else 'af_heart'
 vo = {m['key']: m for m in json.load(open(f'vo/vo_{VOICE}.json'))}
+# cuts: MRV_CUT=full (49 s) | 15 | 6
+CUT = os.environ.get('MRV_CUT', 'full')
+CUTS = {'full': dict(cover=1.65, order=['hook', 'chaos1', 'chaos2', 'chaos3', 'turn', 'home', 'show1', 'show2', 'deal', 'brand', 'vault', 'cta'], alias={}, tail=2.2,
+                     gap={'hook': .35, 'chaos1': .12, 'chaos2': .25, 'chaos3': .5, 'turn': .35, 'home': .3, 'show1': .2, 'show2': .4, 'deal': .3, 'brand': .4, 'vault': .5, 'cta': 0}),
+        '15': dict(cover=0.9, order=['hook', 'turn', 'show1', 'cta'], alias={'cta': 'cta15'}, tail=1.0, gap={'hook': .3, 'turn': .3, 'show1': 1.25, 'cta': 0}),
+        '6': dict(cover=0.0, order=['bump', 'cta'], alias={'cta': 'cta6'}, tail=1.0, gap={'bump': 1.5, 'cta': 0})}
+C = CUTS[CUT]; COVER = C['cover']
+VOF = {k: vo[C['alias'].get(k, k)] for k in C['order']}
 START = {}
-t = 1.95
-COVER = 1.65
-GAP = {'hook': .35, 'chaos1': .12, 'chaos2': .25, 'chaos3': .5, 'turn': .35, 'home': .3, 'show1': .2, 'show2': .4, 'deal': .3, 'brand': .4, 'vault': .5, 'cta': 0}
-for k in ['hook', 'chaos1', 'chaos2', 'chaos3', 'turn', 'home', 'show1', 'show2', 'deal', 'brand', 'vault', 'cta']:
-    START[k] = t; t += vo[k]['dur'] + GAP[k]
-END = {k: START[k] + vo[k]['dur'] for k in START}
-DUR = END['cta'] + 2.2
+t = COVER + 0.3 if COVER else 0.15
+for k in C['order']:
+    START[k] = t; t += VOF[k]['dur'] + C['gap'][k]
+END = {k: START[k] + VOF[k]['dur'] for k in START}
+DUR = END['cta'] + C['tail']
 
 CAP = 'cap/'
 shot = {n: Image.open(CAP + n + '.jpg').convert('RGB') for n in ['a_home', 'b_calendar', 'c_showings', 'd_receipt', 'f_closings', 'g_colors', 'h_gold', 'i_dark']}
@@ -233,7 +239,9 @@ def scene_turn(img, t):
     img.alpha_composite(BG_GREEN)
     # iris wipe from the dark chaos into vault green
     if p < 1:
-        old = Image.new('RGBA', (W, H)); scene_chaos(old, END['chaos3'] + 0.3)
+        old = Image.new('RGBA', (W, H))
+        if 'chaos3' in START: scene_chaos(old, END['chaos3'] + 0.3)
+        else: scene_hook(old, END['hook'] + 0.4)
         m = Image.new('L', (W, H), 255); r = int(1300 * eout(p)); ImageDraw.Draw(m).ellipse((W / 2 - r, H / 2 - r, W / 2 + r, H / 2 + r), fill=0)
         img.paste(old, (0, 0), m)
     text_c(img, "There's a better way.", 560, font('Bold', 80), CREAM, ease((t - s - 0.2) / 0.35), 30 * (1 - eout((t - s - 0.2) / 0.4)))
@@ -256,7 +264,7 @@ def scene_home(img, t):
     if q > 0: text_c(img, 'Built for agents on the go', 430, font('SemiBold', 40), CREAM, min(1, q) * (1 - ease((t - e - .1) / .2)))
 
 def scene_show(img, t):
-    s1, s2, e = START['show1'], START['show2'], END['show2']
+    s1 = START['show1']; s2 = START.get('show2', s1 + 2.25); e = END.get('show2', s1 + 3.75)
     img.alpha_composite(BG_GREEN)
     p = (t - s1 + 0.1) / 0.55
     cx = lerp(W + 600, W / 2, eout(p)); rot = lerp(12, 0, eout(p))
@@ -264,8 +272,11 @@ def scene_show(img, t):
     ph = phone(name); put_phone(img, ph, cx, 1180, 1.0, rot)
     if t > s1 + 1.7 and t < s1 + 2.3:
         x, y = screen_pt('c_showings', taps['c_showings'], W / 2, 1180, 1.0); tap_ring(img, x, y, (t - s1 - 1.75) / 0.5)
-    caption(img, t, s1, s2, 'A showing request?', 'One tap.')
-    caption(img, t, s2, e + 0.4, 'Buyer and seller,', 'handled.')
+    if 'show2' in START:
+        caption(img, t, s1, s2, 'A showing request?', 'One tap.')
+        caption(img, t, s2, e + 0.4, 'Buyer and seller,', 'handled.')
+    else:
+        caption(img, t, s1, e + 0.4, 'A showing request?', 'One tap. Handled.')
     for i, c in enumerate(CHIPS):                       # chips fly out of the phone
         q = (t - s2 - 0.45 - i * 0.55) / 0.45
         if q <= 0: continue
@@ -318,27 +329,41 @@ def scene_cta(img, t):
         ic = icon_mrv.resize((sz, sz), Image.LANCZOS); m = Image.new('L', ic.size, 0)
         ImageDraw.Draw(m).rounded_rectangle((0, 0, sz - 1, sz - 1), int(sz * .225), fill=255); img.paste(ic, (int(W / 2 - sz / 2), int(560 - sz / 2)), m)
     text_c(img, 'MyRealtyVault', 780, font('Black', 104), CREAM, ease((t - s - 0.2) / 0.4))
-    for i, (w_, col) in enumerate([('Every home.', CREAM), ('Every deal.', CREAM), ('One vault.', BRASS)]):
-        q = (t - s - 1.0 - i * 0.42) / 0.3
-        text_c(img, w_, 1010 + i * 105, font('ExtraBold', 86), col, min(1, max(0, q)), 0, scale=0.7 + 0.3 * back(q, 2))
-    q = (t - s - 2.9) / 0.4
-    if q > 0:
+    lines = [('Every home.', CREAM), ('Every deal.', CREAM), ('One vault.', BRASS)] if CUT == 'full' else [('One vault.', BRASS)]
+    for i, (w_, col) in enumerate(lines):
+        q = (t - s - (1.0 if CUT == 'full' else 0.85) - i * 0.42) / 0.3
+        yy = 1010 + i * 105 if CUT == 'full' else 1040
+        text_c(img, w_, yy, font('ExtraBold', 86 if CUT == 'full' else 104), col, min(1, max(0, q)), 0, scale=0.7 + 0.3 * back(q, 2))
+    q = (t - s - (2.9 if CUT == 'full' else 1.9)) / 0.4
+    if q > 0 and CUT != '6':
         d = ImageDraw.Draw(img); f = font('Bold', 46); lab = 'Get it on the App Store today'; w = d.textlength(lab, font=f) + 110
         a = int(255 * min(1, q)); y = 1520 + 30 * (1 - eout(q))
         d.rounded_rectangle((W / 2 - w / 2, y, W / 2 + w / 2, y + 110), 55, fill=CREAM + (a,))
         d.text((W / 2 - w / 2 + 55, y + 28), lab, font=f, fill=GREEN_D + (a,))
 
-SCENES = [('cover', scene_cover), ('hook', scene_hook), ('chaos1', scene_chaos), ('turn', scene_turn), ('home', scene_home), ('show1', scene_show),
-          ('deal', scene_deal), ('brand', scene_brand), ('vault', scene_vault), ('cta', scene_cta)]
-SCENE_START = [0.0, COVER] + [START[k] - 0.15 for k, _ in SCENES[2:]]
-SCENE_START[3] = START['turn'] - 0.02   # the iris wipe owns its own transition
+def scene_bump(img, t):
+    img.alpha_composite(BG_DARK)
+    s = START['bump']
+    for i, (w_, off, col, wt, sz) in enumerate([('Stop fighting', 0.0, CREAM, 'Bold', 104), ('your', 0.45, CREAM, 'Bold', 104), ('SOFTWARE.', 0.75, RED, 'Black', 150)]):
+        p = (t - s - off) / 0.3
+        if p <= 0: continue
+        shake = 12 * math.sin(t * 70) * max(0, 1 - (t - s - 0.75) / 0.35) if i == 2 else 0
+        text_c(img, w_, 720 + i * 160, font(wt, sz), col, min(1, p * 2), 0, cx=W / 2 + shake, scale=0.6 + 0.4 * back(p, 2.2))
+    img.alpha_composite(VIG)
+
+ALL = {'cover': scene_cover, 'hook': scene_hook, 'chaos1': scene_chaos, 'turn': scene_turn, 'home': scene_home, 'show1': scene_show,
+       'deal': scene_deal, 'brand': scene_brand, 'vault': scene_vault, 'cta': scene_cta, 'bump': scene_bump}
+names = (['cover'] if COVER else []) + [k for k in C['order'] if k in ALL and k not in ('chaos2', 'chaos3', 'show2')]
+SCENES = [(k, ALL[k]) for k in names]
+SCENE_START = [0.0 if k == 'cover' or (i == 0) else COVER if k == 'hook' else START[k] - 0.02 if k == 'turn' else START[k] - 0.15 for i, k in enumerate(names)]
+NOBLUR = {0} | ({names.index('turn')} if 'turn' in names else set())
 
 def frame(t):
     img = Image.new('RGBA', (W, H), (0, 0, 0, 255))
     i = max(j for j, s in enumerate(SCENE_START) if t >= s)
     SCENES[i][1](img, t)
     # whip-pan blur flash on scene cuts (except the iris)
-    if i not in (0, 3) and t - SCENE_START[i] < 0.12:
+    if i not in NOBLUR and t - SCENE_START[i] < 0.12:
         img = img.filter(ImageFilter.BoxBlur(int(14 * (1 - (t - SCENE_START[i]) / 0.12)) + 1))
     return img.convert('RGB')
 
@@ -346,12 +371,15 @@ if __name__ == '__main__':
     mode = sys.argv[1] if len(sys.argv) > 1 else 'video'
     if mode == 'cover':
         frame(0).save('out/MRV_Promo_Cover_1080x1920.png'); sys.exit()
+    if mode == 'stills' and CUT != 'full':
+        for k, tt in enumerate([x / 4 * DUR for x in range(1, 4)] + [DUR - 0.3]): frame(tt).save(f'shots/c{CUT}_{k}.jpg', quality=85)
+        print(json.dumps({k: round(v, 2) for k, v in START.items()}), round(DUR, 2)); sys.exit()
     if mode == 'stills':
         ts = [START['hook'] + 2.6, START['chaos1'] + 4.6, START['chaos2'] + 1.0, START['chaos3'] + 1.4, START['turn'] + 1.9,
               START['home'] + 2.6, START['show1'] + 1.9, START['show2'] + 3.0, START['deal'] + 2.6, START['brand'] + 1.6, START['vault'] + 3.0, START['cta'] + 3.6]
         for k, tt in enumerate(ts): frame(tt).save(f'shots/p_{k:02d}.jpg', quality=85)
         print(json.dumps({k: round(v, 2) for k, v in START.items()}), round(DUR, 2)); sys.exit()
-    out = 'out/promo_noaudio.mp4'
+    out = 'out/promo_noaudio.mp4' if CUT == 'full' else f'out/promo_noaudio_{CUT}.mp4'
     ff = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
                            '-c:v', 'libx264', '-crf', '19', '-preset', 'veryfast', '-pix_fmt', 'yuv420p', out + '.tmp.mp4'], stdin=subprocess.PIPE)
     for n in range(int(DUR * FPS)):

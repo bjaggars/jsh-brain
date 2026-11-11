@@ -82,5 +82,26 @@
   "file": "vo_af_heart_cta.wav",
   "dur": 5.056,
   "sr": 24000
+ },
+ {
+  "key": "cta15",
+  "text": "My Realty Vault. One vault. Get it on the App Store today.",
+  "file": "vo_af_heart_cta15.wav",
+  "dur": 3.498666666666667,
+  "sr": 24000
+ },
+ {
+  "key": "bump",
+  "text": "Stop fighting your software.",
+  "file": "vo_af_heart_bump.wav",
+  "dur": 1.472,
+  "sr": 24000
+ },
+ {
+  "key": "cta6",
+  "text": "My Realty Vault. One vault.",
+  "file": "vo_af_heart_cta6.wav",
+  "dur": 1.8773333333333333,
+  "sr": 24000
  }
 ]

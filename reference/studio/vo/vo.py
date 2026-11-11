@@ -18,12 +18,20 @@ LINES = [
     ('brand',  "And it wears your brand, not ours. White or dark. Your color."),
     ('vault',  "Your clients get a vault of their own, so when the deal closes, you're still on their phone."),
     ('cta',    "My Realty Vault. Every home. Every deal. One vault. Get it on the App Store today."),
+    # cut-downs
+    ('cta15',  "My Realty Vault. One vault. Get it on the App Store today."),
+    ('bump',   "Stop fighting your software."),
+    ('cta6',   "My Realty Vault. One vault."),
 ]
+ONLY = sys.argv[3].split(',') if len(sys.argv) > 3 else None
 k = Kokoro('models/kokoro-v1.0.onnx', 'models/voices-v1.0.bin')
-meta = []
+import os
+meta = json.load(open(f'vo/vo_{VOICE}.json')) if ONLY and os.path.exists(f'vo/vo_{VOICE}.json') else []
+meta = [m for m in meta if not ONLY or m['key'] not in ONLY]
 for key, text in LINES:
+    if ONLY and key not in ONLY: continue
     audio, sr = k.create(text, voice=VOICE, speed=SPEED, lang='en-us')
-    path = f'vo_{VOICE}_{key}.wav'  # relative to vo/; sf.write('vo/' + path, audio, sr)
+    path = f'vo_{VOICE}_{key}.wav'; sf.write('vo/' + path, audio, sr)  # path is relative to vo/
     meta.append({'key': key, 'text': text, 'file': path, 'dur': len(audio) / sr, 'sr': sr})
     print(key, round(len(audio) / sr, 2))
 json.dump(meta, open(f'vo/vo_{VOICE}.json', 'w'), indent=1)
