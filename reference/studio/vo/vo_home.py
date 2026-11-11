@@ -9,14 +9,20 @@ LINES = [
     ('h_chaos2', "And everyone wants your documents. Again."),
     ('h_turn',   "There's a better way. My Realty Vault. Free for homeowners."),
     ('h_plan',   "Tell it what you want to do, and it builds your plan."),
+    ('h_onestop', "It's your one-stop shop. Search for your dream home, research the neighborhood, understand the taxes and the true cost, and compare your favorites."),
     ('h_afford', "Know what you can comfortably afford, before you fall in love with a house."),
     ('h_steps',  "Every step, in plain English. In any order, at your own pace."),
     ('h_docs',   "Keep every document in one private vault, and share it with your lender in one secure link that expires."),
     ('h_agent',  "When you're ready, bring your agent in. They only see what you share."),
     ('h_cta',    "My Realty Vault. Every home. Every document. For life. Free on the App Store today."),
 ]
-k = Kokoro('models/kokoro-v1.0.onnx', 'models/voices-v1.0.bin'); meta = []
+ONLY = sys.argv[1].split(',') if len(sys.argv) > 1 else None
+k = Kokoro('models/kokoro-v1.0.onnx', 'models/voices-v1.0.bin')
+meta = []
+import os
+old = {m['key']: m for m in json.load(open('vo/vo_home.json'))} if ONLY and os.path.exists('vo/vo_home.json') else {}
 for key, text in LINES:
+    if ONLY and key not in ONLY: meta.append(old[key]); continue
     a, sr = k.create(text, voice=VOICE, speed=SPEED, lang='en-us'); path = f'vo_home_{key}.wav'; sf.write('vo/' + path, a, sr)
     meta.append({'key': key, 'text': text, 'file': path, 'dur': len(a) / sr, 'sr': sr}); print(key, round(len(a) / sr, 2))
 json.dump(meta, open('vo/vo_home.json', 'w'), indent=1)

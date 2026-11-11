@@ -8,8 +8,8 @@ from PIL import Image, ImageDraw, ImageFilter
 
 # ---------- timing (VO-driven) ----------
 vo = {m['key']: m for m in json.load(open('vo/vo_home.json'))}
-ORDER = ['h_open', 'h_chaos1', 'h_chaos2', 'h_turn', 'h_plan', 'h_afford', 'h_steps', 'h_docs', 'h_agent', 'h_cta']
-GAP = {'h_open': .45, 'h_chaos1': .15, 'h_chaos2': .55, 'h_turn': .35, 'h_plan': .9, 'h_afford': .35, 'h_steps': .35, 'h_docs': .5, 'h_agent': .45, 'h_cta': 0}
+ORDER = ['h_open', 'h_chaos1', 'h_chaos2', 'h_turn', 'h_plan', 'h_onestop', 'h_afford', 'h_steps', 'h_docs', 'h_agent', 'h_cta']
+GAP = {'h_open': .45, 'h_chaos1': .15, 'h_chaos2': .55, 'h_turn': .35, 'h_plan': .6, 'h_onestop': .4, 'h_afford': .35, 'h_steps': .35, 'h_docs': .5, 'h_agent': .45, 'h_cta': 0}
 START, t = {}, 0.45
 for k in ORDER: START[k] = t; t += vo[k]['dur'] + GAP[k]
 END = {k: START[k] + vo[k]['dur'] for k in START}
@@ -21,6 +21,8 @@ CAP = 'cap_home/'
 for n in ['a_setup', 'b_setup2', 'c_dash', 'e_calc_filled', 'f_checklist', 'g_docs', 'i_share_form', 'j_share_sent', 'k_dash_agent', 'l_agent']:
     shot['H_' + n] = Image.open(CAP + n + '.jpg').convert('RGB')
 TAPS = json.load(open(CAP + 'taps.json'))
+shot['H_m_full'] = Image.open(CAP + 'm_dash_full.jpg').convert('RGB')
+TILES = json.load(open(CAP + 'tiles.json'))
 TAPS['a_setup'] = [220, 571]; TAPS['b_setup2'] = [221, 737]          # "Keep my home organized", "Build my dashboard"
 def spt(css, cx, cy, sc=1.0):
     sx = css[0] * 2 / 886 * SCR_W + 14; sy = css[1] * 2 / 1920 * SCR_H + 14
@@ -140,7 +142,7 @@ def scene_plan(img, t):
     phone_in(img, t, s, cur)
     for nm, key, tt in [('H_a_setup', 'a_setup', s + 0.85), ('H_b_setup2', 'b_setup2', s + 2.1)]:
         x, y = spt(TAPS[key], W / 2, 1180); tap_ring(img, x, y, (t - tt) / 0.45)
-    caption(img, t, s, START['h_afford'], 'Tell it your plan.', 'It builds the rest.')
+    caption(img, t, s, START['h_onestop'] - 0.1, 'Tell it your plan.', 'It builds the rest.')
 
 def scene_afford(img, t):
     s, e = START['h_afford'], END['h_afford']
@@ -159,6 +161,35 @@ def scene_steps(img, t):
     caption(img, t, s, e + 0.3, 'Every step.', 'In plain English.')
     q = (t - s - 1.6) / 0.45
     if q > 0: text_c(img, 'Any order. Your pace.', 430, font('SemiBold', 44), CREAM, min(1, q))
+
+# one-stop shop: scroll the dashboard, light each tile as it's named (founder 11/10: full search experience ships at go-live)
+OS_BEATS = [(1.45, ['Home search'], 'Search.'), (3.05, ['Check a neighborhood'], 'Neighborhoods.'),
+            (4.65, ['Mortgage calculator', 'Cash to close'], 'Taxes & true cost.'), (6.85, ['Compare homes'], 'Compare.')]
+def scene_onestop(img, t):
+    s, e = START['h_onestop'], END['h_onestop']; lt = t - s
+    img.alpha_composite(BG_GREEN)
+    top = 700 if lt < 0.9 else lerp(700, 860, ease((lt - 0.9) / 0.6)) if lt < 2.6 else lerp(860, 1180, ease((lt - 2.6) / 0.6))
+    top = int(top // 2 * 2); box = (0, top * 2, 886, top * 2 + 1920)
+    p = (t - s + 0.15) / 0.6
+    cx = lerp(W + 600, W / 2, eout(p)); cy = 1180
+    put_phone(img, phone('H_m_full', box), cx, cy, 1.0, lerp(10, 0, eout(p)))
+    act = [b for b in OS_BEATS if lt >= b[0]]
+    if act:
+        b0, names, word = act[-1]; k = (lt - b0)
+        ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
+        for nm in names:
+            x, y, w, h = TILES[nm]
+            x0 = cx + (x * 2 / 886 * SCR_W + 14 - PW / 2); y0 = cy + ((y - top) * 2 / 1920 * SCR_H + 14 - PH / 2)
+            x1 = x0 + w * 2 / 886 * SCR_W; y1 = y0 + h * 2 / 1920 * SCR_H
+            g = 0.5 + 0.5 * math.sin(k * 6); a = int(255 * min(1, k / 0.2))
+            d.rounded_rectangle((x0 - 6, y0 - 6, x1 + 6, y1 + 6), 26, outline=BRASS + (a,), width=7)
+            d.rounded_rectangle((x0 - 14, y0 - 14, x1 + 14, y1 + 14), 32, outline=BRASS + (int(a * 0.35 * g),), width=5)
+        img.alpha_composite(ov)
+    a = min(eout((t - s) / 0.35), 1 - ease((t - (e + 0.2)) / 0.2))
+    text_c(img, 'Your one-stop shop.', 150, font('Bold', 84), CREAM, a, 30 * (1 - eout((t - s) / 0.4)))
+    if act:
+        b0, _, word = act[-1]; q = (lt - b0) / 0.3
+        text_c(img, word, 150 + 84 * 1.18, font('ExtraBold', 84), BRASS, a * min(1, q), 0, scale=0.75 + 0.25 * back(q, 2))
 
 CHIPS2 = [chip('View-only', (34, 160, 90)), chip('Expires in 7 days', (34, 160, 90)), chip('See every open', (34, 160, 90))]
 def scene_docs(img, t):
@@ -202,7 +233,7 @@ def scene_cta(img, t):
         d.rounded_rectangle((W / 2 - w / 2, y, W / 2 + w / 2, y + 110), 55, fill=CREAM + (a,))
         d.text((W / 2 - w / 2 + 55, y + 28), lab, font=f, fill=GREEN_D + (a,))
 
-SCENES = [(0.0, scene_cover), (COVER, scene_chaos), (START['h_turn'] - 0.02, scene_turn), (START['h_plan'] - 0.15, scene_plan),
+SCENES = [(0.0, scene_cover), (COVER, scene_chaos), (START['h_turn'] - 0.02, scene_turn), (START['h_plan'] - 0.15, scene_plan), (START['h_onestop'] - 0.15, scene_onestop),
           (START['h_afford'] - 0.15, scene_afford), (START['h_steps'] - 0.15, scene_steps), (START['h_docs'] - 0.15, scene_docs),
           (START['h_agent'] - 0.15, scene_agent), (START['h_cta'] - 0.15, scene_cta)]
 NOBLUR = {0, 2}
@@ -222,7 +253,7 @@ def frame(t):
 if __name__ == '__main__':
     mode = sys.argv[1] if len(sys.argv) > 1 else 'video'
     if mode == 'stills':
-        ts = [0.9, START['h_chaos1'] + 3.8, START['h_chaos2'] + 1.8, START['h_turn'] + 2.6, START['h_plan'] + 1.5, START['h_afford'] + 2.6,
+        ts = [0.9, START['h_chaos1'] + 3.8, START['h_chaos2'] + 1.8, START['h_turn'] + 2.6, START['h_plan'] + 1.5, START['h_onestop'] + 2.0, START['h_onestop'] + 3.6, START['h_onestop'] + 5.5, START['h_onestop'] + 7.4, START['h_afford'] + 2.6,
               START['h_steps'] + 2.2, START['h_docs'] + 1.5, START['h_docs'] + 5.0, START['h_agent'] + 2.4, START['h_cta'] + 4.0]
         for k, tt in enumerate(ts): frame(tt).save(f'shots/hp_{k:02d}.jpg', quality=85)
         print(json.dumps({k: round(v, 2) for k, v in START.items()}), round(DUR, 2)); sys.exit()

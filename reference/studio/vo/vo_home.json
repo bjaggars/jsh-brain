@@ -35,6 +35,13 @@
   "sr": 24000
  },
  {
+  "key": "h_onestop",
+  "text": "It's your one-stop shop. Search for your dream home, research the neighborhood, understand the taxes and the true cost, and compare your favorites.",
+  "file": "vo_home_h_onestop.wav",
+  "dur": 8.106666666666667,
+  "sr": 24000
+ },
+ {
   "key": "h_afford",
   "text": "Know what you can comfortably afford, before you fall in love with a house.",
   "file": "vo_home_h_afford.wav",
