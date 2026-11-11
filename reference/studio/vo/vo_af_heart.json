@@ -85,9 +85,9 @@
  },
  {
   "key": "cta15",
-  "text": "My Realty Vault. One vault. Get it on the App Store today.",
+  "text": "My Realty Vault. Every home. Every deal. One vault. Get it on the App Store today.",
   "file": "vo_af_heart_cta15.wav",
-  "dur": 3.498666666666667,
+  "dur": 4.8213333333333335,
   "sr": 24000
  },
  {
@@ -102,6 +102,20 @@
   "text": "My Realty Vault. One vault.",
   "file": "vo_af_heart_cta6.wav",
   "dur": 1.8773333333333333,
+  "sr": 24000
+ },
+ {
+  "key": "sil_chaos",
+  "text": "",
+  "file": "vo_af_heart_sil_chaos.wav",
+  "dur": 2.25,
+  "sr": 24000
+ },
+ {
+  "key": "sil_home",
+  "text": "",
+  "file": "vo_af_heart_sil_home.wav",
+  "dur": 1.75,
   "sr": 24000
  }
 ]

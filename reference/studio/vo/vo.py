@@ -19,7 +19,7 @@ LINES = [
     ('vault',  "Your clients get a vault of their own, so when the deal closes, you're still on their phone."),
     ('cta',    "My Realty Vault. Every home. Every deal. One vault. Get it on the App Store today."),
     # cut-downs
-    ('cta15',  "My Realty Vault. One vault. Get it on the App Store today."),
+    ('cta15',  "My Realty Vault. Every home. Every deal. One vault. Get it on the App Store today."),  # speed 1.14 in the 15 s cut
     ('bump',   "Stop fighting your software."),
     ('cta6',   "My Realty Vault. One vault."),
 ]

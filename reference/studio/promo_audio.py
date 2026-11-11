@@ -80,10 +80,11 @@ if COVER: place(sfx, thud(), COVER, 0.55); place(sfx, whoosh(0.3, False), COVER 
 if 'bump' in START: place(sfx, thud(), START['bump'] + 0.78, 0.7)
 if 'chaos1' in START:
   s1 = START['chaos1']
-  for i in range(8): place(sfx, pop(600 + 90 * i), s1 + 0.25 + i * 0.42 + 0.25, 0.22)
-  for j in range(4): place(sfx, ding(1500 - j * 120), s1 + 1.6 + j * 0.75, 0.14)
-  place(sfx, thud(), START['chaos2'] + 0.35, 0.3); place(sfx, whoosh(0.2), START['chaos2'] + 0.3, 0.25)                         # sticky slap
-  place(sfx, thud(), START['chaos3'] + 0.05, 0.7); place(sfx, ding(990), START['chaos3'] + 0.2, 0.12)
+  CR = ns_CR = (1.0 if 'chaos2' in START else 0.45)
+  for i in range(8): place(sfx, pop(600 + 90 * i), s1 + (0.25 + i * 0.42) * CR + 0.25, 0.22)
+  for j in range(4): place(sfx, ding(1500 - j * 120), s1 + (1.6 + j * 0.75) * CR, 0.14)
+  if 'chaos2' in START: place(sfx, thud(), START['chaos2'] + 0.35, 0.3); place(sfx, whoosh(0.2), START['chaos2'] + 0.3, 0.25)                         # sticky slap
+  if 'chaos3' in START: place(sfx, thud(), START['chaos3'] + 0.05, 0.7); place(sfx, ding(990), START['chaos3'] + 0.2, 0.12)
 if 'turn' in START: place(sfx, whoosh(0.7), START['turn'] - 0.05, 0.35); place(sfx, ding(1760), START['turn'] + 1.25, 0.18)
 for key in ['home', 'show1', 'deal', 'brand', 'vault', 'cta']:
     if key in START: place(sfx, whoosh(0.45), max(0, START[key] - 0.2), 0.28)
@@ -92,7 +93,8 @@ if 'show1' in START:
     for i in range(3): place(sfx, pop(1100 + 150 * i, 0.15), START.get('show2', START['show1'] + 2.25) + 0.45 + i * 0.55, 0.25)
 if 'brand' in START:
     for dt in [1.05, 2.15]: place(sfx, click(), START['brand'] + dt, 0.6)
-for i in range(3 if CUT == 'full' else 1): place(sfx, pop(700 + 120 * i), START['cta'] + (1.0 if CUT == 'full' else 0.85) + i * 0.42, 0.18)
+_full = CUT in ('full', '15')
+for i in range(3 if _full else 1): place(sfx, pop(700 + 120 * i), START['cta'] + (1.0 if _full else 0.85) + i * 0.42, 0.18)
 place(sfx, ding(1760), START['cta'] + 0.1, 0.15)
 
 out = mix_vo * 1.0 + music * 0.9 + sfx

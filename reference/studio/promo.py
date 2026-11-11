@@ -18,8 +18,10 @@ vo = {m['key']: m for m in json.load(open(f'vo/vo_{VOICE}.json'))}
 CUT = os.environ.get('MRV_CUT', 'full')
 CUTS = {'full': dict(cover=1.65, order=['hook', 'chaos1', 'chaos2', 'chaos3', 'turn', 'home', 'show1', 'show2', 'deal', 'brand', 'vault', 'cta'], alias={}, tail=2.2,
                      gap={'hook': .35, 'chaos1': .12, 'chaos2': .25, 'chaos3': .5, 'turn': .35, 'home': .3, 'show1': .2, 'show2': .4, 'deal': .3, 'brand': .4, 'vault': .5, 'cta': 0}),
-        '15': dict(cover=0.9, order=['hook', 'turn', 'show1', 'cta'], alias={'cta': 'cta15'}, tail=1.0, gap={'hook': .3, 'turn': .3, 'show1': 1.25, 'cta': 0}),
-        '6': dict(cover=0.0, order=['bump', 'cta'], alias={'cta': 'cta6'}, tail=1.0, gap={'bump': 1.5, 'cta': 0})}
+        # founder 11/10: 15 s = the long version's own intro (house + app chaos) → better way → MRV home → full closing
+        '15': dict(cover=0.6, order=['hook', 'chaos1', 'turn', 'home', 'cta'], alias={'chaos1': 'sil_chaos', 'home': 'sil_home', 'cta': 'cta15'}, tail=0.33,
+                   gap={'hook': 0.0, 'chaos1': 0.0, 'turn': 0.1, 'home': 0.05, 'cta': 0}),
+        '6': dict(cover=0.0, order=['chaos1', 'cta'], alias={'chaos1': 'bump', 'cta': 'cta6'}, tail=1.1, gap={'chaos1': 1.4, 'cta': 0}),}
 C = CUTS[CUT]; COVER = C['cover']
 VOF = {k: vo[C['alias'].get(k, k)] for k in C['order']}
 START = {}
@@ -197,14 +199,15 @@ def scene_hook(img, t):
         text_c(img, w_, y, font(wt, sz), col, min(1, p * 2), 0, scale=0.6 + 0.4 * k)
     img.alpha_composite(VIG)
 
+CR = 1.0 if 'chaos2' in START else 0.45      # chaos pacing: compressed in short cuts
 def scene_chaos(img, t):
     img.alpha_composite(BG_DARK)
-    s1, s2, s3 = START['chaos1'], START['chaos2'], START['chaos3']
+    s1 = START['chaos1']; s2 = START.get('chaos2', 1e9); s3 = START.get('chaos3', 1e9)
     shake = 0
     if t > s3: shake = 10 * math.sin(t * 61) * max(0, 1 - (t - s3) / 1.2)
     layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     for i, ic in enumerate(ICONS):                     # icons fly in from off-screen and pile up
-        t0 = s1 + 0.25 + i * 0.42; p = (t - t0) / 0.5
+        t0 = s1 + (0.25 + i * 0.42) * CR; p = (t - t0) / 0.5
         if p <= 0: continue
         x, y, r = ICON_POS[i]; ox = -400 if x < W / 2 else W + 400
         k = back(p, 1.6); cx = lerp(ox, x, k); cy = lerp(y - 500, y, k)
@@ -213,12 +216,12 @@ def scene_chaos(img, t):
         layer.alpha_composite(im, (int(cx - im.width / 2 + shake), int(cy - im.height / 2)))
         n = int(min(99, max(1, (t - t0) * (4 + i * 2)))); badge(layer, int(cx + 75 + shake), int(cy - 75), n, min(1, p))
     img.alpha_composite(layer)
-    dim = Image.new('RGBA', (W, H), (0, 0, 0, int(110 * ease((t - s1 - 1.8) / 0.6)))); img.alpha_composite(dim)
+    dim = Image.new('RGBA', (W, H), (0, 0, 0, int(110 * ease((t - s1 - 1.8 * CR) / 0.6)))); img.alpha_composite(dim)
     for j, nimg in enumerate(NOTIF_IMG):                # notifications stack down from the top
-        t0 = s1 + 1.6 + j * 0.75; p = (t - t0) / 0.4
+        t0 = s1 + (1.6 + j * 0.75) * CR; p = (t - t0) / 0.4
         if p <= 0: continue
-        later = sum(1 for jj in range(j + 1, len(NOTIF_IMG)) if t > s1 + 1.6 + jj * 0.75)
-        y = lerp(-200, 210 + later * 196, eout(p)) if later == 0 else 210 + later * 196 - 196 * (1 - eout((t - (s1 + 1.6 + (j + later) * 0.75)) / 0.4))
+        later = sum(1 for jj in range(j + 1, len(NOTIF_IMG)) if t > s1 + (1.6 + jj * 0.75) * CR)
+        y = lerp(-200, 210 + later * 196, eout(p)) if later == 0 else 210 + later * 196 - 196 * (1 - eout((t - (s1 + (1.6 + (j + later) * 0.75) * CR)) / 0.4))
         img.alpha_composite(nimg, (int((W - nimg.width) / 2 + shake), int(y)))
     if t > s2 - 0.1:                                    # the sticky note slaps on
         p = (t - (s2 + 0.35)) / 0.28
@@ -241,6 +244,7 @@ def scene_turn(img, t):
     if p < 1:
         old = Image.new('RGBA', (W, H))
         if 'chaos3' in START: scene_chaos(old, END['chaos3'] + 0.3)
+        elif 'chaos1' in START: scene_chaos(old, END['chaos1'])
         else: scene_hook(old, END['hook'] + 0.4)
         m = Image.new('L', (W, H), 255); r = int(1300 * eout(p)); ImageDraw.Draw(m).ellipse((W / 2 - r, H / 2 - r, W / 2 + r, H / 2 + r), fill=0)
         img.paste(old, (0, 0), m)
@@ -259,9 +263,9 @@ def scene_home(img, t):
     cy = lerp(H + 700, 1180, back(p, 1.25)); rot = lerp(-14, -3, eout(p)) + 3 * ease((t - s - 1) / 1.5)
     sc = lerp(1.0, 1.0, 0)
     put_phone(img, phone('a_home'), W / 2, cy, 1.0 * sc, rot)
-    caption(img, t, s, START['show1'], 'Your whole business.', 'One screen.')
+    caption(img, t, s, START.get('show1', e + 0.25), 'Your whole business.', 'One screen.')
     q = (t - s - 2.2) / 0.45                            # sub-caption pops
-    if q > 0: text_c(img, 'Built for agents on the go', 430, font('SemiBold', 40), CREAM, min(1, q) * (1 - ease((t - e - .1) / .2)))
+    if q > 0 and 'show1' in START: text_c(img, 'Built for agents on the go', 430, font('SemiBold', 40), CREAM, min(1, q) * (1 - ease((t - e - .1) / .2)))
 
 def scene_show(img, t):
     s1 = START['show1']; s2 = START.get('show2', s1 + 2.25); e = END.get('show2', s1 + 3.75)
@@ -329,12 +333,13 @@ def scene_cta(img, t):
         ic = icon_mrv.resize((sz, sz), Image.LANCZOS); m = Image.new('L', ic.size, 0)
         ImageDraw.Draw(m).rounded_rectangle((0, 0, sz - 1, sz - 1), int(sz * .225), fill=255); img.paste(ic, (int(W / 2 - sz / 2), int(560 - sz / 2)), m)
     text_c(img, 'MyRealtyVault', 780, font('Black', 104), CREAM, ease((t - s - 0.2) / 0.4))
-    lines = [('Every home.', CREAM), ('Every deal.', CREAM), ('One vault.', BRASS)] if CUT == 'full' else [('One vault.', BRASS)]
+    FULLC = CUT in ('full', '15')
+    lines = [('Every home.', CREAM), ('Every deal.', CREAM), ('One vault.', BRASS)] if FULLC else [('One vault.', BRASS)]
     for i, (w_, col) in enumerate(lines):
-        q = (t - s - (1.0 if CUT == 'full' else 0.85) - i * 0.42) / 0.3
-        yy = 1010 + i * 105 if CUT == 'full' else 1040
-        text_c(img, w_, yy, font('ExtraBold', 86 if CUT == 'full' else 104), col, min(1, max(0, q)), 0, scale=0.7 + 0.3 * back(q, 2))
-    q = (t - s - (2.9 if CUT == 'full' else 1.9)) / 0.4
+        q = (t - s - (1.0 if FULLC else 0.85) - i * 0.42) / 0.3
+        yy = 1010 + i * 105 if FULLC else 1040
+        text_c(img, w_, yy, font('ExtraBold', 86 if FULLC else 104), col, min(1, max(0, q)), 0, scale=0.7 + 0.3 * back(q, 2))
+    q = (t - s - (2.9 if FULLC else 1.9)) / 0.4
     if q > 0 and CUT != '6':
         d = ImageDraw.Draw(img); f = font('Bold', 46); lab = 'Get it on the App Store today'; w = d.textlength(lab, font=f) + 110
         a = int(255 * min(1, q)); y = 1520 + 30 * (1 - eout(q))
