@@ -157,14 +157,14 @@ def chip(label, glyph_col):
 CHIPS = [chip('Buyer texted', (34, 160, 90)), chip('Buyer emailed', (34, 160, 90)), chip('Seller notified', (34, 160, 90))]
 
 # ---------- scenes ----------
-HOUSE = Image.open('cap/house.png').convert('RGB')
+HOUSE = Image.open('cap/house.jpg').convert('RGB')   # Pexels #8469934 (free license)
 _hc = {}
 def house_frame(z):
     """full-bleed vertical crop of the house photo, centred on the sign, pushed in by z"""
     k = round(z, 3)
     if k in _hc: return _hc[k]
-    hw, hh = HOUSE.size; ch = hh / z; cw = ch * W / H; cx = 418
-    x0 = min(max(cx - cw / 2, 0), hw - cw); y0 = (hh - ch) / 2
+    hw, hh = HOUSE.size; ch = hh / z; cw = ch * W / H; cx = hw * 0.785   # centred on the sign
+    x0 = min(max(cx - cw / 2, 0), hw - cw); y0 = (hh - ch) * 0.62
     im = HOUSE.resize((W, H), Image.LANCZOS, box=(x0, y0, x0 + cw, y0 + ch)).convert('RGBA')
     if len(_hc) < 60: _hc[k] = im
     return im
