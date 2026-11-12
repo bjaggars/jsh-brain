@@ -58,7 +58,7 @@ BEATS=[
  dict(shot='top2', cam=((0,0,1440),(100,180,1240)), hl=['t2.bar'], cap='The build package goes to the JSH build team',
       vo="Then the build package goes to the JSH build team: the foundation for building, testing, and training."),
  dict(kind='close', cap='',
-      vo="Workshops in days, not months. An app in production in a few short months, not a year or more. This is the JSH AI Workshop Platform."),
+      vo="Workshops in days, not months. An app in production in a few short months, not a year or more. This is the JSH AI Workshop Platform. Changing how software gets built, one client at a time."),
 ]
 # ---- voice
 meta_p='vo/ovf.json'; texts=[b['vo'] for b in BEATS]
@@ -69,7 +69,7 @@ if not os.path.exists(meta_p) or json.load(open(meta_p))['texts']!=texts:
         a,sr=k.create(b['vo'],voice='af_heart',speed=1.02,lang='en-us'); sf.write(f'vo/ovf_{i}.wav',a,sr); durs.append(len(a)/sr)
     json.dump({'texts':texts,'durs':durs},open(meta_p,'w'))
 durs=json.load(open(meta_p))['durs']
-LEAD,GAP,OUTRO=0.5,0.5,1.6
+LEAD,GAP,OUTRO=0.5,0.5,2.2
 t=LEAD
 for b,d in zip(BEATS,durs): b['s']=t; b['e']=t+d+GAP; t=b['e']
 DUR=t+OUTRO
@@ -81,28 +81,40 @@ def view(name,cam):
     im=S(name); sc=im.width/1440; x,y,w=cam; h=w*9/16; iw,ih=im.width/sc,im.height/sc
     x=min(max(x,0),iw-w); y=min(max(y,0),max(0,ih-h))
     return im.resize((W,H),Image.LANCZOS,box=(x*sc,y*sc,(x+w)*sc,(y+h)*sc)),(x,y,w)
+import random
+_docs=[]; _pc={'n':0,'base':None}
+def _mkdocs():
+    rnd=random.Random(7); titles=['Meeting notes','Requirements v4','Workshop 3 recap','Action items','Scope draft','Follow-up','Open questions','Sign-off (pending)','Requirements v7','Workshop 5 agenda','Change requests','Notes from the call']
+    cells=[(c,r) for r in range(4) for c in range(7)]; rnd.shuffle(cells); cells+=[(rnd.uniform(0,6),rnd.uniform(0,3)) for _ in range(22)]
+    for j,(c,r) in enumerate(cells):
+        w,h=rnd.randint(300,360),rnd.randint(390,460); pg=Image.new('RGBA',(w+24,h+24),(0,0,0,0)); d=ImageDraw.Draw(pg)
+        d.rounded_rectangle((14,16,w+22,h+22),6,fill=(0,0,0,70))
+        tone=rnd.choice([(244,246,248),(236,239,242),(250,250,247),(229,234,239)]); d.rounded_rectangle((4,4,w+4,h+4),6,fill=tone+(255,),outline=(170,178,188,255),width=2)
+        d.text((28,26),titles[j%len(titles)],font=font('Bold',21),fill=(40,52,64,255)); d.rectangle((28,60,w-20,62),fill=(150,160,172,255))
+        y=80; k=rnd.randint(0,2)
+        while y<h-30:
+            if k==1 and 150<y<260:
+                for q in range(3): d.rectangle((28,y+q*30,w-20,y+q*30+22),outline=(150,160,172,255),width=2); d.line((28+(w-48)//3,y+q*30,28+(w-48)//3,y+q*30+22),fill=(150,160,172,255),width=2)
+                y+=100; continue
+            if k==2 and y<200: d.rectangle((28,y,40,y+12),outline=(110,122,136,255),width=2); d.rectangle((50,y+3,rnd.randint(150,w-30),y+9),fill=(128,140,154,255)); y+=24; continue
+            d.rectangle((28,y,rnd.randint(int(w*0.45),w-22),y+6),fill=(138,150,164,255)); y+=17 if rnd.random()>0.12 else 34
+        pg=pg.rotate(rnd.uniform(-11,11),expand=True,resample=Image.BICUBIC)
+        x=int(-70+c*(W+140-330)/6+rnd.uniform(-45,45)); yy=int(-60+r*(H+120-400)/3+rnd.uniform(-40,40))
+        _docs.append((pg,x,yy,0.02+0.80*j/len(cells)))
 def problem(p):
-    im=Image.new('RGB',(W,H),PAPER); d=ImageDraw.Draw(im,'RGBA')
-    # left: twelve weeks filling up with meetings
-    for j in range(12):
-        a=ease((p*1.25-j/14)/0.10)
-        if a<=0: continue
-        cx,cy=250+(j%4)*190,300+(j//4)*170; col=(34,44,54,int(255*a))
-        d.rounded_rectangle((cx,cy,cx+160,cy+140),14,fill=col,outline=(58,72,86,int(255*a)),width=2)
-        d.rectangle((cx,cy+22,cx+160,cy+26),fill=(58,72,86,int(255*a)))
-        d.text((cx+14,cy+2),f'WEEK {j+1}',font=font('SemiBold',15),fill=SOFT+(int(255*a),))
-        for m in range(3):
-            ma=ease((p*1.25-j/14-0.04*(m+1))/0.08)
-            if ma>0: d.rounded_rectangle((cx+14,cy+40+m*30,cx+146-m*26,cy+60+m*30),6,fill=(110,168,232,int(150*ma)))
-    # right: the documents pile up
-    for j in range(9):
-        a=ease((p*1.2-0.28-j/16)/0.10)
-        if a<=0: continue
-        ox,oy=1230+((j*37)%60)-30,720-j*46-int(40*(1-a))
-        d.rounded_rectangle((ox,oy,ox+420,oy+62),8,fill=(226,230,234,int(245*a)),outline=(150,160,170,int(255*a)),width=2)
-        for q in range(3): d.rectangle((ox+24,oy+16+q*12,ox+250+((j+q)*53)%130,oy+20+q*12),fill=(120,132,144,int(220*a)))
-    k=ease((p-0.90)/0.10)
-    if k>0: im=Image.blend(im,Image.new('RGB',(W,H),PAPER),k*0.85)
+    if not _docs: _mkdocs()
+    landed=[k for k,dc in enumerate(_docs) if p>=dc[3]+0.07]
+    if _pc['base'] is None or len(landed)<_pc['n']: _pc['base']=Image.new('RGB',(W,H),PAPER); _pc['n']=0
+    for k in landed[_pc['n']:]:
+        pg,x,y,_=_docs[k]; _pc['base'].paste(pg,(x,y),pg)
+    _pc['n']=len(landed); im=_pc['base'].copy()
+    for pg,x,y,at in _docs:
+        q=(p-at)/0.07
+        if 0<q<1:
+            e=eout(q); sc=1.35-0.35*e; g=pg.resize((int(pg.width*sc),int(pg.height*sc)),Image.BILINEAR)
+            al=g.getchannel('A').point(lambda v,e=e:int(v*e)); im.paste(g,(x-(g.width-pg.width)//2,y-(g.height-pg.height)//2-int(30*(1-e))),al)
+    k=ease((p-0.92)/0.08)
+    if k>0: im=Image.blend(im,Image.new('RGB',(W,H),PAPER),k*0.9)
     return im
 def title(p):
     im=Image.new('RGB',(W,H),PAPER); d=ImageDraw.Draw(im,'RGBA')
@@ -131,7 +143,8 @@ def close(p):
     d.text((210,312),'JSH Innovations',font=font('SemiBold',34),fill=SOFT+(int(255*a),))
     b1=ease((p-0.02)/0.08); d.text((120,400),'Workshops in days, not months.',font=font('Bold',84),fill=INK+(int(255*b1),))
     b2=ease((p-0.24)/0.08); d.text((120,520),'In production in months, not a year or more.',font=font('SemiBold',54),fill=BLUE+(int(255*b2),))
-    b3=ease((p-0.66)/0.08); d.text((120,650),'JSH AI Workshop Platform',font=font('Medium',44),fill=SOFT+(int(255*b3),))
+    b3=ease((p-0.52)/0.08); d.text((120,650),'JSH AI Workshop Platform',font=font('Bold',50),fill=INK+(int(255*b3),))
+    b4=ease((p-0.70)/0.08); d.text((120,724),'Changing how software gets built, one client at a time.',font=font('Medium',40),fill=BRASS+(int(255*b4),))
     return im
 def endcard(a=1.0): return close(1.0)
 def scene(i,t):
@@ -186,7 +199,7 @@ def frame(t):
         im=Image.blend(_prev[i],im,ease((t-BEATS[i]['s'])/0.3))
     return im
 if len(sys.argv)>1:
-    ts=[b['s']+(b['e']-b['s'])*f for b in BEATS[4:] for f in ((0.9,) if b.get('kind') else (0.2,0.88))]
+    ts=[BEATS[0]['s']+(BEATS[0]['e']-BEATS[0]['s'])*f for f in (0.15,0.45,0.75,0.9)]+[BEATS[1]['s']+0.1, BEATS[-1]['s']+1, BEATS[-1]['e']-0.3, DUR-0.9]
     ims=[frame(x).resize((640,360)) for x in ts]; n=len(ims); sh=Image.new('RGB',(640*4,360*math.ceil(n/4)))
     [sh.paste(im,(640*(k%4),360*(k//4))) for k,im in enumerate(ims)]; sh.save('shots/ov_sheet.jpg',quality=85); print(round(DUR,2)); sys.exit()
 # ---- audio: VO + soft pad (ducked) + clicks
