@@ -1,0 +1,3 @@
+[["scroll","Clickable prototype",70],["text","Crew member"],["wait",2],["shot","proto_route"],["box","pr.frame2","","section iframe"],
+["click","Create a share link for v1"],["wait",2],["scroll","Share with the client",90],["shot","share"],["box","sh.title","Share with the client"],["box","sh.copy","Copy link"],["box","sh.open","Open as the client sees it"],
+["dump","a:has-text('Open as the client sees it')",200]]

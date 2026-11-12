@@ -1,0 +1,7 @@
+[["shot","top2"],["box","t2.present","Present to client"],["box","t2.bar","Blueprint 88% complete"],
+["click","Present to client"],["wait",1.5],["shot","present2"],["box","p2.pill","Back to JSH view"],["click","Back to JSH view"],["wait",1],
+["text","Day-in-the-life journeys"],["shot","jr2"],["box","jr.dlg","","[role=dialog]"],["box","jr.src","","[role=dialog] .tag >> nth=0"],["dump","[role=dialog]",700],["click","Close"],
+["scroll","Build readiness",90],["shot","readiness2"],["box","br.title","Build readiness"],["box","br.score","Build score 75%"],["box","br.gaps","Gap questions waiting"],["box","br.see","See what's left and answer it"],
+["scroll","Versions:",130],["shot","versions2"],["box","vs.row","Versions:"],["box","vs.cur","v3 (current)"],["box","vs.note","Design direction approved. Version 3"],
+["scroll","Clickable prototype",70],["shot","proto_a2"],["box","pa.crew","Crew member"],["box","pa.title","Clickable prototype"],["text","Crew member"],["wait",2],["shot","proto_route2"],
+["scroll","Update the Blueprint",90],["shot","ub2"],["box","ub.change2","","div.updates .tag >> nth=0"],["box","ub.applied","Applied in version 3."],["box","ub.said","Client said:"]]

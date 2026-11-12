@@ -1,0 +1,2 @@
+[["scroll","Ready for the prototype",80],["shot","ready_done"],["box","rd.title","Ready for the prototype"],["box","rd.mark","Mark Workshop 1 complete"],["box","rd.l1","The 20 core client questions are answered"],["box","rd.l6","Closing comments from JSH"],
+["click","Mark Workshop 1 complete"],["wait",3],["dump","main",12000]]

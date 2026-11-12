@@ -1,0 +1,5 @@
+[["answer","Once an order is placed, does the customer get any confirmation","No confirmation at all. They wait, and if it is not there by lunch they call the counter. Those did-it-get-there calls are what we want gone."],
+["answer","What actually puts a marina account","Anything unpaid past 45 days. Only Marcus and I can see it, on a printout by the register, and clerks have to ask us before taking the order."],
+["click","Assume the rest and log it"],
+["dump","section.workshop",1800],
+["tab","JSH chamber"],["click","Assume the rest and log it"],["dump","section.workshop",1500]]

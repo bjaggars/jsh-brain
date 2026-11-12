@@ -1,0 +1,8 @@
+[["scroll","Core questions:",110],["shot","q_round"],["box","qr.core","Core questions:"],["box","qr.q1","Besides the owner, who else works the counter"],["box","qr.q2","Besides walk-ins at the counter"],["box","qr.list","","section.workshop ul.list"],
+["idk","How does the day change in peak"],["scroll","How does the day change in peak",260],["shot","idk_offer"],["box","idk.card","","li.qcard:has(.offer)"],["box","idk.offer","","li.qcard .offer"],["box","idk.yes","Yes, that's us"],["box","idk.assume","Not sure, assume it for now"],
+["idk_yes","How does the day change in peak"],["scroll","Core questions:",110],["shot","idk_done"],["dump","section.workshop .note",500],["box","idk.note","","section.workshop .note"],
+["answer","Besides the owner, who else works the counter","Three counter clerks and a counter lead, Marcus. Clerks take orders and look up stock. Only Marcus and I can change a price, approve credit, or release an order for an account that is past due."],
+["answer","Besides walk-ins at the counter","Mostly phone calls and texts to the counter cell phone. A few of the big marinas email a list on Monday mornings. No website ordering at all."],
+["answer","Roughly what share of your orders are urgent","In season about 60 percent are same-day, a boat is on the lift and the mechanic is waiting. Off season it flips, mostly planned restocking."],
+["answer","When a marina chooses you over another","Speed and knowing their boats. We get the part to the slip the same day and we know what their service manager usually needs. We are not the cheapest."],
+["click","Ask the next questions"]]

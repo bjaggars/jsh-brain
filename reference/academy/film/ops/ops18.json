@@ -1,0 +1,3 @@
+[["scroll","Update the Blueprint",90],["fill","What should change","Drivers also pick up returned parts at the stop. They need to scan or note a return against the original order right there on the dock."],["label","The client says"],
+["scroll","Update the Blueprint",90],["shot","ub_typed"],["box","ub.title","","div.updates h5"],["box","ub.text","","div.updates textarea"],["box","ub.send","","div.updates button.btn:has-text('Send')"],
+["click","Send"],["wait",3],["scroll","Update the Blueprint",90],["shot","ub_triaged"],["dump","div.updates",2500]]

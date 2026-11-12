@@ -1,0 +1,4 @@
+[["scroll","Workshop 1 is complete",80],["shot","w1_complete"],
+["click","Propose a design direction"],["wait",2],
+["scroll","Prototype",60],["shot","design_dir"],
+["dump","section:has(> h2:text-is('Prototype')), section.prototype, section:has(h2:text-is('Prototype'))",3500]]

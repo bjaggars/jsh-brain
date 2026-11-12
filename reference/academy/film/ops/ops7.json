@@ -1,0 +1,9 @@
+[["shot","bp86_top"],
+["text","Recommendations"],["shot","recs_open"],["click","Adopt",0],["click","Adopt",0],["shot","recs_adopted"],["dump","[role=dialog]",1800],["click","Close"],
+["scroll","Before the prototype",80],
+["fill","Client workshop: closing comments","Keep it simple for the drivers. If it takes more than two taps at the dock they will go back to texting."],["click","Save comments",0],
+["click","Nothing to add",0],
+["scroll","Before the prototype",80],["shot","ready_done"],
+["click","Mark Workshop 1 complete"],["wait",3],
+["scroll","Before the prototype",80],["shot","w1_complete"],
+["dump","main",6000]]

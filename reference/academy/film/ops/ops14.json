@@ -1,0 +1,3 @@
+[["scroll","Clickable prototype",70],["shot","proto_a"],["box","pr.enter","Enter as:"],["box","pr.frame","","section iframe"],["box","pr.add","Add comments"],["box","pr.click","Click through"],
+["click","Parts counter"],["wait",2],["scroll","Clickable prototype",70],["shot","proto_order"],
+["click","Crew member"],["wait",2],["scroll","Clickable prototype",70],["shot","proto_route"],["box","pr.frame2","","section iframe"]]

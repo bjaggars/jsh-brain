@@ -1,0 +1,4 @@
+[["scroll","Dockside Clarity",110],["shot","dd_top"],["box","dd.name","Dockside Clarity"],["box","dd.why","Why this direction"],
+["scroll","Sample screen: Order Entry",70],["shot","dd_sample"],["box","dd.sample","Sample screen: Order Entry"],
+["scroll","The screens (10)",120],["shot","dd_plan"],["box","dd.plan","The screens (10)"],["box","dd.approve","Approve this direction"],
+["click","Approve this direction"],["wait",3],["dump","main",16000]]

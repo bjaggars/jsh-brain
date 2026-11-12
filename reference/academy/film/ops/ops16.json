@@ -1,0 +1,5 @@
+[["scroll","Clickable prototype",70],["text","Crew member"],["wait",2],["click","Add comments"],["wait",1],
+["xy",500,757],["wait",1],["shot","cm_draft0"],
+["fill","Comment","Drivers wear gloves. Make the Rush tag bigger so it stands out at a glance."],["label","Client"],["shot","cm_draft"],["box","cm.draft","","div.pin-draft"],["box","cm.save","Save comment"],
+["click","Save comment"],["wait",2],["shot","cm_saved"],["box","cm.pins","","ol.pins"],["box","cm.tweak","Tweak the screen with this"],["box","cm.bp","Send to Update the Blueprint"],
+["dump","div.screen-panel",700]]

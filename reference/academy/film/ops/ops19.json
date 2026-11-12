@@ -1,0 +1,6 @@
+[["scroll","Update the Blueprint",90],["box","ub.change","","div.updates :text('Blueprint change')"],["box","ub.update","Update the prototype"],
+["click","Update the prototype"],["wait",3],
+["scroll","Update the Blueprint",90],["shot","ub_applied"],["dump","div.updates",900],
+["scroll","Design direction approved",120],["shot","versions"],
+["scroll","Build readiness",90],["click","Run the build-readiness check"],["wait",3],["scroll","Build readiness",90],["shot","readiness"],
+["dump","main",22000]]
