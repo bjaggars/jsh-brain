@@ -116,14 +116,16 @@ def problem(p):
     k=ease((p-0.92)/0.08)
     if k>0: im=Image.blend(im,Image.new('RGB',(W,H),PAPER),k*0.9)
     return im
+def mix(c,a,bg=None):
+    bg=bg or PAPER; a=max(0.,min(1.,a)); return tuple(int(bg[i]+(c[i]-bg[i])*a) for i in range(3))
 def title(p):
     im=Image.new('RGB',(W,H),PAPER); d=ImageDraw.Draw(im,'RGBA')
-    a=ease(p/0.10); d.rounded_rectangle((120,330,184,394),14,fill=BRASS+(int(255*a),)); d.text((140,338),'J',font=font('Bold',40),fill=(26,20,8,int(255*a)))
-    d.text((210,342),'JSH Innovations',font=font('SemiBold',34),fill=SOFT+(int(255*a),))
-    d.text((120,430),'JSH AI Workshop Platform',font=font('Bold',104),fill=INK+(int(255*a),))
-    for j,(tx,at) in enumerate([('AI-driven.',0.42),('Human-led.',0.52)]):
-        b=ease((p-at)/0.07); d.text((120+j*330,580),tx,font=font('SemiBold',56),fill=BLUE+(int(255*b),))
-    b=ease((p-0.66)/0.08); d.text((120,680),'First conversation to clickable prototype, in days.',font=font('Medium',40),fill=SOFT+(int(255*b),))
+    a=ease(p/0.10); d.rounded_rectangle((120,330,184,394),14,fill=mix(BRASS,a)); d.text((140,338),'J',font=font('Bold',40),fill=mix((26,20,8),a,BRASS))
+    d.text((210,342),'JSH Innovations',font=font('SemiBold',34),fill=mix(SOFT,a))
+    d.text((120,430),'JSH AI Workshop Platform',font=font('Bold',104),fill=mix(INK,a))
+    for j,(tx,at) in enumerate([('AI-driven.',0.48),('Human-led.',0.56)]):
+        b=ease((p-at)/0.07); d.text((120+j*330,580),tx,font=font('SemiBold',56),fill=mix(BLUE,b))
+    b=ease((p-0.66)/0.08); d.text((120,680),'First conversation to clickable prototype, in days.',font=font('Medium',40),fill=mix(SOFT,b))
     return im
 _ph={}
 def phone(p):
@@ -139,12 +141,12 @@ def phone(p):
     return im
 def close(p):
     im=Image.new('RGB',(W,H),PAPER); d=ImageDraw.Draw(im,'RGBA')
-    a=ease(p/0.06); d.rounded_rectangle((120,300,184,364),14,fill=BRASS+(int(255*a),)); d.text((140,308),'J',font=font('Bold',40),fill=(26,20,8,int(255*a)))
-    d.text((210,312),'JSH Innovations',font=font('SemiBold',34),fill=SOFT+(int(255*a),))
-    b1=ease((p-0.02)/0.08); d.text((120,400),'Workshops in days, not months.',font=font('Bold',84),fill=INK+(int(255*b1),))
-    b2=ease((p-0.24)/0.08); d.text((120,520),'In production in months, not a year or more.',font=font('SemiBold',54),fill=BLUE+(int(255*b2),))
-    b3=ease((p-0.52)/0.08); d.text((120,650),'JSH AI Workshop Platform',font=font('Bold',50),fill=INK+(int(255*b3),))
-    b4=ease((p-0.70)/0.08); d.text((120,724),'Changing how software gets built, one client at a time.',font=font('Medium',40),fill=BRASS+(int(255*b4),))
+    a=ease(p/0.06); d.rounded_rectangle((120,300,184,364),14,fill=mix(BRASS,a)); d.text((140,308),'J',font=font('Bold',40),fill=mix((26,20,8),a,BRASS))
+    d.text((210,312),'JSH Innovations',font=font('SemiBold',34),fill=mix(SOFT,a))
+    b1=ease((p-0.02)/0.08); d.text((120,400),'Workshops in days, not months.',font=font('Bold',84),fill=mix(INK,b1))
+    b2=ease((p-0.24)/0.08); d.text((120,520),'In production in months, not a year or more.',font=font('SemiBold',54),fill=mix(BLUE,b2))
+    b3=ease((p-0.52)/0.08); d.text((120,650),'JSH AI Workshop Platform',font=font('Bold',50),fill=mix(INK,b3))
+    b4=ease((p-0.70)/0.08); d.text((120,724),'Changing how software gets built, one client at a time.',font=font('Medium',40),fill=mix(BRASS,b4))
     return im
 def endcard(a=1.0): return close(1.0)
 def scene(i,t):
