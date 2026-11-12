@@ -184,7 +184,7 @@ const M = [
   {id:'list', t:'Read the engagements list', d:'1:20', s:['All engagements lists every client engagement with its client, industry and stage.','Tags tell you where the questionnaire stands: to send, sent or back.','A Demo tag marks the practice engagement.']},
   {id:'around', t:'Find your way back', d:'0:55', flag:'R6.1', s:['Inside an engagement, All engagements stays at the top as you scroll.','The platform title and the browser Back button also take you home.','Every engagement has its own address, so you can bookmark it.']}]},
  {id:'m2', t:'Start an engagement', art:'spark', L:[
-  {id:'new', t:'Create a new engagement', d:'0:27', pilot:true, s:['From All engagements, choose New engagement.','Enter the engagement name, the client and the industry.','Keep the pre-workshop questionnaire ticked, or untick it for a live workshop.','Choose Create engagement. Three expert voices are built in about 8 seconds.'],
+  {id:'new', t:'Create a new engagement', d:'0:40', pilot:true, s:['From All engagements, choose New engagement.','Enter the engagement name, the client and the industry.','Keep the pre-workshop questionnaire ticked, or untick it for a live workshop.','Choose Create engagement. Three expert voices are built in about 8 seconds.'],
    q:{q:'You untick "Run a pre-workshop questionnaire first". What does the form now require?', o:['The client contact and email','What should the app do?','A design direction'], a:1, why:'Going straight to the live workshop needs the purpose up front, in the client\'s own words.'}},
   {id:'setup', t:'Edit setup and rebuild the expert voices', d:'1:30', s:['On an engagement, choose Edit setup next to the client line.','Changing industry, client or purpose offers Rebuild the expert voices.','Who answers what re-routes sections between the client and JSH.']},
   {id:'delete', t:'Delete an engagement safely', d:'0:50', s:['Edit setup, then Delete this engagement at the bottom.','Type the engagement name to confirm.','Everything goes, including share links and files. It cannot be undone.'],
@@ -345,11 +345,10 @@ function lesson(id){
   const l = ALL.find(x=>x.id===id); if (!l) return path();
   const i = ALL.indexOf(l), nx = ALL[i+1];
   const stage = l.pilot
-   ? `<div class="stage" id="stage">${scene(0,0)}</div><div class="cap" id="cap">Press play. Narration is on.</div>
-      <div class="bar"><button id="play" aria-label="Play lesson">▶</button><div class="track"><i id="prog"></i></div><span class="tm" id="tm">0:00 / 0:27</span></div>
-      <div class="note">Storyboard preview with the real narration voice. The finished lesson uses screen recordings of the platform itself, re-recorded automatically when a screen changes.</div>`
+   ? `<video controls playsinline preload="metadata" src="lesson-new.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>
+      <div class="note">Recorded from the Workshop Platform itself, on the Demo engagement, with the Academy narration voice. Other clients' names in the list are replaced with made-up ones.</div>`
    : `<div class="stage"><div class="awp" style="display:grid;place-items:center;text-align:center"><div><div class="t">${esc(l.t)}</div><div style="color:var(--soft);margin-top:.6em">Lesson video · ${l.d} · scripted from the steps on the right</div></div></div></div>
-      <div class="note">In this prototype only "Create a new engagement" has a playable lesson.</div>`;
+      <div class="note">"Create a new engagement" is the first lesson recorded so far.</div>`;
   return `
   <div class="crumbs"><button data-go="path">Facilitator path</button><span>/</span><span>${esc(l.m.t)}</span>${l.flag?`<span class="pill warn">Screen changed in ${l.flag} · re-record queued</span>`:''}</div>
   <h1 class="h1" style="font-size:clamp(28px,4vw,38px)">${esc(l.t)}</h1>
@@ -370,7 +369,7 @@ function wireLesson(id){
   if (quiz) quiz.onclick = e => { const b = e.target.closest('[data-opt]'); if (!b) return; const k = +b.dataset.opt;
     quiz.querySelectorAll('[data-opt]').forEach(x=>x.classList.remove('right','wrong')); b.classList.add(k===l.q.a?'right':'wrong');
     $('#why').textContent = (k===l.q.a ? 'Correct. ' : 'Not quite. ') + l.q.why; };
-  if (!l.pilot) return;
+  if (!l.pilot || !$('#play')) return;
   const a = $('#vo'), DUR = 26.6;
   const tick = () => {
     const t = fallback ? (performance.now()-t0)/1000 : a.currentTime;
@@ -422,15 +421,6 @@ function team(){
       <span class="cta">Start my training</span>
       <p style="margin:10px 0 0;font-size:13px;color:#5d6770">One tap signs you in. No password to set up.</p></div></div>
    </div>
-   <div class="box"><h2>Automatic invites <span class="sample">proposed rules</span></h2>
-    <ul class="rules">
-     <li><span><b>Workshop Platform:</b> a teammate is added to the JSH team → invite to the Facilitator path</span><span class="pill good">On</span></li>
-     <li><span><b>Any path:</b> not started after 3 days, or not finished 2 days before the deadline → one reminder</span><span class="pill good">On</span></li>
-     <li><span><b>MyRealtyVault:</b> an agent signs up → welcome email with the first 3 lessons for agents</span><span class="pill">At MRV launch</span></li>
-     <li><span><b>MyRealtyVault:</b> a broker invites their whole team at once and sees who finished</span><span class="pill">At MRV launch</span></li>
-     <li><span><b>MyRealtyVault:</b> a homeowner joins → 2 lessons inside the app, never a required course</span><span class="pill">At MRV launch</span></li>
-     <li><span><b>Any product:</b> a release changes a screen → people who completed that lesson get a 30-second "what changed"</span><span class="pill">Proposed</span></li>
-    </ul></div>
    <div class="box"><h2>Lesson health</h2>
     <p style="margin:0 0 12px;color:var(--soft)">Every release is compared with the lessons that touch its screens. A lesson whose screen changed is flagged and re-recorded from its script.</p>
     <div class="tablewrap"><table><thead><tr><th>Lesson</th><th>Release</th><th>What changed</th><th>Status</th></tr></thead><tbody>
@@ -484,7 +474,7 @@ function how(){
     <li>In the Academy, on a role-based path like this one.</li>
     <li>Inside the product: the ? on a screen opens the lesson for that screen.</li>
     <li>In onboarding emails: the first three lessons for a new user's role.</li></ul></div>
-   <div class="box"><h2>What this prototype is</h2><p style="margin:0;color:var(--soft);max-width:70ch">A clickable model of the Academy with the full Workshop Platform curriculum, written from the platform's current how-to manual at release R6.1. One lesson plays with real narration. Progress is remembered in this browser only.</p></div>
+   <div class="box"><h2>What this prototype is</h2><p style="margin:0;color:var(--soft);max-width:70ch">A clickable model of the Academy with the full Workshop Platform curriculum, written from the platform's current how-to manual at release R6.1. One lesson is a real recording with narration. Progress is remembered in this browser only.</p></div>
   </div>`;
 }
 function render(){
