@@ -58,7 +58,7 @@ MODS={
    intro="Module seven. Share and hand off.",
    shots=[('PHONE',None,'On the client’s own phone, no sign-in',"A share link puts the prototype in the client's hands, on their own phone, with no sign-in."),
           ('readiness2',((0,0,1440),(130,40,1000)),'Every gap becomes a question',"The build-readiness check scores every section against what the build needs, and turns each gap into a question."),
-          ('top2',((0,0,1440),(100,180,1240)),'Build-ready at ninety percent',"At ninety percent, with nothing left to confirm with the client, the engagement is build-ready, and the founder exports the build package for the JSH build team.")],
+          ('top2',((0,0,1440),(100,180,1240)),'Build-ready at ninety percent',"At ninety percent, with nothing left to confirm with the client, the engagement is build-ready, and a Product Engineer exports the build package for the JSH build team.")],
    end="By the end, you'll share a link, run the check, and know what happens at export."),
 }
 shots={}

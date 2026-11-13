@@ -161,6 +161,20 @@ main{padding:28px clamp(16px,4vw,44px) 60px;min-width:0}
 @media (max-width:900px){.sim .pair,.sim .v3{grid-template-columns:1fr}}
 .starthere{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:center}
 @media (max-width:900px){.starthere{grid-template-columns:1fr}}
+.grid>*{min-width:0}
+.doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:12px}
+@media (max-width:600px){.camps{grid-template-columns:1fr}}
+.doors div{background:var(--raised);border-radius:12px;padding:14px}
+.doors b{display:block;margin-bottom:4px}
+.doors span{color:var(--soft);font-size:14px}
+.camps{grid-column:1/-1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin:0;min-width:0}
+.camps legend{padding:0 6px;color:var(--soft);font-size:14px}
+.form .camps label{display:flex;gap:8px;align-items:center;margin:0;font-size:14px;flex-direction:row;color:var(--ink)}
+.form .camps input{width:18px;height:18px;padding:0;accent-color:#6ea8e8}
+.form .wide{grid-column:1/-1}
+.pwrow{display:flex;gap:8px;max-width:420px}
+.pwrow input{min-width:0}
+.pwrow input{flex:1;font-family:ui-monospace,monospace}
 .crumbs{display:flex;gap:8px;align-items:center;color:var(--soft);font-size:14px;margin-bottom:8px;flex-wrap:wrap}
 .crumbs button{background:none;border:0;color:var(--blue);padding:0}
 .rowx{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -214,7 +228,7 @@ td.num{font-variant-numeric:tabular-nums}
     <nav class="nav" id="nav"></nav>
     <div class="who">
       <label for="viewas">Viewing as</label>
-      <select id="viewas"><option value="jose">Jose · Facilitator</option><option value="brice">Brice · Academy owner</option></select>
+      <select id="viewas"><option value="jose">Jose · Faculty (JSH staff)</option><option value="brice">Brice · Academy admin</option><option value="agent">Dana · MyRealtyVault agent</option></select>
     </div>
   </aside>
   <main><div class="wrap" id="view"></div></main>
@@ -260,7 +274,7 @@ const M = [
   {id:'share', t:'Create a share link for the client', d:'1:10', s:['Prototype box, Share with the client, then Create a share link.','The client sees "Who are you today?" and the clickable app. No sign-in.','The link is pinned to one version. Turn it off any time.'],
    q:{q:'What can a client see through a share link?', o:['The Blueprint','Only the built screens','The meeting plan'], a:1, why:'A share link shows built screens only, never the Blueprint or anything internal.'}},
   {id:'check', t:'Run the build-readiness check', d:'1:20', s:['Run the build-readiness check. It takes about a minute.','Gaps become questions tagged For the build.','Build-ready means a build score of 90% or more and no open client assumptions.']},
-  {id:'export', t:'Export the build package', d:'0:45', lock:'Founder only', s:['Export downloads the build package and a gallery of every screen.','Commit the package as the first BRAIN entry of the new product repo.','Only the founder can export.']}]}
+  {id:'export', t:'Export the build package', d:'0:45', lock:'Product Engineer only', s:['Export downloads the build package and a gallery of every screen.','Commit the package as the first BRAIN entry of the new product repo.','Only a Product Engineer can export.']}]}
 ];
 const ALL = M.flatMap(m => m.L.map(l => ({...l, m})));
 const TOTAL = ALL.length;
@@ -269,7 +283,8 @@ let done = new Set(['signin','list','around']);
 try { const s = JSON.parse(localStorage.getItem('jsh-academy-done')||'null'); if (Array.isArray(s)) done = new Set(s); } catch(e){}
 const save = () => { try { localStorage.setItem('jsh-academy-done', JSON.stringify([...done])); } catch(e){} };
 let who = 'jose';
-let invites = [{name:'New teammate', email:'teammate@jshinnovations.com', path:'Facilitator', due:'in 14 days', status:'Invited', sent:'Nov 10'}];
+const tempPw = () => { const w=['Harbor','Kite','Anchor','Cedar','Lantern','Marlin','Quartz','Tiller'], r=n=>Math.floor(Math.random()*n); return w[r(8)]+'-'+w[r(8)]+'-'+(1000+r(9000)); };
+let invites = [{name:'New teammate', email:'teammate@jshinnovations.com', role:'Learner', campuses:['AI Workshop Platform'], path:'Facilitator', due:'in 14 days', pw:'Cedar-Marlin-4827', status:'Invited', sent:'Nov 10'}];
 let lastInvite = null, inScreen = 'engagement';
 const SCREENS = {
   list:{label:'All engagements', title:'All engagements', sub:'Your client engagements', ids:['list','new','around']},
@@ -301,10 +316,14 @@ function art(k){
 function nav(){
   const h = (location.hash||'#home').slice(1);
   const is = k => (k==='path' ? (h==='path'||h.startsWith('lesson-')||h.startsWith('intro-')) : h===k) ? 'on' : '';
+  if (who==='agent') { $('#nav').innerHTML = `
+   <button class="on" data-go="home">My campus</button>
+   <div class="lbl">Campus</div>
+   <button class="camprow" data-go="home"><span class="dot" style="background:#4f9a6a"></span>MyRealtyVault</button>`; return; }
   $('#nav').innerHTML = `
    <button class="${is('home')}" data-go="home">Home</button>
    <button class="${is('path')}" data-go="path">My path</button>
-   ${who==='brice' ? `<button class="${is('team')}" data-go="team">Team, invites and lesson health</button>` : ''}
+   ${who==='brice' ? `<button class="${is('team')}" data-go="team">People, access and lesson health</button>` : ''}
    <button class="${is('in-app')}" data-go="in-app">Inside the product</button>
    <button class="${is('how')}" data-go="how">How lessons are made</button>
    <div class="lbl">Campuses</div>
@@ -313,7 +332,24 @@ function nav(){
    <button class="camprow" disabled><span class="dot" style="background:#c98a4b"></span>RV Warranty<span class="soon">later</span></button>
    <button class="camprow" disabled><span class="dot" style="background:#9b8be0"></span>JSH Expenses<span class="soon">later</span></button>`;
 }
+function agentHome(){
+  return `
+  <div class="eyebrow">Vault Academy · MyRealtyVault campus</div>
+  <h1 class="h1">Welcome, Dana.</h1>
+  <p class="lead">You came in through MyRealtyVault, so there was no second sign-in. This is the only campus you see.</p>
+  <div class="grid" style="margin-top:22px">
+   <div class="box"><h2>How a product user gets here</h2>
+    <div class="doors"><div><b>From inside the product</b><span>The ? on any MyRealtyVault screen opens the lessons for that screen, or the whole campus.</span></div>
+    <div><b>From an Academy link</b><span>A link for the MyRealtyVault campus asks for the MyRealtyVault sign-in they already have. No new account.</span></div>
+    <div><b>Self-study by default</b><span>Short lessons, practice beside the steps, a quick check. A small agency never needs a trainer.</span></div>
+    <div><b>Their trainer, if they have one</b><span>A larger brokerage can name its own trainer, who runs classes and sees progress for that brokerage only.</span></div></div></div>
+   <div class="box"><h2>Agent path <span class="sample">opens with the MyRealtyVault launch</span></h2>
+    <p style="margin:0;color:var(--soft)">About 25 lessons at launch, recorded the same way as the Workshop Platform campus: a two-minute overview, a short intro per module, then one task per lesson. Homeowners get their own, shorter path.</p></div>
+   <div class="box"><h2>What Dana cannot see</h2><p style="margin:0;color:var(--soft)">The other campuses, the JSH staff dashboard, other brokerages, and anyone else's progress. Switch "Viewing as" back to Jose or Brice to see the staff side.</p></div>
+  </div>`;
+}
 function home(){
+  if (who==='agent') return agentHome();
   const n = nextLesson();
   return `
   <div class="eyebrow">JSH Training Academy · pilot campus</div>
@@ -356,7 +392,7 @@ function path(){
   <div class="box starthere" style="margin-top:18px"><div class="player" style="border-radius:12px"><video controls playsinline preload="none" poster="overview-poster.jpg" src="overview.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video></div>
    <div><div class="eyebrow" style="color:var(--brass)">Start here · 1:52</div><h2 style="font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15;margin:6px 0 8px">What the Workshop Platform is, and why it's different</h2><p style="margin:0;color:var(--soft)">The whole platform in under two minutes: an expert in the client's industry from minute one, a clickable prototype in days, and a Blueprint with a source for every fact. Optional, and it doesn't count toward completion.</p></div></div>
   <div class="rowx" style="margin:16px 0 22px"><div class="meter" style="flex:1;min-width:180px"><i style="width:${pct()}%"></i></div><span style="color:var(--brass);font-variant-numeric:tabular-nums">${done.size} of ${TOTAL}</span>${n?`<button class="btn" data-go="lesson-${n.id}">Resume</button>`:''}</div>
-  ${complete ? `<div class="box cert" style="margin-bottom:18px"><div class="seal">J</div><div><b style="font-size:18px">AWP Certified Facilitator</b><div style="color:var(--soft)">Every lesson complete. Last step: a practice run on the Tidewater demo engagement, signed off by Brice.</div></div></div>` : ''}
+  ${complete ? `<div class="box cert" style="margin-bottom:18px"><div class="seal">J</div><div><b style="font-size:18px">AWP Certified Facilitator</b><div style="color:var(--soft)">Every lesson complete. Last step: a practice run on the Tidewater demo engagement, signed off by your faculty lead.</div></div></div>` : ''}
   <div class="mods">${M.map((m,i)=>`
    <section class="mod">
     <div class="art">${art(m.art)}</div>
@@ -365,7 +401,12 @@ function path(){
      <h3>${esc(m.t)}</h3>
      <ul class="les"><li><button data-go="intro-${m.id}"><span class="chk" style="border-color:var(--brass);color:var(--brass);font-size:9px">▶</span><span class="t">Module intro <span class="pill">optional</span></span><span class="d">${INTRO_D[m.id]}</span></button></li>${m.L.map(l=>`<li><button data-go="lesson-${l.id}"><span class="chk ${done.has(l.id)?'done':(n&&n.id===l.id?'next':'')}">${done.has(l.id)?'✓':''}</span><span class="t">${esc(l.t)}${l.lock?` <span class="pill">${l.lock}</span>`:''}</span><span class="d">${l.d}</span></button></li>`).join('')}</ul>
     </div>
-   </section>`).join('')}</div>`;
+   </section>`).join('')}</div>
+  <div class="box" style="margin-top:18px"><h2>Certification: AWP Certified Facilitator</h2>
+   <div class="doors"><div><b>1. Finish every lesson</b><span>A lesson is complete when you answer its quick check correctly. Practice is there to help, and intros are optional.</span></div>
+   <div><b>2. Do a practice run</b><span>Run the Tidewater demo engagement from a new engagement to a shared prototype.</span></div>
+   <div><b>3. Get signed off</b><span>Your faculty lead reviews the practice run and signs you off. Product users on self-study get a completion certificate with no sign-off.</span></div>
+   <div><b>Staying current</b><span>When a release changes a screen, only the lessons that changed need retaking. Your certificate shows the release it covers.</span></div></div></div>`;
 }
 const INTRO_D = {m1:'0:32', m2:'0:30', m3:'0:35', m4:'0:36', m5:'0:33', m6:'0:35', m7:'0:34'};
 function intro(mid){
@@ -423,7 +464,7 @@ function lesson(id){
     <div class="box${practice && l.pilot ? ' sticky' : ''}"><h2>${practice && l.pilot ? 'Follow along' : 'Steps'}</h2>${practice && l.pilot ? `<ol class="steps live" id="steps">${l.s.map((s,k)=>`<li data-k="${k}"><span class="n">${k+1}</span><span>${esc(s)}</span></li>`).join('')}</ol><p id="pstat" class="mut" style="margin:12px 0 0;font-size:14px;color:var(--soft)"></p>` : `<ol class="steps">${l.s.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`}</div>
     ${practice ? '' : `<div class="box"><h2>Try it</h2><p style="margin:0 0 12px;color:var(--soft)">Practice right here, with the steps beside you. Each step ticks off as you do it, and nothing is saved or sent.</p><button class="btn ghost" data-mode="practice">Practice this lesson</button></div>`}
     ${l.q ? `<div class="box" id="quiz"><h2>Quick check</h2><div>${esc(l.q.q)}</div><div class="opts">${l.q.o.map((o,k)=>`<button data-opt="${k}">${esc(o)}</button>`).join('')}</div><p id="why" style="margin:10px 0 0;color:var(--soft)"></p></div>` : ''}
-    <div class="rowx"><button class="btn ${done.has(l.id)?'ghost':'brass'}" id="mark">${done.has(l.id)?'Completed ✓':'Mark complete'}</button>${nx?`<button class="btn quiet" data-go="lesson-${nx.id}">Next: ${esc(nx.t)}</button>`:`<button class="btn quiet" data-go="path">Back to the path</button>`}</div>
+    <div class="rowx">${l.q ? (done.has(l.id) ? `<span class="pill good" style="font-size:14px;padding:6px 14px">Completed ✓</span>` : `<span style="color:var(--soft);font-size:14px">Answer the quick check to complete this lesson.</span>`) : `<button class="btn ${done.has(l.id)?'ghost':'brass'}" id="mark">${done.has(l.id)?'Completed ✓':'Mark complete'}</button>`}${nx?`<button class="btn quiet" data-go="lesson-${nx.id}">Next: ${esc(nx.t)}</button>`:`<button class="btn quiet" data-go="path">Back to the path</button>`}</div>
    </div>
   </div>`;
 }
@@ -481,11 +522,12 @@ function wirePractice(){
 }
 function wireLesson(id){
   const l = ALL.find(x=>x.id===id); if (!l) return;
-  $('#mark').onclick = () => { done.has(l.id) ? done.delete(l.id) : done.add(l.id); save(); render(); };
+  if ($('#mark')) $('#mark').onclick = () => { done.has(l.id) ? done.delete(l.id) : done.add(l.id); save(); render(); };
   const quiz = $('#quiz');
   if (quiz) quiz.onclick = e => { const b = e.target.closest('[data-opt]'); if (!b) return; const k = +b.dataset.opt;
     quiz.querySelectorAll('[data-opt]').forEach(x=>x.classList.remove('right','wrong')); b.classList.add(k===l.q.a?'right':'wrong');
-    $('#why').textContent = (k===l.q.a ? 'Correct. ' : 'Not quite. ') + l.q.why; };
+    $('#why').textContent = (k===l.q.a ? 'Correct. ' : 'Not quite. Try again. ') + (k===l.q.a ? l.q.why : '');
+    if (k===l.q.a && !done.has(l.id)) { done.add(l.id); save(); const y = window.scrollY, w = l.q.why; render(); window.scrollTo(0, y); const q2 = $('#quiz'); if (q2) { q2.querySelectorAll('[data-opt]')[k].classList.add('right'); $('#why').textContent = 'Correct. ' + w + ' Lesson complete.'; } } };
   if (mode==='practice' && l.pilot) wirePractice();
   if (!l.pilot || !$('#play')) return;
   const a = $('#vo'), DUR = 26.6;
@@ -510,35 +552,54 @@ function wireLesson(id){
   };
 }
 function team(){
-  const flagged = ALL.filter(l=>l.flag);
+  const flagged = ALL.filter(l=>l.flag); const li = lastInvite || invites[0];
+  const camp = c => c.map(x=>`<span class="pill">${esc(x)}</span>`).join(' ');
   return `
-  <div class="eyebrow">Academy owner</div>
-  <h1 class="h1">Team, invites and lesson health</h1>
-  <p class="lead">Who is trained, who to invite, and which lessons no longer match the product.</p>
+  <div class="eyebrow">Academy admin</div>
+  <h1 class="h1">People, access and lesson health</h1>
+  <p class="lead">Who can get in, what they can see, how far along they are, and which lessons no longer match the product.</p>
   <div class="grid" style="margin-top:20px">
-   <div class="box"><h2>People <span class="sample">sample data</span></h2><div class="tablewrap"><table>
-    <thead><tr><th>Person</th><th>Path</th><th>Progress</th><th>Last lesson</th><th>Status</th></tr></thead>
+   <div class="box"><h2>How people get in</h2>
+    <div class="doors"><div><b>JSH staff door</b><span>You add the person here, pick their campuses and give a temporary password. They must set their own at first sign-in. They see a dashboard of every campus you assigned.</span></div>
+    <div><b>Product door</b><span>Customers open the Academy from inside the product, or from that product's Academy link, using the product's own sign-in. They see that product's campus and nothing else. You do not manage them one by one.</span></div>
+    <div><b>Self-study</b><span>The default for product users and small agencies. Lessons, practice and quick checks, at their own pace.</span></div>
+    <div><b>Faculty-led</b><span>A trainer runs a class: a group, a path and dates. The trainer sees the group's progress and signs off certification. The trainer can be JSH staff or a customer's own trainer.</span></div></div></div>
+   <div class="box"><h2>Manage users <span class="sample">sample data</span></h2><div class="tablewrap"><table>
+    <thead><tr><th>Person</th><th>Role</th><th>Campuses</th><th>Progress</th><th>Sign-in</th><th></th></tr></thead>
     <tbody>
-     <tr><td>Jose</td><td>Facilitator</td><td class="num">${done.size} / ${TOTAL}</td><td>${esc((ALL.filter(l=>done.has(l.id)).pop()||{t:'Not started'}).t)}</td><td><span class="pill blue">In progress</span></td></tr>
-     <tr><td>Brice</td><td>Founder</td><td class="num">${TOTAL} / ${TOTAL}</td><td>Export the build package</td><td><span class="pill good">Certified</span></td></tr>
-     ${invites.map(v=>`<tr><td>${esc(v.name)}<div class="sample">${esc(v.email)}</div></td><td>${esc(v.path)}</td><td class="num">0 / ${TOTAL}</td><td>Invited ${esc(v.sent)}, due ${esc(v.due)}</td><td><span class="pill">${esc(v.status)}</span> <button class="btn quiet" data-remind="${esc(v.email)}">Send a reminder</button></td></tr>`).join('')}
-    </tbody></table></div></div>
-   <div class="box"><h2>Invite someone to training</h2>
+     <tr><td>Brice</td><td>Admin</td><td>${camp(['All'])}</td><td class="num">${TOTAL} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td></td></tr>
+     <tr><td>Jose</td><td>Faculty</td><td>${camp(['AI Workshop Platform','MyRealtyVault'])}</td><td class="num">${done.size} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td><button class="btn quiet" data-reset="Jose">Reset password</button></td></tr>
+     ${invites.filter(v=>!v.removed).map((v,k)=>`<tr><td>${esc(v.name)}<div class="sample">${esc(v.email)}</div></td><td>${esc(v.role)}</td><td>${camp(v.campuses)}</td><td class="num">0 / ${TOTAL}</td><td><span class="pill warn">Temporary password</span><div class="sample">must change at first sign-in${v.due==='no deadline'?'':`, finish ${esc(v.due)}`}</div></td><td><button class="btn quiet" data-reset="${esc(v.name)}">Reset password</button> <button class="btn quiet" data-remove="${k}" style="color:var(--bad)">Remove access</button></td></tr>`).join('')}
+     <tr><td>Harbor & Oak Realty<div class="sample">6 agents, through MyRealtyVault</div></td><td>Product users</td><td>${camp(['MyRealtyVault'])}</td><td class="num">opens at launch</td><td><span class="pill blue">Product sign-in</span></td><td><span class="sample">managed in the product</span></td></tr>
+    </tbody></table></div><p id="um-msg" style="margin:12px 0 0;color:var(--good)"></p></div>
+   <div class="box"><h2>Add a person</h2>
     <form class="form" id="inv">
      <label for="iv-name">Name<input id="iv-name" required placeholder="First and last name"></label>
      <label for="iv-email">Email<input id="iv-email" type="email" required placeholder="name@company.com"></label>
-     <label for="iv-path">Path<select id="iv-path"><option>Facilitator</option><option>Founder</option></select></label>
+     <label for="iv-role">Role<select id="iv-role"><option>Learner</option><option>Faculty</option><option>Admin</option></select></label>
+     <label for="iv-path">Path<select id="iv-path"><option>Facilitator</option><option>Product Engineer</option></select></label>
+     <fieldset class="camps"><legend>Campuses they can open</legend>
+      <label><input type="checkbox" name="camp" value="AI Workshop Platform" checked> AI Workshop Platform</label><label><input type="checkbox" name="camp" value="MyRealtyVault"> MyRealtyVault</label>
+      <label><input type="checkbox" name="camp" value="RV Warranty"> RV Warranty</label><label><input type="checkbox" name="camp" value="JSH Expenses"> JSH Expenses</label></fieldset>
      <label for="iv-due">Finish by<select id="iv-due"><option>in 7 days</option><option selected>in 14 days</option><option>in 30 days</option><option>no deadline</option></select></label>
-     <button class="btn" type="submit">Send invite</button>
+     <label for="iv-pw" class="wide">Temporary password<span class="pwrow"><input id="iv-pw" required value="${esc(tempPw())}" autocomplete="off"><button type="button" class="btn ghost" id="iv-gen">New one</button></span></label>
+     <button class="btn wide" type="submit" style="justify-self:start">Add and send invite</button>
     </form>
-    <p id="iv-msg" style="margin:12px 0 0;color:var(--good)">${lastInvite?`Invite queued for ${esc(lastInvite.name)}. In this prototype no email is sent.`:''}</p>
+    <p id="iv-msg" style="margin:12px 0 0;color:var(--good)">${lastInvite?`${esc(lastInvite.name)} added with a temporary password. In this prototype no email is sent.`:''}</p>
     <div style="margin-top:14px"><div class="sample" style="margin-bottom:6px">What they receive</div>
-     <div class="mailp"><div class="from">From JSH Training Academy · Subject: ${esc((lastInvite||invites[0]).name.split(' ')[0])}, your ${esc((lastInvite||invites[0]).path)} training is ready</div>
-      <b>Hi ${esc((lastInvite||invites[0]).name.split(' ')[0])},</b>
-      <p style="margin:8px 0">Brice invited you to the ${esc((lastInvite||invites[0]).path)} path for the JSH AI Workshop Platform. It is ${TOTAL} short lessons, about 32 minutes in all, and you can stop and resume any time.${(lastInvite||invites[0]).due==='no deadline'?'':` Please finish ${esc((lastInvite||invites[0]).due)}.`}</p>
-      <span class="cta">Start my training</span>
-      <p style="margin:10px 0 0;font-size:13px;color:#5d6770">One tap signs you in. No password to set up.</p></div></div>
+     <div class="mailp"><div class="from">From JSH Training Academy · Subject: ${esc(li.name.split(' ')[0])}, your ${esc(li.path)} training is ready</div>
+      <b>Hi ${esc(li.name.split(' ')[0])},</b>
+      <p style="margin:8px 0">Brice added you to the JSH Training Academy on the ${esc(li.path)} path. It is ${TOTAL} short lessons, about 32 minutes in all, and you can stop and resume any time.${li.due==='no deadline'?'':` Please finish ${esc(li.due)}.`}</p>
+      <p style="margin:8px 0">Your temporary password: <b style="font-family:ui-monospace,monospace">${esc(li.pw)}</b></p>
+      <span class="cta">Sign in and set my password</span>
+      <p style="margin:10px 0 0;font-size:13px;color:#5d6770">You'll choose your own password the first time you sign in. The temporary one stops working after 7 days.</p></div></div>
    </div>
+   <div class="box"><h2>Classes <span class="sample">sample data</span></h2>
+    <p style="margin:0 0 12px;color:var(--soft)">Faculty-led training. A class is a group, a path and dates. Everyone still takes the same lessons; the trainer adds a live session and the sign-off.</p>
+    <div class="tablewrap"><table><thead><tr><th>Class</th><th>Led by</th><th>People</th><th>Dates</th><th>Progress</th><th>Sign-off</th></tr></thead><tbody>
+     <tr><td>Workshop Platform facilitators, November</td><td>Jose</td><td class="num">${1+invites.filter(v=>!v.removed).length}</td><td>Nov 17 to Dec 1, live session Nov 24</td><td class="num">${Math.round(done.size/TOTAL*50)}%</td><td><span class="pill">Practice runs not started</span></td></tr>
+     <tr><td>Harbor & Oak Realty, agent onboarding</td><td>Their own trainer</td><td class="num">6</td><td>Opens with the MyRealtyVault launch</td><td class="num">n/a</td><td><span class="pill">Self-study, no sign-off</span></td></tr>
+    </tbody></table></div><div class="rowx" style="margin-top:12px"><button class="btn ghost" data-class>Start a class</button><span id="cl-msg" style="color:var(--soft);font-size:14px"></span></div></div>
    <div class="box"><h2>Lesson health</h2>
     <p style="margin:0 0 12px;color:var(--soft)">Every release is compared with the lessons that touch its screens. A lesson whose screen changed is flagged and re-recorded from its script.</p>
     <div class="tablewrap"><table><thead><tr><th>Lesson</th><th>Release</th><th>What changed</th><th>Status</th></tr></thead><tbody>
@@ -599,18 +660,24 @@ function render(){
   stopPlayer();
   let h = (location.hash||'#home').slice(1);
   if (h==='team' && who!=='brice') h = 'home';
+  if (who==='agent') h = 'home';
   const v = h.startsWith('lesson-') ? lesson(h.slice(7)) : h.startsWith('intro-') ? intro(h.slice(6)) : ({home, path, team, how, 'in-app':inapp}[h] || home)();
   $('#view').innerHTML = v; nav();
   if (h.startsWith('lesson-')) wireLesson(h.slice(7));
   const f = $('#inv');
   if (f) f.onsubmit = e => { e.preventDefault();
-    lastInvite = {name:$('#iv-name').value.trim(), email:$('#iv-email').value.trim(), path:$('#iv-path').value, due:$('#iv-due').value, status:'Invited', sent:'today'};
+    const cs = [...f.querySelectorAll('[name=camp]:checked')].map(x=>x.value); if (!cs.length) { $('#iv-msg').style.color='var(--bad)'; $('#iv-msg').textContent='Pick at least one campus.'; return; }
+    lastInvite = {name:$('#iv-name').value.trim(), email:$('#iv-email').value.trim(), role:$('#iv-role').value, campuses:$('#iv-role').value==='Admin'?['All']:cs, path:$('#iv-path').value, due:$('#iv-due').value, pw:$('#iv-pw').value.trim(), status:'Invited', sent:'today'};
     invites.push(lastInvite); render(); };
   window.scrollTo(0,0);
 }
 document.addEventListener('click', e => {
   const mb = e.target.closest('[data-mode]'); if (mb) { mode = mb.dataset.mode; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const sb = e.target.closest('[data-screen]'); if (sb) { inScreen = sb.dataset.screen; render(); return; }
+  if (e.target.closest('#iv-gen')) { $('#iv-pw').value = tempPw(); return; }
+  const rs = e.target.closest('[data-reset]'); if (rs) { $('#um-msg').textContent = `New temporary password for ${rs.dataset.reset}: ${tempPw()}. They must change it at their next sign-in.`; return; }
+  const rm = e.target.closest('[data-remove]'); if (rm) { invites[+rm.dataset.remove].removed = true; if (lastInvite && lastInvite.removed) lastInvite = null; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (e.target.closest('[data-class]')) { $('#cl-msg').textContent = 'In the real Academy this opens: pick the people, the path, the dates and the trainer.'; return; }
   const rb = e.target.closest('[data-remind]'); if (rb) { rb.textContent = 'Reminder queued'; rb.disabled = true; return; }
   const b = e.target.closest('[data-go]'); if (b && !b.disabled) go(b.dataset.go); });
 $('#viewas').onchange = e => { who = e.target.value; render(); };
