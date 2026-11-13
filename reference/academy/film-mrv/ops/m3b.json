@@ -1,0 +1,6 @@
+[["goto","/work"],["tap","Buyers"],["tap","Active buyers"],["wait",1.5],["shot","buyers_list",{"elena":"Elena Park","chips":"css:button:has-text('All buyers')","find":"css:input[placeholder^='Find a buyer']"}],
+ ["tap","Elena Park"],["wait",1.5],
+ ["btn","+ Track a home"],["wait",1.2],["shot","track_blank"],["dump",-500],
+ ["btn","Log pre-approval"],["wait",1.2],["shot","pre_blank"],["dump",-500],
+ ["btn","Log tour"],["wait",1.2],["shot","tour_blank"],["dump",-500],
+ ["btn","Log offer"],["wait",1.2],["shot","offer_blank"],["dump",-600]]

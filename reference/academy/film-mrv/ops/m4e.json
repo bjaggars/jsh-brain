@@ -1,0 +1,6 @@
+[["goto","/work"],["tap","Listings"],["tap","Active listings"],["wait",1.5],["tapx","88 Heron Bend Drive"],["wait",2.5],["shot","hb_detail",{"price":"$412,500","stats":"days listed","share":"btn:Share listing"}],
+ ["into","btn:Log showing"],["shot","hb_actions",{"owner":"~Selling for","stages":"btn:Showings","next":"~Next: Review","showing":"btn:Log showing","offer":"btn:Log offer","price":"btn:Price","deadlines":"btn:Deadlines","comp":"btn:Comp","status":"css:select >> nth=-1","advice":"~Hold — monitor"}],
+ ["btn","Log showing"],["wait",1.2],["shot","hb_showing"],["js","[...document.querySelectorAll('input,textarea,select')].filter(e=>e.offsetParent&&e.getBoundingClientRect().top>0&&e.getBoundingClientRect().top<960).map(e=>e.tagName+'|'+e.type+'|'+(e.placeholder||''))"],
+ ["btn","Price"],["wait",1.2],["shot","hb_price"],["js","[...document.querySelectorAll('input,textarea,select,button')].filter(e=>e.offsetParent&&e.getBoundingClientRect().top>500&&e.getBoundingClientRect().top<900).map(e=>e.tagName+'|'+(e.placeholder||e.textContent).slice(0,30))"],
+ ["btn","Deadlines"],["wait",1.2],["shot","hb_deadlines"],
+ ["btn","Share listing"],["wait",1.5],["shot","hb_share"],["dump",-500]]

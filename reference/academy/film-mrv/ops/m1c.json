@@ -1,0 +1,2 @@
+[["goto","/work"],["tap","Needs you"],["tap","Ask your assistant"],["wait",1.5],["tap","What should I do first today?"],["wait",28],
+ ["js","[...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+40&&getComputedStyle(e).overflowY!='visible').map(e=>{e.scrollTop=0;return e.tagName+e.clientHeight})"],["wait",1],["shot","ask_answer",{"q":["What should I do first today?",-1],"ans":"~Call Hannah Cole"}]]

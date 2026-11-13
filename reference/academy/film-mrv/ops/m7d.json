@@ -1,0 +1,4 @@
+[["goto","/work"],["tap","Marketing"],["wait",1.5],["tap","Emails"],["wait",1.5],["tapx","Quick email from a template"],["wait",2],
+ ["shot","camp_moment",{"head":"New campaign","jl":"css:button:has-text('Just listed')","oh":"css:button:has-text('Open house')","pr":"css:button:has-text('Price reduced')","sold":"css:button:has-text('Just sold')","else":"css:button:has-text('Something else')"}],
+ ["into","~Choose a listing"],["tapx","Choose a listing"],["wait",1.5],["shot","camp_pick"],["dump",-500],
+ ["tapx","305 Cypress Hollow Lane",-1],["wait",1.5],["into","~Create just listed campaign"],["shot","camp_ready",{"design":"~Curated template","ai":"~AI custom","listing":"i:THE LISTING","name":"~CAMPAIGN NAME","create":"~Create just listed campaign"}],["dump",-700]]

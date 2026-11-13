@@ -1,0 +1,7 @@
+[["goto","/work"],["tap","Closings"],["wait",2],["shot","closings",{"count":"under contract","card":"css:button:has-text('517 Saddlebrook Lane')","steps":"~Closes Dec 5","tabs":"btn:Closings"}],
+ ["tapx","517 Saddlebrook Lane"],["wait",2.5],["shot","closing_detail"],["dump",-900],
+ ["goto","/work"],["tap","Documents"],["wait",1.5],["shot","docs_panel",{"add":"css:button:has-text('Add to the vault')","vaults":"css:button:has-text('Client vaults')"}],
+ ["tapx","Add to the vault"],["wait",1.5],["js","[...document.querySelectorAll('select')].filter(e=>e.offsetParent).map(s=>[...s.options].map(o=>o.textContent).join('/').slice(0,300))"],
+ ["select","select >> nth=0","Owen Bradley — Selling"],["wait",1],["select","select >> nth=2","Disclosure"],["select","select >> nth=3","Awaiting signature"],["fill","input[placeholder^='e.g. Purchase agreement']","Seller disclosure"],
+ ["file","input[type=file] >> nth=0","Seller Disclosure - 305 Cypress Hollow Lane.pdf"],
+ ["shot","vault_filled",{"client":"css:select >> nth=0","under":"css:select >> nth=1","kind":"css:select >> nth=2","status":"css:select >> nth=3","title":"css:input[placeholder^='e.g. Purchase agreement']","share":"Share with client","private":"Keep private to you","choose":"~Choose file","scan":"~Scan","upload":"btn:Upload"}],["dump",600]]

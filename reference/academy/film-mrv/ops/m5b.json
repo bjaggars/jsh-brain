@@ -1,0 +1,7 @@
+[["goto","/work"],["tap","Needs you"],["tap","Showing requests"],["wait",1.5],["shot","req",{"card":"~Thu, Nov 12, 11:00 AM","addr":"88 Heron Bend Drive","confirm":"btn:Confirm","decline":"btn:Decline","ask":"~Ask the seller"}],
+ ["btn","Confirm"],["wait",3],["shot","req_done"],["dump",500],
+ ["goto","/work"],["tap","Showings"],["tapx","Full calendar"],["wait",2],["shot","cal_week",{"views":"btn:Week","new":"btn:New","today":"css:button:has-text('Today') >> nth=0","filters":"btn:Showings","row":"~Showing — 1420 Live Oak Court"}],
+ ["btn","List"],["wait",1],["shot","cal_list",{"views":"btn:List","new":"btn:New","filters":"btn:Deadlines","row":"~Inspection period ends"}],
+ ["btn","New"],["wait",1],["shot","cal_new",{"task":"btn:Task","appt":"btn:Appointment","event":"btn:Event"}],["btn","Task"],["wait",1],
+ ["fill","ph:What needs doing?","Order yard sign for 305 Cypress Hollow Lane"],["select","select >> nth=-2",1],["shot","cal_task",{"what":"ph:What needs doing?","client":"css:select >> nth=-2","prio":"css:select >> nth=-1","due":"css:input[type=date]","add":"btn:Add task item"}],
+ ["btn","Add task item"],["wait",2.5],["btn","Tasks"],["wait",1],["shot","cal_tasks"],["dump",-400]]

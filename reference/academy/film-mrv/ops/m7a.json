@@ -1,0 +1,3 @@
+[["goto","/work"],["tap","Marketing"],["wait",1.5],["shot","mkt_panel",{"emails":"css:button:has-text('Emails')","flows":"css:button:has-text('Workflows')","forms":"css:button:has-text('Forms')","results":"css:button:has-text('Results')"}],
+ ["tap","Forms"],["wait",1.5],["shot","forms",{"tabs":"btn:Forms","oh":"~Open house sign-in","guide":"~Buyer guide","worth":"~What's my home worth","consult":"~Listing consultation","news":"~Newsletter sign-up"}],
+ ["tapx","Open house sign-in"],["wait",2.5],["shot","form_oh"],["dump",1300]]

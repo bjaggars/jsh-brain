@@ -1,0 +1,6 @@
+[["goto","/work"],["tap","Clients"],
+ ["shot","clients_panel",{"reach":"css:button:has-text('Reach today')","book":"css:button:has-text('Your book')","add":"css:button:has-text('Add client')","import":"css:button:has-text('Import')","pipeline":"css:button:has-text('Pipeline')","templates":"css:button:has-text('Templates')","forms":"css:button:has-text('Forms')"}],
+ ["tapx","Add client"],["shot","add_blank",{"type":"btn:Client","name":"ph:Name *","email":"ph:Email","phone":"ph:Phone","hot":"i:Hot","warm":"i:Warm","cold":"i:Cold","buying":"btn:Buying","notsure":"btn:Not sure","src":"btn:Open house","stage":"css:select","note":"css:[placeholder^='Note']","save":"btn:Add to my book"}],
+ ["fill","ph:Name *","Elena Park"],["fill","ph:Email","elena.park@example.com"],["fill","ph:Phone","(352) 555-0142"],["tap","i:Hot"],["btn","Buying"],["btn","Open house"],["fill","[placeholder^='Note']","Met at the Live Oak Court open house. Wants 3 beds near downtown."],
+ ["shot","add_filled",{"name":"ph:Name *","email":"ph:Email","phone":"ph:Phone","hot":"i:Hot","buying":"btn:Buying","src":"btn:Open house","stage":"css:select","note":"css:[placeholder^='Note']","save":"btn:Add to my book"}],
+ ["btn","Add to my book"],["wait",3],["shot","add_done"],["dump",900]]

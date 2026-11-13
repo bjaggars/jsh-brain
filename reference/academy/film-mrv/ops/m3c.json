@@ -1,0 +1,8 @@
+[["goto","/work"],["tap","Buyers"],["tap","Active buyers"],["wait",1.5],["tap","Elena Park"],["wait",1.5],
+ ["shot","bp",{"stage":"css:button:has-text('Getting started') >> nth=-1","stages":"Searching","next":"~Next: tap to set","stats":"Homes tracked","brief":"btn:Edit search brief","pre":"btn:Log pre-approval","tour":"btn:Log tour","offer":"btn:Log offer","mls":"btn:Search the MLS","suggest":"btn:+ Suggest a home","watch":"~Email Elena a daily digest","track":"btn:+ Track a home"}],
+ ["btn","Log pre-approval"],["wait",1],["fill","ph:850,000","400,000"],["fill","ph:Synovus Mortgage","Gulf Coast Lending"],["fill","ph:6.375","6.25"],
+ ["shot","pre_filled",{"amt":"ph:850,000","lender":"ph:Synovus Mortgage","type":"css:select >> nth=-1","rate":"ph:6.375","save":"btn:Save the pre-approval","pre":"btn:Log pre-approval"}],
+ ["btn","Save the pre-approval"],["wait",3],["shot","pre_saved",{"approved":"Approved to"}],
+ ["btn","+ Track a home"],["wait",1],["into","btn:Track it"],["fill","css:input[placeholder^='Address *']","2204 SE 9th Street, Ocala"],["fill","ph:List price (optional)","389,000"],
+ ["shot","track_filled",{"addr":"css:input[placeholder^='Address *']","price":"ph:List price (optional)","link":"ph:Listing link (optional)","go":"btn:Track it"}],
+ ["btn","Track it"],["wait",3],["shot","track_saved"],["dump",-900]]

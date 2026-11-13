@@ -1,0 +1,2 @@
+[["goto","/work"],["tap","Marketing"],["wait",1.5],["tap","Emails"],["wait",2],["shot","emails_list",{"quick":"~Quick email from a template","row":"~305 Cypress Hollow Lane","counts":"~Drafts"}],["dump",600],
+ ["tapx","305 Cypress Hollow Lane"],["wait",20],["shot","camp_made",{"head":"~Step 2 of 4","edit":"btn:Edit","send":"btn:Send","link":"btn:Send me the link"}],["dump",900],["wheel",500],["shot","camp_made2"]]

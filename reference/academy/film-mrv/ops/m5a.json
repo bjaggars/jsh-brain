@@ -1,0 +1,5 @@
+[["goto","/work"],["tap","Showings"],["wait",1],["shot","show_panel",{"today":"css:button:has-text('Today') >> nth=0","showings":"css:button:has-text('Showings') >> nth=0","deadlines":"css:button:has-text('Deadlines')","tasks":"css:button:has-text('Tasks')","full":"css:button:has-text('Full calendar')","add":"css:button:has-text('Add to calendar')"}],["dump",500],
+ ["goto","/work"],["tap","Needs you"],["tap","Showing requests"],["wait",1.5],["shot","req"],["dump",900],
+ ["goto","/work"],["tap","Showings"],["tapx","Full calendar"],["wait",2],["shot","cal_week"],
+ ["btn","Month"],["wait",1],["shot","cal_month"],["btn","List"],["wait",1],["shot","cal_list"],
+ ["btn","New"],["wait",1],["shot","cal_new"],["tap","Task"],["wait",1],["shot","cal_task"],["dump",-600]]

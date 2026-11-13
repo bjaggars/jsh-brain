@@ -1,0 +1,5 @@
+[["goto","/work"],["tap","Clients"],["tap","Your book"],
+ ["shot","book",{"search":"css:input[placeholder^='Search']","add":"btn:Add client","hot":"css:button:has-text('Hot') >> nth=0","filters":"btn:Buyers","row":"css:button:has-text('Maya Ellis'), div:has(> div:has-text('Maya Ellis'))","maya":"Maya Ellis","mic":"css:button[aria-label='Speak a note for Maya Ellis']","edit":"css:button[aria-label='Edit Maya Ellis']"}],
+ ["tap","Maya Ellis"],["wait",1.5],
+ ["shot","card",{"name":["Maya Ellis",0],"call":"btn:Call","text":"btn:Text","email":"btn:Email","dir":"btn:Directions","every":"~Everything for","b_email":"i:EMAIL","b_text":"i:TEXT","b_call":"i:CALL","b_note":"i:NOTE","b_test":"i:TESTIMONIAL","b_ai":"i:AI LOG","b_hist":"i:HISTORY","b_book":"i:BOOK","b_vault":"i:VAULT"}],["dump",900],
+ ["tap","i:NOTE"],["shot","card_note"],["dump",1200]]

@@ -1,0 +1,7 @@
+[["goto","/work"],["tap","Buyers"],["tap","Active buyers"],["wait",1.5],["tap","Elena Park"],["wait",1.5],
+ ["btn","+ Track a home"],["wait",1],["into","btn:Track it"],["fill","input[placeholder^='Address *']","2204 SE 9th Street, Ocala"],["fill","ph:List price (optional)","389,000"],
+ ["shot","track_filled",{"addr":"css:input[placeholder^='Address *']","price":"ph:List price (optional)","link":"ph:Listing link (optional)","go":"btn:Track it"}],
+ ["btn","Track it"],["wait",3],["shot","track_saved"],["dump",-700],
+ ["into","btn:Log tour"],["btn","Log tour"],["wait",1],["fill","input[placeholder^='How it went']","Loved the yard and the office. Kitchen needs updating."],
+ ["shot","tour_filled",{"when":"css:input[type='datetime-local']","how":"css:input[placeholder^='How it went']","go":"btn:Log the tour","tour":"btn:Log tour"}],
+ ["btn","Log the tour"],["wait",3],["shot","tour_saved"],["dump",-900]]

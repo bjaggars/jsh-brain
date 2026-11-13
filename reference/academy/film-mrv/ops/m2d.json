@@ -1,0 +1,8 @@
+[["goto","/work"],["tap","Clients"],["tap","Pipeline"],["wait",1.5],["shot","pipeline"],["dump",1200],
+ ["goto","/work"],["tap","Clients"],["tap","Reach today"],["wait",1.5],["shot","reach"],["dump",700],
+ ["goto","/work"],["tap","Clients"],["tap","Import"],["wait",1.5],["shot","import"],["dump",900],
+ ["goto","/work"],["tap","Clients"],["tap","Templates"],["wait",1.5],["shot","templates"],["dump",900],
+ ["goto","/work"],["tap","Clients"],["tap","Your book"],["tap","Maya Ellis"],["wait",1],["tap","i:EMAIL",-1],["wait",1.5],["shot","card_email"],["dump",-700],
+ ["tap","i:TEXT",-1],["wait",1.5],["shot","card_text"],["dump",-600],
+ ["tap","i:BOOK",-1],["wait",1.5],["shot","card_book"],["dump",-600],
+ ["tap","i:VAULT",-1],["wait",1.5],["shot","card_vault"],["dump",-500]]

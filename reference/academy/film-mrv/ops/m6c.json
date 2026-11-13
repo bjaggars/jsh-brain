@@ -1,0 +1,7 @@
+[["goto","/work"],["tap","Documents"],["wait",1.5],["tapx","Add to the vault"],["wait",1.5],
+ ["select","select >> nth=0","Owen Bradley — Selling"],["wait",1],["select","select >> nth=2","Disclosure"],["select","select >> nth=3","Awaiting signature"],["fill","input[placeholder^='e.g. Purchase agreement']","Seller disclosure"],
+ ["file","input[type=file] >> nth=0","Seller Disclosure - 305 Cypress Hollow Lane.pdf"],["btn","Upload"],["wait",5],["shot","vault_done"],["dump",700],
+ ["goto","/work"],["tap","Closings"],["wait",2],["tapx","517 Saddlebrook Lane"],["wait",2.5],
+ ["shot","closing_detail",{"name":["Grace Whitfield",-1],"bar":"Closing","stage":["btn:Under contract",-1],"insp":["btn:Inspection",-1],"next":["~Next: Inspection Thursday",-1]}],
+ ["btn","Inspection",-1],["wait",2.5],["shot","closing_insp"],
+ ["goto","/work"],["tap","Showings"],["tap","Deadlines"],["wait",1.5],["shot","deadlines",{"count":"~in the next 30 days","r1":"Inspection period ends","r2":"Appraisal","r3":"Loan approval","r4":"Closing"}]]

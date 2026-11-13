@@ -1,0 +1,6 @@
+[["goto","/work"],["tap","Clients"],["tap","Your book"],["tap","Maya Ellis"],["wait",1.5],
+ ["shot","card",{"name":["Maya Ellis",-1],"call":["btn:Call",0],"text":["btn:Text",0],"email":["btn:Email",0],"every":"~Everything for","b_email":["i:EMAIL",-1],"b_text":["i:TEXT",-1],"b_call":["i:CALL",-1],"b_note":["i:NOTE",-1],"b_test":"i:TESTIMONIAL","b_ai":"i:AI LOG","b_hist":"i:HISTORY","b_book":"i:BOOK","b_vault":"i:VAULT","edit":["css:button[aria-label='Edit Maya Ellis']",-1]}],
+ ["tap","i:NOTE",-1],["tap","Meeting"],["fill","textarea","Toured two homes Saturday. Loved the kitchen at Heron Bend. Wants a second look with her sister."],["tap","3 days"],
+ ["shot","card_note",{"kinds":"Meeting","box":"css:textarea","follow":"3 days","save":"btn:Save note","ai":"btn:Structure with AI"}],
+ ["btn","Save note"],["wait",2.5],["shot","card_saved"],["dump",900],
+ ["tap","i:HISTORY"],["wait",2],["shot","card_hist"],["dump",1400]]

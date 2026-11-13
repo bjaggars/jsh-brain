@@ -1,0 +1,2 @@
+[["goto","/work"],["tap","Listings"],["tap","Active listings"],["wait",1.5],["tapx","305 Cypress Hollow Lane"],["wait",2],["shot","nl_detail0"],["dump",-900],
+ ["btn","Edit page"],["wait",2],["shot","ep_empty",{"link":"~/l/305-cypress","copy":"btn:Copy link","open":"btn:Open page","add":"btn:Add photos","photos":"~PHOTOS (0)"}],["dump",-700]]

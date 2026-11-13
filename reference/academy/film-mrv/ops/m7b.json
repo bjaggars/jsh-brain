@@ -1,0 +1,3 @@
+[["goto","/work"],["tap","Marketing"],["wait",1.5],["tap","Forms"],["wait",1.5],["tapx","Open house sign-in"],["wait",2],["into","css:select[aria-label='Open house listing'], select"],
+ ["shot","form_pick",{"oh":"~Open house sign-in","pick":"css:select"}],
+ ["select","select","305 Cypress Hollow Lane, Ocala"],["wait",4],["shot","form_made"],["dump",1500]]
