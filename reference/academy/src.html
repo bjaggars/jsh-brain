@@ -289,16 +289,16 @@ let done = new Set(['signin','list','around']);
 try { const s = JSON.parse(localStorage.getItem('jsh-academy-done')||'null'); if (Array.isArray(s)) done = new Set(s); } catch(e){}
 const save = () => { try { localStorage.setItem('jsh-academy-done', JSON.stringify([...done])); } catch(e){} };
 let who = 'brice';
-const STAFF = {brice:{first:'Brice', last:'Jaggars', role:'Admin', returning:true}, jose:{first:'Jose', last:'Prieto', role:'Faculty', returning:true}};
+const STAFF = {brice:{first:'Brice', last:'Jaggars', role:'Admin', returning:true}};
 // who is signed in: staff by key, an added person as "inv-<n>", or the product-door sample user
 const me = () => STAFF[who] || (who.startsWith('inv-') && invites[+who.slice(4)] ? {first:invites[+who.slice(4)].first, last:invites[+who.slice(4)].last, role:invites[+who.slice(4)].role, returning:false} : {first:'Dana', role:'Product user', returning:true});
 const isAdmin = () => me().role === 'Admin';
 function fillViewAs(){ const sel = document.getElementById('viewas'); if (!sel) return;
   if (who.startsWith('inv-') && (!invites[+who.slice(4)] || invites[+who.slice(4)].removed)) who = 'brice';
-  sel.innerHTML = `<option value="brice">Brice · Academy admin</option><option value="jose">Jose · Instructor (JSH staff)</option>` + invites.map((v,k)=>v.removed?'':`<option value="inv-${k}">${esc(v.first)} · ${esc(v.role)}, first sign-in</option>`).join('') + `<option value="agent">Dana · MyRealtyVault agent</option>`;
+  sel.innerHTML = `<option value="brice">Brice · Academy admin</option>` + invites.map((v,k)=>v.removed?'':`<option value="inv-${k}">${esc(v.first)} · ${esc(v.role)}, first sign-in</option>`).join('') + `<option value="agent">Dana · MyRealtyVault agent</option>`;
   sel.value = who; }
 const tempPw = () => { const w=['Harbor','Kite','Anchor','Cedar','Lantern','Marlin','Quartz','Tiller'], r=n=>Math.floor(Math.random()*n); return w[r(8)]+'-'+w[r(8)]+'-'+(1000+r(9000)); };
-let invites = [{first:'Taylor', last:'Reed', name:'Taylor Reed', email:'taylor.reed@jshinnovations.com', role:'Learner', campuses:['AI Workshop Platform'], path:'Facilitator', due:'in 14 days', pw:'Cedar-Marlin-4827', status:'Invited', sent:'Nov 10'}];
+let invites = [];
 let lastInvite = null, inScreen = 'engagement';
 const SCREENS = {
   list:{label:'All engagements', title:'All engagements', sub:'Your client engagements', ids:['list','new','around']},
@@ -308,7 +308,13 @@ let curLesson = null, mode = 'watch', P = null;
 const newP = () => ({screen:'list', name:'', client:'', ind:'', pre:true, preTouched:false, cn:'', ce:'', notes:'', purpose:'', msg:''});
 const $ = (s, r=document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let seen = new Set(['m1']);   // module intros watched (part of the path, not optional)
+try { const q = JSON.parse(localStorage.getItem('jsh-academy-seen')||'null'); if (Array.isArray(q)) seen = new Set(q); } catch(e){}
+const saveSeen = () => { try { localStorage.setItem('jsh-academy-seen', JSON.stringify([...seen])); } catch(e){} };
 const nextLesson = () => ALL.find(l => !done.has(l.id) && !l.lock) || null;
+// the next thing to do, in path order: a module's intro comes before its lessons
+const nextStop = () => { for (const m of M) { if (!seen.has(m.id) && m.L.some(l=>!done.has(l.id)&&!l.lock)) return {h:'intro-'+m.id, t:'Module intro: '+m.t, d:INTRO_D[m.id], m}; const l = m.L.find(x=>!done.has(x.id)&&!x.lock); if (l) return {h:'lesson-'+l.id, t:l.t, d:l.d, m}; } return null; };
+const modDone = m => seen.has(m.id) && m.L.every(l=>done.has(l.id)||l.lock);
 const pct = () => Math.round(done.size / TOTAL * 100);
 const go = h => { location.hash = h; };
 
@@ -360,12 +366,12 @@ function agentHome(){
     <div><b>Their trainer, if they have one</b><span>A larger brokerage can name its own trainer, who runs classes and sees progress for that brokerage only.</span></div></div></div>
    <div class="box"><h2>Agent path <span class="sample">opens with the MyRealtyVault launch</span></h2>
     <p style="margin:0;color:var(--soft)">About 25 lessons at launch, recorded the same way as the Workshop Platform campus: a two-minute overview, a short intro per module, then one task per lesson. Homeowners get their own, shorter path.</p></div>
-   <div class="box"><h2>What Dana cannot see</h2><p style="margin:0;color:var(--soft)">The other campuses, the JSH staff dashboard, other brokerages, and anyone else's progress. Switch "Viewing as" back to Jose or Brice to see the staff side.</p></div>
+   <div class="box"><h2>What Dana cannot see</h2><p style="margin:0;color:var(--soft)">The other campuses, the JSH staff dashboard, other brokerages, and anyone else's progress. Switch "Viewing as" back to Brice to see the staff side.</p></div>
   </div>`;
 }
 function home(){
   if (who==='agent') return agentHome();
-  const n = nextLesson();
+  const n = nextStop();
   return `
   <div class="eyebrow">JSH Training Academy · pilot campus</div>
   <h1 class="h1">${me().returning ? 'Welcome back' : 'Welcome'}, ${esc(me().first)}.</h1>
@@ -376,14 +382,14 @@ function home(){
     <div>
      <div class="eyebrow">${n ? 'Continue where you left off' : 'Path complete'}</div>
      <h2>${n ? esc(n.t) : 'You are an AWP Certified Facilitator.'}</h2>
-     <div class="rowx">${n ? `<button class="btn" data-go="lesson-${n.id}">Resume lesson · ${n.d}</button><span class="pill blue">${esc(n.m.t)}</span>` : `<button class="btn brass" data-go="path">See your certificate</button>`}</div>
+     <div class="rowx">${n ? `<button class="btn" data-go="${n.h}">Resume · ${n.d}</button><span class="pill blue">${esc(n.m.t)}</span>` : `<button class="btn brass" data-go="path">See your certificate</button>`}</div>
     </div>
     <div>
      <div class="rowx" style="justify-content:space-between;margin-bottom:8px"><b>Facilitator path</b><span style="color:var(--brass);font-variant-numeric:tabular-nums">${done.size} of ${TOTAL} lessons</span></div>
      <div class="meter"><i style="width:${pct()}%"></i></div>
      <div class="stats" style="margin-top:14px">
       <div class="stat"><b>${pct()}%</b><span>complete</span></div>
-      <div class="stat"><b>${M.filter(m=>m.L.every(l=>done.has(l.id))).length}/${M.length}</b><span>modules</span></div>
+      <div class="stat"><b>${M.filter(modDone).length}/${M.length}</b><span>modules</span></div>
       <div class="stat"><b>~32</b><span>minutes in all</span></div>
      </div>
     </div>
@@ -402,26 +408,26 @@ function home(){
   </div>`;
 }
 function path(){
-  const n = nextLesson(), complete = ALL.filter(l=>!l.lock).every(l=>done.has(l.id));
+  const n = nextStop(), complete = M.every(modDone);
   return `
   <div class="eyebrow">AI Workshop Platform campus</div>
   <h1 class="h1">Facilitator path</h1>
   <p class="lead">Run your first client workshop with confidence. Seven modules, in the order you will use them with a client.</p>
   <div class="box starthere" style="margin-top:18px"><div class="player" style="border-radius:12px"><video controls playsinline preload="none" poster="overview-poster.jpg" src="overview.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video></div>
    <div><div class="eyebrow" style="color:var(--brass)">Start here · 1:52</div><h2 style="font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15;margin:6px 0 8px">What the Workshop Platform is, and why it's different</h2><p style="margin:0;color:var(--soft)">The whole platform in under two minutes: an expert in the client's industry from minute one, a clickable prototype in days, and a Blueprint with a source for every fact. Optional, and it doesn't count toward completion.</p></div></div>
-  <div class="rowx" style="margin:16px 0 22px"><div class="meter" style="flex:1;min-width:180px"><i style="width:${pct()}%"></i></div><span style="color:var(--brass);font-variant-numeric:tabular-nums">${done.size} of ${TOTAL}</span>${n?`<button class="btn" data-go="lesson-${n.id}">Resume</button>`:''}</div>
+  <div class="rowx" style="margin:16px 0 22px"><div class="meter" style="flex:1;min-width:180px"><i style="width:${pct()}%"></i></div><span style="color:var(--brass);font-variant-numeric:tabular-nums">${done.size} of ${TOTAL}</span>${n?`<button class="btn" data-go="${n.h}">Resume</button>`:''}</div>
   ${complete ? `<div class="box cert" style="margin-bottom:18px"><div class="seal">J</div><div><b style="font-size:18px">AWP Certified Facilitator</b><div style="color:var(--soft)">Every lesson complete. Last step: a practice run on the Tidewater demo engagement, signed off by your faculty lead.</div></div></div>` : ''}
   <div class="mods">${M.map((m,i)=>`
    <section class="mod">
     <div class="art">${art(m.art)}</div>
     <div class="body">
-     <div class="rowx" style="justify-content:space-between"><span class="n">Module ${i+1}</span><span class="pill ${m.L.every(l=>done.has(l.id))?'good':''}">${m.L.filter(l=>done.has(l.id)).length}/${m.L.length}</span></div>
+     <div class="rowx" style="justify-content:space-between"><span class="n">Module ${i+1}</span><span class="pill ${modDone(m)?'good':''}">${(seen.has(m.id)?1:0)+m.L.filter(l=>done.has(l.id)).length}/${m.L.length+1}</span></div>
      <h3>${esc(m.t)}</h3>
-     <ul class="les"><li><button data-go="intro-${m.id}"><span class="chk" style="border-color:var(--brass);color:var(--brass);font-size:9px">▶</span><span class="t">Module intro <span class="pill">optional</span></span><span class="d">${INTRO_D[m.id]}</span></button></li>${m.L.map(l=>`<li><button data-go="lesson-${l.id}"><span class="chk ${done.has(l.id)?'done':(n&&n.id===l.id?'next':'')}">${done.has(l.id)?'✓':''}</span><span class="t">${esc(l.t)}${l.lock?` <span class="pill">${l.lock}</span>`:''}</span><span class="d">${l.d}</span></button></li>`).join('')}${i===M.length-1?`<li><button data-go="wrap"><span class="chk" style="border-color:var(--good);color:var(--good);font-size:9px">▶</span><span class="t">Wrap-up: congratulations</span><span class="d">0:18</span></button></li>`:''}</ul>
+     <ul class="les"><li><button data-go="intro-${m.id}"><span class="chk ${seen.has(m.id)?'done':(n&&n.h==='intro-'+m.id?'next':'')}">${seen.has(m.id)?'✓':''}</span><span class="t">Module intro</span><span class="d">${INTRO_D[m.id]}</span></button></li>${m.L.map(l=>`<li><button data-go="lesson-${l.id}"><span class="chk ${done.has(l.id)?'done':(n&&n.h==='lesson-'+l.id?'next':'')}">${done.has(l.id)?'✓':''}</span><span class="t">${esc(l.t)}${l.lock?` <span class="pill">${l.lock}</span>`:''}</span><span class="d">${l.d}</span></button></li>`).join('')}${i===M.length-1?`<li><button data-go="wrap"><span class="chk" style="border-color:var(--good);color:var(--good);font-size:9px">▶</span><span class="t">Wrap-up: congratulations</span><span class="d">0:18</span></button></li>`:''}</ul>
     </div>
    </section>`).join('')}</div>
   <div class="box" style="margin-top:18px"><h2>Certification: AWP Certified Facilitator</h2>
-   <div class="doors"><div><b>1. Finish every lesson</b><span>A lesson is complete when you answer its quick check correctly. Practice is there to help, and intros are optional.</span></div>
+   <div class="doors"><div><b>1. Finish every lesson</b><span>A lesson is complete when you answer its quick check correctly. Each module starts with its intro, and practice is there to help.</span></div>
    <div><b>2. Do a practice run</b><span>Run the Tidewater demo engagement from a new engagement to a shared prototype.</span></div>
    <div><b>3. Get signed off</b><span>Your faculty lead reviews the practice run and signs you off. Product users on self-study get a completion certificate with no sign-off.</span></div>
    <div><b>Staying current</b><span>When a release changes a screen, only the lessons that changed need retaking. Your certificate shows the release it covers.</span></div></div></div>`;
@@ -448,20 +454,22 @@ function upnext(cur){ const i = SEQ.indexOf(cur), nx = SEQ[i+1]; if (!nx) return
   return {over:`<div class="upnext" id="upnext" hidden><div><small>Up next</small><b>${esc(seqTitle(nx))}</b><div class="rowx" style="justify-content:center"><button class="btn" data-next="${nx}">Play next</button><button class="btn ghost" id="replay">Replay</button></div></div></div>`,
           bar:`<div class="vbar"><span>${i+1} of ${SEQ.length} in the path</span><button class="btn quiet" data-next="${nx}" style="padding:2px 0">Next: ${esc(seqTitle(nx))} ▸</button></div>`}; }
 function wireNext(){ const v = $('.vwrap video'), o = $('#upnext'); if (!v) return;
+  const ih = (location.hash||'').slice(1); const markSeen = () => { if (ih.startsWith('intro-') && !seen.has(ih.slice(6))) { seen.add(ih.slice(6)); saveSeen(); } };
+  v.addEventListener('ended', markSeen);
   if (o) { v.addEventListener('ended', () => { o.hidden = false; }); const r = $('#replay'); if (r) r.onclick = () => { o.hidden = true; v.currentTime = 0; v.play().catch(()=>{}); }; }
   if (autoplayNext) { autoplayNext = false; v.play().catch(()=>{}); } }
 const INTRO_D = {m1:'0:32', m2:'0:30', m3:'0:50', m4:'0:36', m5:'0:33', m6:'0:35', m7:'0:34'};
 function intro(mid){
   const i = M.findIndex(m=>m.id===mid); if (i<0) return path(); const m = M[i], first = m.L.find(l=>!done.has(l.id) && !l.lock) || m.L[0];
   return `
-  <div class="crumbs"><button data-go="path">Facilitator path</button><span>/</span><span>Module ${i+1}</span><span class="pill">Optional intro</span></div>
+  <div class="crumbs"><button data-go="path">Facilitator path</button><span>/</span><span>Module ${i+1}</span><span class="pill ${seen.has(m.id)?'good':''}">${seen.has(m.id)?'Intro watched ✓':'Start here'}</span></div>
   <h1 class="h1" style="font-size:clamp(28px,4vw,38px)">${esc(m.t)}</h1>
   <div class="lesson" style="margin-top:16px">
    <div class="player"><div class="vwrap"><video controls playsinline preload="none" poster="intro-${m.id}.jpg" src="intro-${m.id}.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>${upnext('intro-'+m.id).over}</div>${upnext('intro-'+m.id).bar}
-    <div class="note">What this module is for, where it fits, and what you'll be able to do by the end. Skip it any time; intros don't count toward completion.</div></div>
+    <div class="note">What this module is for, where it fits, and what you'll be able to do by the end. Watch this first: it's part of the module.</div></div>
    <div class="side">
     <div class="box"><h2>In this module</h2><ul class="les" style="margin:0;padding:0;list-style:none">${m.L.map(l=>`<li><button data-go="lesson-${l.id}"><span class="chk ${done.has(l.id)?'done':''}">${done.has(l.id)?'✓':''}</span><span class="t">${esc(l.t)}</span><span class="d">${l.d}</span></button></li>`).join('')}</ul></div>
-    <div class="rowx"><button class="btn" data-go="lesson-${first.id}">Start: ${esc(first.t)}</button>${M[i+1]?`<button class="btn quiet" data-go="intro-${M[i+1].id}">Next module intro</button>`:''}</div>
+    <div class="rowx"><button class="btn" data-next="lesson-${first.id}">Start: ${esc(first.t)}</button>${M[i+1]?`<button class="btn quiet" data-go="intro-${M[i+1].id}">Next module intro</button>`:''}</div>
    </div>
   </div>`;
 }
@@ -506,7 +514,7 @@ function lesson(id){
     <div class="box${practice && l.pilot ? ' sticky' : ''}"><h2>${practice && l.pilot ? 'Follow along' : 'Steps'}</h2>${practice && l.pilot ? `<ol class="steps live" id="steps">${l.s.map((s,k)=>`<li data-k="${k}"><span class="n">${k+1}</span><span>${esc(s)}</span></li>`).join('')}</ol><p id="pstat" class="mut" style="margin:12px 0 0;font-size:14px;color:var(--soft)"></p>` : `<ol class="steps">${l.s.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`}</div>
     ${practice ? '' : `<div class="box"><h2>Try it</h2><p style="margin:0 0 12px;color:var(--soft)">Practice right here, with the steps beside you. Each step ticks off as you do it, and nothing is saved or sent.</p><button class="btn ghost" data-mode="practice">Practice this lesson</button></div>`}
     ${l.q ? `<div class="box" id="quiz"><h2>Quick check</h2><div>${esc(l.q.q)}</div><div class="opts">${l.q.o.map((o,k)=>`<button data-opt="${k}">${esc(o)}</button>`).join('')}</div><p id="why" style="margin:10px 0 0;color:var(--soft)"></p></div>` : ''}
-    <div class="rowx">${l.q ? (done.has(l.id) ? `<span class="pill good" style="font-size:14px;padding:6px 14px">Completed ✓</span>` : `<span style="color:var(--soft);font-size:14px">Answer the quick check to complete this lesson.</span>`) : `<button class="btn ${done.has(l.id)?'ghost':'brass'}" id="mark">${done.has(l.id)?'Completed ✓':'Mark complete'}</button>`}${nx?`<button class="btn quiet" data-go="lesson-${nx.id}">Next: ${esc(nx.t)}</button>`:`<button class="btn quiet" data-go="wrap">Finish: watch the wrap-up</button>`}</div>
+    <div class="rowx">${l.q ? (done.has(l.id) ? `<span class="pill good" style="font-size:14px;padding:6px 14px">Completed ✓</span>` : `<span style="color:var(--soft);font-size:14px">Answer the quick check to complete this lesson.</span>`) : `<button class="btn ${done.has(l.id)?'ghost':'brass'}" id="mark">${done.has(l.id)?'Completed ✓':'Mark complete'}</button>`}${(()=>{const h=SEQ[SEQ.indexOf('lesson-'+l.id)+1]; return h==='wrap' ? `<button class="btn quiet" data-go="wrap">Finish: watch the wrap-up</button>` : `<button class="btn quiet" data-go="${h}">Next: ${esc(seqTitle(h))}</button>`;})()}</div>
    </div>
   </div>`;
 }
@@ -594,7 +602,7 @@ function wireLesson(id){
   };
 }
 function team(){
-  const flagged = ALL.filter(l=>l.flag); const li = lastInvite || invites[0];
+  const flagged = ALL.filter(l=>l.flag); const li = lastInvite || {first:'(first name)', path:'Facilitator', due:'in 14 days', pw:'(their temporary password)'};
   const camp = c => c.map(x=>`<span class="pill">${esc(x)}</span>`).join(' ');
   return `
   <div class="eyebrow">Academy admin</div>
@@ -606,13 +614,12 @@ function team(){
     <div><b>Product door</b><span>Customers open the Academy from inside the product, or from that product's Academy link, using the product's own sign-in. They see that product's campus and nothing else. You do not manage them one by one.</span></div>
     <div><b>Self-study</b><span>The default for product users and small agencies. Lessons, practice and quick checks, at their own pace.</span></div>
     <div><b>Instructor-led</b><span>A trainer runs a class: a group, a path and dates. The trainer sees the group's progress and signs off certification. Only some products offer it: MyRealtyVault and the Workshop Platform do; RV Warranty, MyCampVault and JSH Expenses are self-study only.</span></div></div></div>
-   <div class="box"><h2>Manage users <span class="sample">sample data</span></h2><div class="tablewrap"><table>
+   <div class="box"><h2>Manage users</h2><div class="tablewrap"><table>
     <thead><tr><th>Person</th><th>Role</th><th>Campuses</th><th>Progress</th><th>Sign-in</th><th></th></tr></thead>
     <tbody>
-     <tr><td>Brice Jaggars</td><td>Admin</td><td>${camp(['All'])}</td><td class="num">${TOTAL} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td></td></tr>
-     <tr><td>Jose Prieto</td><td>Instructor</td><td>${camp(['AI Workshop Platform','MyRealtyVault'])}</td><td class="num">${done.size} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td><button class="btn quiet" data-reset="Jose">Reset password</button></td></tr>
+     <tr><td>Brice Jaggars<div class="sample">you</div></td><td>Admin</td><td>${camp(['All'])}</td><td class="num">${done.size} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td></td></tr>
      ${invites.filter(v=>!v.removed).map((v,k)=>`<tr><td>${esc(v.name)}<div class="sample">${esc(v.email)}</div></td><td>${esc(v.role)}</td><td>${camp(v.campuses)}</td><td class="num">0 / ${TOTAL}</td><td><span class="pill warn">Temporary password</span><div class="sample">must change at first sign-in${v.due==='no deadline'?'':`, finish ${esc(v.due)}`}</div></td><td><button class="btn quiet" data-reset="${esc(v.name)}">Reset password</button> <button class="btn quiet" data-remove="${k}" style="color:var(--bad)">Remove access</button></td></tr>`).join('')}
-     <tr><td>Harbor & Oak Realty<div class="sample">6 agents, through MyRealtyVault</div></td><td>Product users</td><td>${camp(['MyRealtyVault'])}</td><td class="num">opens at launch</td><td><span class="pill blue">Product sign-in</span></td><td><span class="sample">managed in the product</span></td></tr>
+     ${invites.some(v=>!v.removed) ? '' : `<tr><td colspan="6" style="color:var(--soft)">No one else yet. Add a person below, and they appear here and under "Viewing as".</td></tr>`}
     </tbody></table></div><p id="um-msg" style="margin:12px 0 0;color:var(--good)"></p></div>
    <div class="box"><h2>Add a person</h2>
     <form class="form" id="inv">
@@ -637,11 +644,10 @@ function team(){
       <span class="cta">Sign in and set my password</span>
       <p style="margin:10px 0 0;font-size:13px;color:#5d6770">You'll choose your own password the first time you sign in. The temporary one stops working after 14 days.</p></div></div>
    </div>
-   <div class="box"><h2>Classes <span class="sample">sample data</span></h2>
+   <div class="box"><h2>Classes</h2>
     <p style="margin:0 0 12px;color:var(--soft)">Instructor-led training, for the products that offer it. A class is a group, a path and dates. Everyone still takes the same lessons; the trainer adds a live session and the sign-off.</p>
     <div class="tablewrap"><table><thead><tr><th>Class</th><th>Led by</th><th>People</th><th>Dates</th><th>Progress</th><th>Sign-off</th></tr></thead><tbody>
-     <tr><td>Workshop Platform facilitators, November</td><td>Jose</td><td class="num">${1+invites.filter(v=>!v.removed).length}</td><td>Nov 17 to Dec 1, live session Nov 24</td><td class="num">${Math.round(done.size/TOTAL*50)}%</td><td><span class="pill">Practice runs not started</span></td></tr>
-     <tr><td>Harbor & Oak Realty, agent onboarding</td><td>Their own trainer</td><td class="num">6</td><td>Opens with the MyRealtyVault launch</td><td class="num">n/a</td><td><span class="pill">Self-study, no sign-off</span></td></tr>
+     <tr><td colspan="6" style="color:var(--soft)">No classes yet. Add an Instructor under Manage users, then start a class.</td></tr>
     </tbody></table></div><div class="rowx" style="margin-top:12px"><button class="btn ghost" data-class>Start a class</button><span id="cl-msg" style="color:var(--soft);font-size:14px"></span></div></div>
    <div class="box"><h2>Lesson health</h2>
     <p style="margin:0 0 12px;color:var(--soft)">Every release is compared with the lessons that touch its screens. A lesson whose screen changed is flagged and re-recorded from its script.</p>
@@ -716,7 +722,7 @@ function render(){
   window.scrollTo(0,0);
 }
 document.addEventListener('click', e => {
-  const nb = e.target.closest('[data-next]'); if (nb) { autoplayNext = true; go(nb.dataset.next); return; }
+  const nb = e.target.closest('[data-next]'); if (nb) { const ch = (location.hash||'').slice(1); if (ch.startsWith('intro-')) { seen.add(ch.slice(6)); saveSeen(); } autoplayNext = true; go(nb.dataset.next); return; }
   const mb = e.target.closest('[data-mode]'); if (mb) { mode = mb.dataset.mode; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const sb = e.target.closest('[data-screen]'); if (sb) { inScreen = sb.dataset.screen; render(); return; }
   if (e.target.closest('#iv-gen')) { $('#iv-pw').value = tempPw(); return; }

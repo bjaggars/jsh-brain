@@ -9,7 +9,8 @@ campus in the Academy, so people can actually use what we build. This is a JSH d
 
 ## What a campus is
 1. A product overview film (about two minutes; one per audience).
-2. Modules in the order people do the work. Each module opens with a short intro (optional to watch).
+2. Modules in the order people do the work. Each module opens with a short intro. The intro is part of
+   the module, not optional (founder, 11/12/26): Next always goes to a module's intro before its lessons.
 3. Lessons: one task each, under a minute, recorded on the real product, with a quick check.
    A lesson is complete when its quick check is answered correctly.
 4. Practice inside the training window, with the steps visible beside it.
