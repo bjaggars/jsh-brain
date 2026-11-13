@@ -1,0 +1,3 @@
+[["scroll","Pre-workshop questionnaire",120],
+["click","Bring it into the Blueprint and prepare the meeting plan"],["wait",4],
+["scroll","Pre-workshop questionnaire",120],["shot","fs_plan"],["box","fb.plan","","section.intake .plan"],["box","fb.openwith","","section.intake .plan .upd-label"],["box","fb.goto","Go to them"],["dump","section.intake",2600]]

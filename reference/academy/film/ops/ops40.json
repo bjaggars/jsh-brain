@@ -1,0 +1,4 @@
+[["scroll","Blueprint",140],["text","Assumptions"],["wait",1],["shot","as_open"],["box","as.dlg","","[role=dialog]"],["box","as.confirm","","[role=dialog] button:has-text('Confirm') >> nth=0"],["box","as.correct","","[role=dialog] button:has-text('Correct') >> nth=0"],["box","as.tag","","[role=dialog] .tag >> nth=0"],
+["clickcss","[role=dialog] button:has-text('Correct') >> nth=0"],["wait",0.8],["shot","as_correct"],["dump","[role=dialog]",600],["click","Close"],
+["scroll","Versions:",130],["text","v1"],["wait",1],["shot","vs_open"],["box","vo.back","Bring this version back"],["box","vo.row","Versions:"],["dump","section:has-text('Versions:') >> nth=-1",10],
+["scroll","Build readiness",90],["click","See what's left and answer it"],["wait",1.5],["shot","br_left"],["dump","[role=dialog]",900]]

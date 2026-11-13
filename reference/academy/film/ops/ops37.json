@@ -1,0 +1,6 @@
+[["text","Edit setup"],["wait",1.5],["full","fs_setup_full0"],
+["fillcss","section.form label:has-text('Engagement name') input","Film set: Service desk app"],
+["fillcss","section.form label:has-text('Industry') input","Bicycle repair and e-bike service shops"],["wait",1],["full","fs_setup_full1"],
+["box","su.rebuild","Rebuild the expert voices"],["box","su.save2","Save setup"],["box","su.industry","","section.form label:has-text('Industry')"],["box","su.delete2","Delete this engagement"],
+["fillcss","section.form label:has-text('Industry') input","Bicycle sales and repair shops"],["wait",1],
+["click","Delete this engagement"],["wait",1],["dump","section.form",3000]]

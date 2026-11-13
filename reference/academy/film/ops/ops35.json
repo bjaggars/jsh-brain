@@ -1,0 +1,7 @@
+[["scroll","Open with",150],["shot","fs_open"],["box","fo.box","","div.opening"],["box","fo.head","","div.opening .opening-head"],["box","fo.li1","","div.opening ul.opening-list li >> nth=0"],["box","fo.add1","","div.opening button.small-link >> nth=0"],
+["clickcss","div.opening ul.opening-list li >> nth=0 >> input[type=checkbox]"],["wait",2],["scroll","Open with",150],["shot","fs_open_tick"],
+["clickcss","div.opening button.small-link >> nth=0"],["fillcss","div.opening textarea","Riley wants the ready text to go out on its own, with pickup hours in it."],
+["scroll","Open with",150],["shot","fs_open_note"],["box","fo.addbox","","div.opening .opening-add"],["box","fo.save","Save note and tick it off"],
+["click","Save note and tick it off"],["wait",2],["scroll","Open with",150],["shot","fs_open_saved"],["box","fo.noted","","div.opening .opening-note"],["box","fo.head2","","div.opening .opening-head"],["dump","div.opening",900],
+["scroll","Blueprint",140],["text","Current apps"],["shot","fs_tools"],["box","ft.dlg","","[role=dialog]"],["click","Show what we found"],["wait",1],["shot","fs_tools_found"],["box","ft.dlg2","","[role=dialog]"],["dump","[role=dialog]",1500],["click","Close"],
+["scroll","JSH AI Workshop Platform",0],["text","Edit setup"],["wait",1.5],["shot","fs_setup"],["dump","section.form",1600]]

@@ -1,0 +1,7 @@
+[["click","New engagement"],["wait",1],
+["fillcss","section.form label:has-text('Engagement name') input","Service desk app"],
+["fillcss","section.form label:has-text('Client') input >> nth=0","Bayside Bike Works"],
+["fillcss","section.form label:has-text('Industry') input","Bicycle sales and repair shops"],
+["fillcss","input[placeholder='Name']","Riley Chen"],["fillcss","input[placeholder='name@company.com']","riley@baysidebikeworks.example"],
+["fillcss","section.form textarea","Wants to replace the paper repair tickets and the whiteboard that tracks which bikes are ready"],
+["click","Create engagement"],["wait",4],["dump","main",1500]]

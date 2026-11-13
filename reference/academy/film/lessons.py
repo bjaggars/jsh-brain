@@ -55,15 +55,33 @@ LESSONS={
         vo="Choose Mark Workshop 1 complete. The prototype step opens, and you can reopen Workshop 1 if anything changes."),
  ]),
 }
+from lessons_more import MORE
+LESSONS.update(MORE)
 shots={}
 def S(n):
     if n not in shots:
         p=next(x for x in (f'cap/{n}.jpg',f'cap/p2/{n}.jpg',f'cap/early/{n}.jpg') if os.path.exists(x)); shots[n]=Image.open(p).convert('RGB')
+        if n=='share':
+            from PIL import ImageFilter
+            im=shots[n]; sc=im.width/1440; bx=(int(160*sc),int(250*sc),int(900*sc),int(282*sc)); im.paste(im.crop(bx).filter(ImageFilter.GaussianBlur(28)),bx)
+        if n=='list':
+            im=shots[n]; sc=im.width/1440; bg=im.getpixel((int(130*sc),int(600*sc))); ImageDraw.Draw(im).rectangle((int(100*sc),int(470*sc),int(1340*sc),int(560*sc)),fill=bg)
     return shots[n]
 def view(name,cam):
     im=S(name); sc=im.width/1440; x,y,w=cam; h=w*9/16; iw,ih=im.width/sc,im.height/sc
     x=min(max(x,0),iw-w); y=min(max(y,0),max(0,ih-h))
     return im.resize((W,H),Image.LANCZOS,box=(x*sc,y*sc,(x+w)*sc,(y+h)*sc)),(x,y,w)
+_ph={}
+def phone(p):
+    im=Image.new('RGB',(W,H),PAPER)
+    for j,n in enumerate(['ph_who','ph_route','ph_stop']):
+        if n not in _ph:
+            src=Image.open(f'cap/p2/{n}.jpg').convert('RGB').resize((398,862),Image.LANCZOS); m=Image.new('L',(398,862),0); ImageDraw.Draw(m).rounded_rectangle((0,0,397,861),34,fill=255); _ph[n]=(src,m)
+        a=eout((p-0.03-j*0.10)/0.2)
+        if a<=0: continue
+        x=304+j*458; y=int(70+70*(1-a)); d=ImageDraw.Draw(im); d.rounded_rectangle((x-12,y-12,x+410,y+874),44,fill=(8,11,15),outline=(70,84,98),width=3)
+        src,m=_ph[n]; im.paste(Image.blend(Image.new('RGB',src.size,PAPER),src,a),(x,y),m)
+    return im
 def card(kicker,title,sub,a=1.0):
     im=Image.new('RGB',(W,H),PAPER); d=ImageDraw.Draw(im)
     d.rounded_rectangle((120,330,176,386),12,fill=cmix(BRASS,a)); d.text((137,337),'J',font=font('Bold',35),fill=cmix((26,20,8),a,BRASS))
@@ -87,8 +105,11 @@ def build(lid, stills=False):
     for b,dd in zip(beats,durs): b['s']=t; b['e']=t+dd+GAP; t=b['e']
     DUR=t+OUTRO
     def scene(i,t):
-        b=beats[i]; p=(t-b['s'])/(b['e']-b['s']); c0,c1=b['cam']; k=ease((p-0.06)/0.62); cam=tuple(c0[j]+(c1[j]-c0[j])*k for j in range(3))
-        im,(cx,cy,cw)=view(b['shot'],cam); c_at=0.50 if b.get('shot2') else 0.74
+        b=beats[i]; p=(t-b['s'])/(b['e']-b['s'])
+        if b['shot']=='PHONE': im,(cx,cy,cw)=phone(p),(0,0,1440)
+        else:
+            c0,c1=b['cam']; k=ease((p-0.06)/0.62); cam=tuple(c0[j]+(c1[j]-c0[j])*k for j in range(3)); im,(cx,cy,cw)=view(b['shot'],cam)
+        c_at=0.50 if b.get('shot2') else 0.74
         if b.get('shot2'):
             q=ease((p-c_at-0.04)/0.05)
             if q>0: im2,_=view(b['shot2'],cam); im=Image.blend(im,im2,q)
@@ -120,12 +141,12 @@ def build(lid, stills=False):
                 im=Image.blend(prev['end'],im,k)
             f=ease((t-(DUR-0.5))/0.5); return Image.blend(im,Image.new('RGB',(W,H),(0,0,0)),f) if f>0 else im
         i=max(j for j,b in enumerate(beats) if t>=b['s']); im=scene(i,t)
-        if i>0 and t-beats[i]['s']<0.3 and (beats[i]['shot']!=beats[i-1].get('shot2',beats[i-1]['shot']) or beats[i]['cam'][0]!=beats[i-1]['cam'][1]):
+        if i>0 and t-beats[i]['s']<0.3 and (beats[i]['shot']!=beats[i-1].get('shot2',beats[i-1]['shot']) or beats[i]['cam'] is None or beats[i-1]['cam'] is None or beats[i]['cam'][0]!=beats[i-1]['cam'][1]):
             if i not in prev: prev[i]=scene(i-1,beats[i-1]['e']-1e-3)
             im=Image.blend(prev[i],im,ease((t-beats[i]['s'])/0.3))
         return im
     if stills:
-        ts=[b['s']+(b['e']-b['s'])*f for b in beats for f in (0.45,0.9)]; return [frame(x).resize((480,270)) for x in ts], DUR
+        ts=[b['s']+(b['e']-b['s'])*0.88 for b in beats]; return [frame(x).resize((480,270)) for x in ts], DUR
     SR=48000; n=int(DUR*SR); mixd=np.zeros(n)
     for i,b in enumerate(beats):
         a,sr=sf.read(f'vo/ls_{lid}_{i}.wav'); a=np.interp(np.arange(int(len(a)*SR/sr))*sr/SR,np.arange(len(a)),a); s=int(b['s']*SR); a=a[:n-s]; mixd[s:s+len(a)]+=a/(abs(a).max()+1e-9)*0.9
@@ -139,7 +160,7 @@ def build(lid, stills=False):
     out=f"out/AWP_Lesson_{L['file']}.mp4"
     subprocess.run(['ffmpeg','-y','-loglevel','error','-i',f'out/ls_{lid}.tmp.mp4','-i',f'out/ls_{lid}.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart',out],check=True)
     os.remove(f'out/ls_{lid}.tmp.mp4'); print('ok',lid,round(DUR,2),os.path.getsize(out)//1024,'KB',flush=True)
-ids=list(LESSONS) if sys.argv[1]=='all' else sys.argv[1].split(',')
+ids=list(LESSONS) if sys.argv[1]=='all' else list(MORE) if sys.argv[1]=='more' else sys.argv[1].split(',')
 if len(sys.argv)>2:
     rows=[]
     for lid in ids:

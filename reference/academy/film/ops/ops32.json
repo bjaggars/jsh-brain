@@ -1,0 +1,11 @@
+[["scroll","You're preparing this for the client.",170],
+["fillcss","input[placeholder='e.g. Jose Prieto']","Jose Prieto"],["fillcss","textarea[placeholder^='Great talking today']","Great talking today. This helps us make the workshop worth your time."],
+["scroll","You're preparing this for the client.",170],["shot","fs_prep_top"],["box","fp.title","","section.intake h3"],["box","fp.banner","","section.intake .prep-banner"],["box","fp.meta","","section.intake .intake-meta"],["box","fp.g1","","section.intake .intake-group >> nth=0"],
+["scroll","The app you have in mind",120],["shot","fs_prep_app"],["box","fp.g2","","section.intake .intake-group >> nth=1"],["box","fp.q_app","In your own words, what should the app do?"],
+["clickcss","section.intake button:has-text('+ Add your own question')"],["fillcss","input[placeholder='Your question']","How do customers find out their bike is ready today?"],
+["scroll","Anything else we should know?",200],["shot","fs_prep_custom"],["box","fp.custom","","input[placeholder='Your question']"],["box","fp.add","","section.intake button:has-text('+ Add your own question')"],
+["scroll","Want to show us?",160],["shot","fs_prep_files"],["box","fp.files","Want to show us?"],
+["scroll","Save draft",560],["shot","fs_send_actions"],["box","fs.save","Save draft"],["box","fs.preview","","section.intake .actions button:has-text('Preview as the client')"],["box","fs.self","I'll send the link myself"],["box","fs.email","Email it to the client"],["box","fs.fine","The email comes from workshop@jshinnovations.com"],
+["click","I'll send the link myself"],["wait",3],
+["scroll","Pre-workshop questionnaire",120],["shot","fs_sent"],["box","fs.lead","","section.intake .box-lead"],["box","fs.url","","section.intake code.share-url"],["box","fs.copy","Copy link"],["box","fs.back","Take it back to edit"],["box","fs.email2","","section.intake button:has-text('Email it to the client')"],
+["dump","section.intake",700]]

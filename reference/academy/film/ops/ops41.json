@@ -1,0 +1,7 @@
+[["scrollcss","section.workshop",150],["tab","JSH chamber"],["wait",1],["shot","ch_tab"],["box","ch.tabs","","section.workshop .tabs"],["box","ch.ask","Ask the next questions"],["box","ch.assume","Assume the rest and log it"],["box","ch.import","Have notes from a call with the client? Import them"],["box","ch.explain","","section.workshop p.explain"],
+["click","Have notes from a call with the client? Import them"],["wait",0.8],["fillcss","section.workshop div.import textarea","Call with Riley, Nov 12. Two locations planned for next year. Mechanics share one tablet at the bench. Wants a daily count of bikes waiting on parts."],
+["scrollcss","section.workshop",150],["shot","ch_import"],["box","ch.importbox","","section.workshop div.import"],["box","ch.importbtn","Import notes"],
+["tab","Client workshop"],
+["scroll","Blueprint",140],["text","Recommendations"],["wait",1],["shot","rc_open"],["box","rc.dlg","","[role=dialog]"],["box","rc.adopt","","[role=dialog] button:has-text('Adopt') >> nth=0"],["box","rc.feedback","","[role=dialog] button:has-text('Feedback') >> nth=0"],["box","rc.decline","","[role=dialog] button:has-text('Decline') >> nth=0"],
+["clickcss","[role=dialog] button:has-text('Feedback') >> nth=0"],["wait",0.6],["fillcss","[role=dialog] textarea","Love it, but keep the board to four columns so it fits one screen."],["shot","rc_feedback"],["box","rc.edit","","[role=dialog] div.edit"],["box","rc.send","Send feedback"],
+["dump","[role=dialog]",700],["click","Cancel"],["click","Close"]]

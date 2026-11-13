@@ -1,0 +1,7 @@
+[["text","Edit setup"],["wait",1.5],["shot","fs_setup_a"],["box","sa.form","","section.form"],["box","sa.name","","section.form label:has-text('Engagement name')"],["box","sa.client","","section.form label:has-text('Client')"],["box","sa.ind","","section.form label:has-text('Industry')"],["box","sa.purpose","","section.form label:has-text('What should the app do?')"],
+["fillcss","section.form label:has-text('Industry') input","Bicycle repair and e-bike service shops"],["wait",1],["into","css:div.danger-zone"],["shot","fs_setup_b"],
+["box","sb.land","","section.form fieldset >> nth=0"],["box","sb.who","","section.form fieldset >> nth=1"],["box","sb.rebuild","Rebuild the expert voices"],["box","sb.save","Save setup"],["box","sb.delete","Delete this engagement"],["box","sb.ind","","section.form label:has-text('Industry')"],
+["fillcss","section.form label:has-text('Industry') input","Bicycle sales and repair shops"],["wait",0.5],
+["click","Delete this engagement"],["wait",1],["fillcss","div.danger-zone input","Film set: Service desk app"],["into","css:div.danger-zone"],["into","Keep it"],["shot","fs_delete"],
+["box","dl.zone","","div.danger-zone"],["box","dl.input","","div.danger-zone input"],["box","dl.perm","Delete permanently"],["box","dl.keep","Keep it"],
+["click","Keep it"]]

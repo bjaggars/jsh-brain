@@ -1,0 +1,5 @@
+[["scroll","Pre-workshop questionnaire",120],["shot","fs_back0"],["box","fb.lead","","section.intake .box-lead"],["box","fb.bring","Bring it into the Blueprint and prepare the meeting plan"],["box","fb.show","Show their answers"],
+["click","Show their answers"],["wait",1],["scroll","Pre-workshop questionnaire",120],["shot","fs_answers"],["box","fb.changed","Changed from what you heard"],["box","fb.skipped","Skipped"],["dump","section.intake ul.sub",900],
+["click","Hide their answers"],
+["click","Bring it into the Blueprint and prepare the meeting plan"],["wait",4],
+["scroll","Pre-workshop questionnaire",120],["shot","fs_plan"],["box","fb.plan","","section.intake .plan"],["box","fb.openwith","","section.intake .plan .upd-label"],["box","fb.goto","Go to them"],["dump","section.intake",2200]]

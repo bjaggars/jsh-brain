@@ -3,7 +3,8 @@ usage: python3 live.py '<json list of ops>'   ops: ["answer",prefix,text] ["idk"
 ["click",button name,(nth)] ["text",visible text] ["tab",name] ["shot",name] ["full",name] ["scroll",text] ["fill",aria/placeholder,text] ["wait",sec] ["dump",css]"""
 import asyncio, json, sys, urllib.request
 from playwright.async_api import async_playwright
-URL='https://comtcpdhainyrjazztpj.supabase.co'; SITE='https://workshop.jshinnovations.com'; DEMO='5eed0000-0000-4000-8000-000000000001'
+URL='https://comtcpdhainyrjazztpj.supabase.co'; SITE='https://workshop.jshinnovations.com'; import os
+DEMO=os.environ.get('ENG','5eed0000-0000-4000-8000-000000000001')
 ANON=__import__('re').search(r"eyJ[A-Za-z0-9_.-]+", open('login.py').read()).group(0)
 def login():
     req=urllib.request.Request(URL+'/auth/v1/token?grant_type=password', data=json.dumps({'email':'filmset.academy@jshinnovations.com','password':open('.pw').read()}).encode(), headers={'apikey':ANON,'content-type':'application/json'})
@@ -17,7 +18,7 @@ async def main(ops):
         b=await p.chromium.launch(); ctx=await b.new_context(viewport={'width':1440,'height':810}, device_scale_factor=3, timezone_id='America/Chicago')
         pg=await ctx.new_page(); await pg.goto(SITE+'/')
         await pg.evaluate("s=>localStorage.setItem('sb-comtcpdhainyrjazztpj-auth-token', s)", json.dumps(sess))
-        await pg.goto(SITE+'/?e='+DEMO); await pg.wait_for_timeout(5000)
+        await pg.goto(SITE+('/' if DEMO=='list' else '/?e='+DEMO)); await pg.wait_for_timeout(5000)
         async def idle(maxs=900):
             pr=pg.locator('.progress')
             try: await pr.first.wait_for(state='visible', timeout=4000)
@@ -49,11 +50,18 @@ async def main(ops):
                 elif k=='fill': l=pg.get_by_label(op[1]).first if not op[1].startswith('ph:') else pg.get_by_placeholder(op[1][3:]).first; await l.fill(op[2])
                 elif k=='xy': await pg.mouse.click(op[1],op[2]); await pg.wait_for_timeout(900); print('XY',op[1:])
                 elif k=='label': await pg.locator('label', has_text=op[1]).nth(op[2] if len(op)>2 else 0).click(); await pg.wait_for_timeout(300)
+                elif k=='fillcss': l=pg.locator(op[1]).first; await l.scroll_into_view_if_needed(); await l.fill(op[2])
+                elif k=='clickcss': l=pg.locator(op[1]).first; await l.scroll_into_view_if_needed(); await l.click(); await idle(); print('CLICKCSS', op[1][:50])
+                elif k=='js': print('JS', json.dumps(await pg.evaluate(op[1]))[: (op[2] if len(op)>2 else 4000)])
+                elif k=='scrollcss': await pg.locator(op[1]).first.evaluate("(e,o)=>window.scrollTo(0, e.getBoundingClientRect().top+window.scrollY-o)", op[2] if len(op)>2 else 150); await pg.wait_for_timeout(500)
+                elif k=='into': l=(pg.locator(op[1]).first if op[1].startswith('css:')==False and False else None); l=pg.locator(op[1][4:]).first if op[1].startswith('css:') else pg.get_by_text(op[1]).first; await l.scroll_into_view_if_needed(); await pg.wait_for_timeout(500)
                 elif k=='wait': await pg.wait_for_timeout(int(op[1]*1000))
                 elif k=='dump': print('DUMP', (await pg.locator(op[1]).first.inner_text())[: (op[2] if len(op)>2 else 3000)])
                 elif k=='box':
                     l=pg.get_by_text(op[2]).first if len(op)<4 else pg.locator(op[3]).first; bb=await l.bounding_box(); print('BOX', op[1], json.dumps([round(bb[x],1) for x in ('x','y','width','height')]) if bb else None)
             except Exception as e: print('ERR', op[:2], str(e)[:300]); break
+        print('URL', pg.url)
+        if DEMO=='list': await b.close(); return
         qs=rest(sess, f'questions?engagement_id=eq.{DEMO}&select=prompt,status,target_chamber,suggested_default,gap,phase&order=created_at')
         opn=[q for q in qs if q['status'] in('asked','pending') and q['gap']!='closing_comments']
         print('--- questions', len(qs), 'open', len(opn))

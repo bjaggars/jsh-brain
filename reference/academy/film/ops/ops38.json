@@ -1,0 +1,5 @@
+[["text","Edit setup"],["wait",1.5],["fillcss","section.form label:has-text('Engagement name') input","Film set: Service desk app"],["click","Save setup"],["wait",3],
+["scroll","JSH AI Workshop Platform",0],["shot","fs_top"],["box","ft.title","Film set: Service desk app"],["box","ft.edit","Edit setup"],["box","ft.all","All engagements"],
+["text","Edit setup"],["wait",1.5],["click","Delete this engagement"],["wait",1],["full","fs_delete0"],["box","dl.zone","","div.danger-zone"],["box","dl.warn","for good?"],
+["fillcss","div.danger-zone input","Film set: Service desk app"],["wait",0.5],["full","fs_delete1"],["box","dl.input","","div.danger-zone input"],["box","dl.perm","Delete permanently"],["box","dl.keep","Keep it"],
+["click","Keep it"]]
