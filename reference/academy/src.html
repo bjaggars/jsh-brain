@@ -248,7 +248,7 @@ const M = [
   {id:'delete', t:'Delete an engagement safely', d:'0:50', s:['Edit setup, then Delete this engagement at the bottom.','Type the engagement name to confirm.','Everything goes, including share links and files. It cannot be undone.'],
    q:{q:'What is kept after you delete an engagement?', o:['The Blueprint','The client files','Nothing the client can see; only the AI spend ledger stays'], a:2, why:'Delete removes the Blueprint, questions, prototypes, share links, questionnaire and files.'}}]},
  {id:'m3', t:'The pre-workshop questionnaire', art:'mail', L:[
-  {id:'prep', t:'Prepare and prefill the questions', d:'1:45', s:['Prefill anything you heard on the call. The client sees "From our conversation. Change anything."','Add up to 3 questions of your own.','Add screenshots you already have so the client does not send them again.']},
+  {id:'prep', t:'Prepare and pre-fill the questions', d:'1:45', s:['Pre-fill anything you heard on the call. The client sees "From our conversation. Change anything."','Add up to 3 questions of your own.','Add screenshots you already have so the client does not send them again.']},
   {id:'send', t:'Preview it and email the client', d:'1:15', s:['Preview as the client first.','Email it to the client. It goes from workshop@jshinnovations.com with your note.','Replies come to your inbox, and you get an email the moment they submit.']},
   {id:'back', t:'Bring the answers into the Blueprint', d:'1:30', s:['When it is back, choose Bring it into the Blueprint and prepare the meeting plan.','Answers become Client said facts. Current tools go into Today\'s setup.','Show their answers marks anything changed from what you heard.'],
    q:{q:'Where do the client\'s current tools land?', o:['Today\'s setup','The JSH chamber','Recommendations'], a:0, why:'Their tools go into Today\'s setup, and the meeting plan draws on them.'}},
@@ -408,7 +408,7 @@ function path(){
    <div><b>3. Get signed off</b><span>Your faculty lead reviews the practice run and signs you off. Product users on self-study get a completion certificate with no sign-off.</span></div>
    <div><b>Staying current</b><span>When a release changes a screen, only the lessons that changed need retaking. Your certificate shows the release it covers.</span></div></div></div>`;
 }
-const INTRO_D = {m1:'0:32', m2:'0:30', m3:'0:35', m4:'0:36', m5:'0:33', m6:'0:35', m7:'0:34'};
+const INTRO_D = {m1:'0:32', m2:'0:30', m3:'0:50', m4:'0:36', m5:'0:33', m6:'0:35', m7:'0:34'};
 function intro(mid){
   const i = M.findIndex(m=>m.id===mid); if (i<0) return path(); const m = M[i], first = m.L.find(l=>!done.has(l.id) && !l.lock) || m.L[0];
   return `
@@ -491,7 +491,7 @@ function simHTML(){
   return top + `<button class="link" id="p-back">All engagements</button><h3>${esc(P.name)}<span class="tg" style="font-family:var(--body)">Practice</span></h3>
     <div class="mut">${esc(P.client || 'TBD')}, ${esc(P.ind)}</div>
     <div class="v3"><div><b>Client expert</b>Speaks for ${esc(P.client || 'the client')}</div><div><b>Discovery architect</b>Keeps the Blueprint build-ready</div><div><b>Domain expert</b>Knows ${esc(P.ind)}</div></div>
-    <div class="okbox"><b>You created the engagement.</b><div class="mut" style="margin-top:4px">${P.pre ? 'On the real platform you would land on the questionnaire, ready to prefill and email to the client.' : 'On the real platform you would land on the engagement, ready to ask the first questions.'}</div></div>`;
+    <div class="okbox"><b>You created the engagement.</b><div class="mut" style="margin-top:4px">${P.pre ? 'On the real platform you would land on the questionnaire, ready to pre-fill and email to the client.' : 'On the real platform you would land on the engagement, ready to ask the first questions.'}</div></div>`;
 }
 function pSync(){
   const st = pSteps(), cur = st.indexOf(false);
