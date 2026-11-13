@@ -70,7 +70,7 @@ main{padding:28px clamp(16px,4vw,44px) 60px;min-width:0}
 .camp b{font-size:17px}
 .camp .pill{align-self:flex-start}
 .camp p{margin:0;font-size:14px;color:var(--soft)}
-.camp .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--soft)}
+.camp .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px 10px;font-size:13px;color:var(--soft)}
 /* path */
 .mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 .mod{background:var(--sheet);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
@@ -330,6 +330,7 @@ function nav(){
    <button class="camprow" data-go="path"><span class="dot" style="background:var(--blue)"></span>AI Workshop Platform</button>
    <button class="camprow" disabled><span class="dot" style="background:#4f9a6a"></span>MyRealtyVault<span class="soon">next</span></button>
    <button class="camprow" disabled><span class="dot" style="background:#c98a4b"></span>RV Warranty<span class="soon">later</span></button>
+   <button class="camprow" disabled><span class="dot" style="background:#d9b25f"></span>MyCampVault<span class="soon">later</span></button>
    <button class="camprow" disabled><span class="dot" style="background:#9b8be0"></span>JSH Expenses<span class="soon">later</span></button>`;
 }
 function agentHome(){
@@ -375,10 +376,12 @@ function home(){
    <div class="box">
     <h2>Campuses</h2>
     <div class="campus">
-     <button class="camp" data-go="path"><span class="pill blue">Pilot · live</span><b>JSH AI Workshop Platform</b><p>For JSH facilitators. From a new engagement to a prototype the client can click.</p><div class="foot"><span>${TOTAL} lessons · 7 modules</span><span>Open</span></div></button>
-     <button class="camp" disabled><span class="pill">Next</span><b>MyRealtyVault</b><p>Vault Academy for agents, brokers and homeowners. Opens in the app from the ? on every screen.</p><div class="foot"><span>about 25 lessons at launch</span></div></button>
-     <button class="camp" disabled><span class="pill">Later</span><b>RV Warranty</b><p>For RV owners and service writers.</p><div class="foot"><span>planned</span></div></button>
-     <button class="camp" disabled><span class="pill">Later</span><b>JSH Expenses</b><p>Snap a receipt, file it, report it.</p><div class="foot"><span>planned</span></div></button>
+     <button class="camp" data-go="path"><span class="pill blue">Pilot · live</span><b>JSH AI Workshop Platform</b><p>For JSH facilitators. From a new engagement to a prototype the client can click.</p><div class="foot"><span>${TOTAL} lessons · 7 modules</span><span>Instructor-led + self-study</span></div></button>
+     <button class="camp" disabled><span class="pill">Next</span><b>MyRealtyVault</b><p>Vault Academy for agents, brokers and homeowners. Opens in the app from the ? on every screen.</p><div class="foot"><span>about 25 lessons at launch</span><span>Instructor-led + self-study</span></div></button>
+     <button class="camp" disabled><span class="pill">Later</span><b>RV Warranty</b><p>For RV owners and service writers.</p><div class="foot"><span>planned</span><span>Self-study</span></div></button>
+     <button class="camp" disabled><span class="pill">Later</span><b>MyCampVault</b><p>For RV owners running the whole suite.</p><div class="foot"><span>planned</span><span>Self-study</span></div></button>
+     <button class="camp" disabled><span class="pill">Later</span><b>JSH Expenses</b><p>Snap a receipt, file it, report it.</p><div class="foot"><span>planned</span><span>Self-study</span></div></button>
+    </div></button>
     </div>
    </div>
   </div>`;
@@ -576,7 +579,7 @@ function team(){
     <div class="doors"><div><b>JSH staff door</b><span>You add the person here, pick their campuses and give a temporary password. They must set their own at first sign-in. They see a dashboard of every campus you assigned.</span></div>
     <div><b>Product door</b><span>Customers open the Academy from inside the product, or from that product's Academy link, using the product's own sign-in. They see that product's campus and nothing else. You do not manage them one by one.</span></div>
     <div><b>Self-study</b><span>The default for product users and small agencies. Lessons, practice and quick checks, at their own pace.</span></div>
-    <div><b>Faculty-led</b><span>A trainer runs a class: a group, a path and dates. The trainer sees the group's progress and signs off certification. The trainer can be JSH staff or a customer's own trainer.</span></div></div></div>
+    <div><b>Instructor-led</b><span>A trainer runs a class: a group, a path and dates. The trainer sees the group's progress and signs off certification. Only some products offer it: MyRealtyVault and the Workshop Platform do; RV Warranty, MyCampVault and JSH Expenses are self-study only.</span></div></div></div>
    <div class="box"><h2>Manage users <span class="sample">sample data</span></h2><div class="tablewrap"><table>
     <thead><tr><th>Person</th><th>Role</th><th>Campuses</th><th>Progress</th><th>Sign-in</th><th></th></tr></thead>
     <tbody>
@@ -608,7 +611,7 @@ function team(){
       <p style="margin:10px 0 0;font-size:13px;color:#5d6770">You'll choose your own password the first time you sign in. The temporary one stops working after 14 days.</p></div></div>
    </div>
    <div class="box"><h2>Classes <span class="sample">sample data</span></h2>
-    <p style="margin:0 0 12px;color:var(--soft)">Faculty-led training. A class is a group, a path and dates. Everyone still takes the same lessons; the trainer adds a live session and the sign-off.</p>
+    <p style="margin:0 0 12px;color:var(--soft)">Instructor-led training, for the products that offer it. A class is a group, a path and dates. Everyone still takes the same lessons; the trainer adds a live session and the sign-off.</p>
     <div class="tablewrap"><table><thead><tr><th>Class</th><th>Led by</th><th>People</th><th>Dates</th><th>Progress</th><th>Sign-off</th></tr></thead><tbody>
      <tr><td>Workshop Platform facilitators, November</td><td>Jose</td><td class="num">${1+invites.filter(v=>!v.removed).length}</td><td>Nov 17 to Dec 1, live session Nov 24</td><td class="num">${Math.round(done.size/TOTAL*50)}%</td><td><span class="pill">Practice runs not started</span></td></tr>
      <tr><td>Harbor & Oak Realty, agent onboarding</td><td>Their own trainer</td><td class="num">6</td><td>Opens with the MyRealtyVault launch</td><td class="num">n/a</td><td><span class="pill">Self-study, no sign-off</span></td></tr>
