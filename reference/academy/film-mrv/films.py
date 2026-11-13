@@ -98,7 +98,7 @@ FILMS={
   B('nl_bottom','Beds, baths, size, year',"Add beds, baths, square feet, and the year it was built.",['beds','sqft','year'],cam=(0,180,443)),
   B('nl_bottom','List price and status',"Enter the list price. Leave the status on For sale, or choose Coming soon.",['price','status']),
   B('nl_bottom','Create listing',"Tap Create listing.",['create'],click='create',shot2='listings4'),
-  B('listings4','It is in your active listings',"The listing is live in your active listings, with its own page ready to share.",['card']),
+  B('listings4','It is in your active listings',"Your new listing now shows in your active listings, with its own page ready to share.",['card']),
 ]),
 'page':L(4,'Photos, story and the listing page','Photos_story_and_the_listing_page',[
   B('nl_actions','Every listing has its own page',"Every listing gets its own web page, with a link you can copy. Tap Edit page to build it out.",['link','copy','edit'],click='edit',shot2='ep_photos'),
