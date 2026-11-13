@@ -234,7 +234,7 @@ td.num{font-variant-numeric:tabular-nums}
     <nav class="nav" id="nav"></nav>
     <div class="who">
       <label for="viewas">Viewing as</label>
-      <select id="viewas"><option value="jose">Jose · Faculty (JSH staff)</option><option value="brice">Brice · Academy admin</option><option value="agent">Dana · MyRealtyVault agent</option></select>
+      <select id="viewas"></select>
     </div>
   </aside>
   <main><div class="wrap" id="view"></div></main>
@@ -288,9 +288,17 @@ const TOTAL = ALL.length;
 let done = new Set(['signin','list','around']);
 try { const s = JSON.parse(localStorage.getItem('jsh-academy-done')||'null'); if (Array.isArray(s)) done = new Set(s); } catch(e){}
 const save = () => { try { localStorage.setItem('jsh-academy-done', JSON.stringify([...done])); } catch(e){} };
-let who = 'jose';
+let who = 'brice';
+const STAFF = {brice:{first:'Brice', last:'Jaggars', role:'Admin', returning:true}, jose:{first:'Jose', last:'Prieto', role:'Faculty', returning:true}};
+// who is signed in: staff by key, an added person as "inv-<n>", or the product-door sample user
+const me = () => STAFF[who] || (who.startsWith('inv-') && invites[+who.slice(4)] ? {first:invites[+who.slice(4)].first, last:invites[+who.slice(4)].last, role:invites[+who.slice(4)].role, returning:false} : {first:'Dana', role:'Product user', returning:true});
+const isAdmin = () => me().role === 'Admin';
+function fillViewAs(){ const sel = document.getElementById('viewas'); if (!sel) return;
+  if (who.startsWith('inv-') && (!invites[+who.slice(4)] || invites[+who.slice(4)].removed)) who = 'brice';
+  sel.innerHTML = `<option value="brice">Brice · Academy admin</option><option value="jose">Jose · Instructor (JSH staff)</option>` + invites.map((v,k)=>v.removed?'':`<option value="inv-${k}">${esc(v.first)} · ${esc(v.role)}, first sign-in</option>`).join('') + `<option value="agent">Dana · MyRealtyVault agent</option>`;
+  sel.value = who; }
 const tempPw = () => { const w=['Harbor','Kite','Anchor','Cedar','Lantern','Marlin','Quartz','Tiller'], r=n=>Math.floor(Math.random()*n); return w[r(8)]+'-'+w[r(8)]+'-'+(1000+r(9000)); };
-let invites = [{name:'New teammate', email:'teammate@jshinnovations.com', role:'Learner', campuses:['AI Workshop Platform'], path:'Facilitator', due:'in 14 days', pw:'Cedar-Marlin-4827', status:'Invited', sent:'Nov 10'}];
+let invites = [{first:'Taylor', last:'Reed', name:'Taylor Reed', email:'taylor.reed@jshinnovations.com', role:'Learner', campuses:['AI Workshop Platform'], path:'Facilitator', due:'in 14 days', pw:'Cedar-Marlin-4827', status:'Invited', sent:'Nov 10'}];
 let lastInvite = null, inScreen = 'engagement';
 const SCREENS = {
   list:{label:'All engagements', title:'All engagements', sub:'Your client engagements', ids:['list','new','around']},
@@ -329,7 +337,7 @@ function nav(){
   $('#nav').innerHTML = `
    <button class="${is('home')}" data-go="home">Home</button>
    <button class="${is('path')}" data-go="path">My path</button>
-   ${who==='brice' ? `<button class="${is('team')}" data-go="team">People, access and lesson health</button>` : ''}
+   ${isAdmin() ? `<button class="${is('team')}" data-go="team">People, access and lesson health</button>` : ''}
    <button class="${is('in-app')}" data-go="in-app">Inside the product</button>
    <button class="${is('how')}" data-go="how">How lessons are made</button>
    <div class="lbl">Campuses</div>
@@ -360,7 +368,8 @@ function home(){
   const n = nextLesson();
   return `
   <div class="eyebrow">JSH Training Academy · pilot campus</div>
-  <h1 class="h1">${who==='jose' ? 'Welcome back, Jose.' : 'Academy overview'}</h1>
+  <h1 class="h1">${me().returning ? 'Welcome back' : 'Welcome'}, ${esc(me().first)}.</h1>
+  ${me().returning ? '' : `<div class="box" style="margin:14px 0 4px;border-color:var(--brass)"><b>First sign-in</b><div style="color:var(--soft);margin-top:4px">${esc(me().first)} signed in with the temporary password and was asked to choose a new one before seeing anything else. The greeting uses the first name entered when access was set up.</div></div>`}
   <p class="lead">Short lessons for every JSH product. Each one teaches a single task, lets you try it on a practice engagement, and checks you got it.</p>
   <div class="grid" style="margin-top:22px">
    <div class="box resume">
@@ -600,16 +609,17 @@ function team(){
    <div class="box"><h2>Manage users <span class="sample">sample data</span></h2><div class="tablewrap"><table>
     <thead><tr><th>Person</th><th>Role</th><th>Campuses</th><th>Progress</th><th>Sign-in</th><th></th></tr></thead>
     <tbody>
-     <tr><td>Brice</td><td>Admin</td><td>${camp(['All'])}</td><td class="num">${TOTAL} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td></td></tr>
-     <tr><td>Jose</td><td>Faculty</td><td>${camp(['AI Workshop Platform','MyRealtyVault'])}</td><td class="num">${done.size} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td><button class="btn quiet" data-reset="Jose">Reset password</button></td></tr>
+     <tr><td>Brice Jaggars</td><td>Admin</td><td>${camp(['All'])}</td><td class="num">${TOTAL} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td></td></tr>
+     <tr><td>Jose Prieto</td><td>Instructor</td><td>${camp(['AI Workshop Platform','MyRealtyVault'])}</td><td class="num">${done.size} / ${TOTAL}</td><td><span class="pill good">Active</span></td><td><button class="btn quiet" data-reset="Jose">Reset password</button></td></tr>
      ${invites.filter(v=>!v.removed).map((v,k)=>`<tr><td>${esc(v.name)}<div class="sample">${esc(v.email)}</div></td><td>${esc(v.role)}</td><td>${camp(v.campuses)}</td><td class="num">0 / ${TOTAL}</td><td><span class="pill warn">Temporary password</span><div class="sample">must change at first sign-in${v.due==='no deadline'?'':`, finish ${esc(v.due)}`}</div></td><td><button class="btn quiet" data-reset="${esc(v.name)}">Reset password</button> <button class="btn quiet" data-remove="${k}" style="color:var(--bad)">Remove access</button></td></tr>`).join('')}
      <tr><td>Harbor & Oak Realty<div class="sample">6 agents, through MyRealtyVault</div></td><td>Product users</td><td>${camp(['MyRealtyVault'])}</td><td class="num">opens at launch</td><td><span class="pill blue">Product sign-in</span></td><td><span class="sample">managed in the product</span></td></tr>
     </tbody></table></div><p id="um-msg" style="margin:12px 0 0;color:var(--good)"></p></div>
    <div class="box"><h2>Add a person</h2>
     <form class="form" id="inv">
-     <label for="iv-name">Name<input id="iv-name" required placeholder="First and last name"></label>
+     <label for="iv-first">First name<input id="iv-first" required placeholder="First name" autocomplete="off"></label>
+     <label for="iv-last">Last name<input id="iv-last" required placeholder="Last name" autocomplete="off"></label>
      <label for="iv-email">Email<input id="iv-email" type="email" required placeholder="name@company.com"></label>
-     <label for="iv-role">Role<select id="iv-role"><option>Learner</option><option>Faculty</option><option>Admin</option></select></label>
+     <label for="iv-role">Role<select id="iv-role"><option>Learner</option><option>Instructor</option><option>Admin</option></select></label>
      <label for="iv-path">Path<select id="iv-path"><option>Facilitator</option><option>Product Engineer</option></select></label>
      <fieldset class="camps"><legend>Campuses they can open</legend>
       <label><input type="checkbox" name="camp" value="AI Workshop Platform" checked> AI Workshop Platform</label><label><input type="checkbox" name="camp" value="MyRealtyVault"> MyRealtyVault</label>
@@ -618,10 +628,10 @@ function team(){
      <label for="iv-pw" class="wide">Temporary password<span class="pwrow"><input id="iv-pw" required value="${esc(tempPw())}" autocomplete="off"><button type="button" class="btn ghost" id="iv-gen">New one</button></span></label>
      <button class="btn wide" type="submit" style="justify-self:start">Add and send invite</button>
     </form>
-    <p id="iv-msg" style="margin:12px 0 0;color:var(--good)">${lastInvite?`${esc(lastInvite.name)} added with a temporary password. In this prototype no email is sent.`:''}</p>
+    <p id="iv-msg" style="margin:12px 0 0;color:var(--good)">${lastInvite?`${esc(lastInvite.name)} added with a temporary password. Switch "Viewing as" to ${esc(lastInvite.first)} to see their first sign-in. In this prototype no email is sent.`:''}</p>
     <div style="margin-top:14px"><div class="sample" style="margin-bottom:6px">What they receive</div>
-     <div class="mailp"><div class="from">From JSH Training Academy · Subject: ${esc(li.name.split(' ')[0])}, your ${esc(li.path)} training is ready</div>
-      <b>Hi ${esc(li.name.split(' ')[0])},</b>
+     <div class="mailp"><div class="from">From JSH Training Academy · Subject: ${esc(li.first)}, your ${esc(li.path)} training is ready</div>
+      <b>Hi ${esc(li.first)},</b>
       <p style="margin:8px 0">Brice added you to the JSH Training Academy on the ${esc(li.path)} path. It is ${TOTAL} short lessons, about 32 minutes in all, and you can stop and resume any time.${li.due==='no deadline'?'':` Please finish ${esc(li.due)}.`}</p>
       <p style="margin:8px 0">Your temporary password: <b style="font-family:ui-monospace,monospace">${esc(li.pw)}</b></p>
       <span class="cta">Sign in and set my password</span>
@@ -690,9 +700,9 @@ function how(){
   </div>`;
 }
 function render(){
-  stopPlayer();
+  stopPlayer(); fillViewAs();
   let h = (location.hash||'#home').slice(1);
-  if (h==='team' && who!=='brice') h = 'home';
+  if (h==='team' && !isAdmin()) h = 'home';
   if (who==='agent') h = 'home';
   const v = h.startsWith('lesson-') ? lesson(h.slice(7)) : h.startsWith('intro-') ? intro(h.slice(6)) : h==='wrap' ? wrapup() : ({home, path, team, how, 'in-app':inapp}[h] || home)();
   $('#view').innerHTML = v; nav();
@@ -701,7 +711,7 @@ function render(){
   const f = $('#inv');
   if (f) f.onsubmit = e => { e.preventDefault();
     const cs = [...f.querySelectorAll('[name=camp]:checked')].map(x=>x.value); if (!cs.length) { $('#iv-msg').style.color='var(--bad)'; $('#iv-msg').textContent='Pick at least one campus.'; return; }
-    lastInvite = {name:$('#iv-name').value.trim(), email:$('#iv-email').value.trim(), role:$('#iv-role').value, campuses:$('#iv-role').value==='Admin'?['All']:cs, path:$('#iv-path').value, due:$('#iv-due').value, pw:$('#iv-pw').value.trim(), status:'Invited', sent:'today'};
+    lastInvite = {first:$('#iv-first').value.trim(), last:$('#iv-last').value.trim(), name:($('#iv-first').value.trim()+' '+$('#iv-last').value.trim()).trim(), email:$('#iv-email').value.trim(), role:$('#iv-role').value, campuses:$('#iv-role').value==='Admin'?['All']:cs, path:$('#iv-path').value, due:$('#iv-due').value, pw:$('#iv-pw').value.trim(), status:'Invited', sent:'today'};
     invites.push(lastInvite); render(); };
   window.scrollTo(0,0);
 }

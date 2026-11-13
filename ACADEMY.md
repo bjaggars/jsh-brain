@@ -50,8 +50,9 @@ and in the product BRAIN's open loops.
 | JSH Expenses | Self-study |
 
 ## Access (founder, 11/12/26)
-- JSH staff door: an internal dashboard of all campuses. The founder grants access, picks campuses and
-  assigns a temporary password (changed at first sign-in, expires after 14 days).
+- JSH staff door: an internal dashboard of all campuses. The founder grants access by entering first name,
+  last name, email, role, campuses and a temporary password (changed at first sign-in, expires after 14 days).
+  The Academy greets each person by the first name entered there ("Welcome back, Brice.").
 - Product door: customers open the Academy from inside the product, or from that product's Academy link,
   with the product's own sign-in. They see only that product's campus.
 - A larger customer can name its own trainer, who sees progress for that customer only.
