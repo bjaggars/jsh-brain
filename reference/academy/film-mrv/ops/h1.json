@@ -1,0 +1,10 @@
+[["goto","/"],["tap","Do it"],["wait",2],["shot","x_afford"],["dump",900],
+ ["goto","/"],["tapx","Open my checklist"],["wait",2],["shot","x_check"],["dump",1300],
+ ["goto","/"],["tap","Home search"],["wait",2],["shot","x_search"],["dump",1200],
+ ["goto","/"],["tap","Documents"],["wait",2],["shot","x_docs"],["dump",900],
+ ["goto","/"],["tap","Mortgage calculator"],["wait",2],["shot","x_mort"],["dump",700],
+ ["goto","/"],["tap","Get pre-approved"],["wait",2],["shot","x_pre"],["dump",900],
+ ["goto","/"],["tap","Check a neighborhood"],["wait",2],["shot","x_hood"],["dump",600],
+ ["goto","/"],["tap","My calendar"],["wait",2],["shot","x_cal"],["dump",600],
+ ["goto","/"],["tap","Add your agent"],["wait",2],["shot","x_agent"],["dump",700],
+ ["goto","/"],["tap","Ask MRV",0],["wait",2],["shot","x_ask"],["dump",600]]

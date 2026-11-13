@@ -1,0 +1,6 @@
+[["goto","/"],["tap","Home search"],["wait",2.5],["into","~All ·","start"],["wait",1],["shot","saved",{"filters":"~All ·","card1":"88 Heron Bend Drive","card2":"305 Cypress Hollow Lane"}],
+ ["xy",80,834],["fill","textarea","Love the lanai and the oak trees. Ask about the roof age."],["shot","rate",{"note":"css:textarea","save":"btn:Save note"}],["btn","Save note"],["wait",2],["shot","rate_done"],
+ ["goto","/"],["tap","Documents"],["wait",2.5],["btn","Add a document"],["wait",1.5],["file","input[type=file] >> nth=-1","Homeowners insurance policy.pdf"],["fill","input[placeholder^='What is it?']","Homeowners insurance policy"],["select","select >> nth=0","Insurance"],
+ ["shot","doc_add",{"add":"btn:Add a document","photo":"~Take a photo","choose":"~Choose a file","what":"css:input[placeholder^='What is it?']","folder":"css:select >> nth=0","save":"btn:Save to my vault"}],["dump",-300],
+ ["btn","Save to my vault"],["wait",5],["shot","doc_saved"],["dump",-500],
+ ["goto","/"],["tap","Get pre-approved"],["wait",2],["shot","lender",{"intro":"~Send a bank or lender","share":"btn:Share documents","links":"Your links"}],["btn","Share documents"],["wait",2],["shot","lender2"],["dump",-900]]

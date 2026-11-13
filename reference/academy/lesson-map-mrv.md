@@ -56,3 +56,44 @@ Every lesson is defined in `film/../film-mrv/films.py` (one dict per film: captu
 6. The film-set tenant holds a client record with the founder's real name and a family email address. Rename or remove it from the film set.
 7. Pre-approval form placeholders name a real lender (`Synovus Mortgage`, `loans@synovus.com`).
 8. Tapping a later stage on a buyer's step bar (Inspection) made no change and gave no message.
+
+## Homeowner path (recorded 2026-11-13)
+
+Scripts in `film-mrv/films_home.py`, captures in `caph/`. Filmed as the film-set homeowner Jordan Avery (no agent attached). Render with `FILMS=films_home python3 render.py all`; capture with `STATE=state.home.json CAP=caph python3 shoot.py ops/h*.json`.
+
+| Module | Film | Captures it depends on |
+|---|---|---|
+| Module 1 · Your vault | Find your way around your vault (`h_tour`) | home, home2, home3 |
+| Module 1 · Your vault | Use your checklist (`h_check`) | home, check, check_done, check2 |
+| Module 2 · Buying a home | Work out what you can afford (`h_afford`) | home, afford, home2, mort, mort2 |
+| Module 2 · Buying a home | Search for homes and save the ones you like (`h_search`) | home2, search, search2, search3, saved, rate, rate_done |
+| Module 2 · Buying a home | Check a neighborhood (`h_hood`) | hood, hood2, hood3 |
+| Module 3 · Your documents | Keep your documents in your vault (`h_docs`) | home2, docs, doc_add, doc_saved |
+| Module 3 · Your documents | Share documents with a lender (`h_lender`) | home2, lender, lender2, lender3, lender_links |
+| Module 4 · Selling and owning | Thinking of selling (`h_sell`) | home, sell, sell2, walk |
+| Module 4 · Selling and owning | Your home and its records (`h_own`) | home, own, myhome1, myhome2, own2, tax, maint |
+| Module 5 · Help, and your agent | Ask MRV (`h_ask`) | home, ask, ask2 |
+| Module 5 · Help, and your agent | Keep your dates on My calendar (`h_cal`) | home3, cal, cal1, cal2 |
+| Module 5 · Help, and your agent | Add your agent (`h_agent`) | home3, agent, rate_done |
+| Module 1 · Your vault | Your vault (`h_intro1`) | home, check |
+| Module 2 · Buying a home | Buying a home (`h_intro2`) | afford, rate_done, hood3 |
+| Module 3 · Your documents | Your documents (`h_intro3`) | doc_saved, lender_links |
+| Module 4 · Selling and owning | Selling and owning (`h_intro4`) | walk, myhome2 |
+| Module 5 · Help, and your agent | Help, and your agent (`h_intro5`) | ask2, agent, cal2 |
+| Start here | MyRealtyVault for homeowners (`h_overview`) | home, check, afford, rate_done, lender_links, walk, ask2 |
+| Homeowner path complete | Your vault is ready (`h_wrap`) | home, check_done |
+
+### Film-set data created for the homeowner lessons (TEST only)
+
+- Two saved homes (305 Cypress Hollow Lane, 88 Heron Bend Drive) with film-set details and Pexels photos; one rated Love it with a note.
+- One checklist step marked done; one sample PDF (Homeowners insurance policy) in Documents; a home on file (2714 Laurel Run Drive); one calendar entry.
+- One lender share link to `loans@example.com` (Gulf Coast Lending). TEST reported that the email did not go out; the link exists and is listed.
+- Check a neighborhood was run once for a public building's address (110 SE Watula Ave, Ocala). Add your agent was filled in but not submitted.
+- Functions proxied to the TEST site for single captures: `link-preview`, `home-data`, `packet-create`, `ask-vault`.
+
+### Product findings while filming the homeowner path
+
+9. Saving our own listing page by link (`/l/<slug>`) lands as `Price not listed · Address unknown`; link preview does not read MyRealtyVault's own pages.
+10. My home: a purchase date entered as Jun 14 shows as Jun 13 (time-zone shift on a date-only field).
+11. The buying checklist says `1 of 24` on its own page and `1 of 25` on the vault home.
+12. Share with a lender on TEST: `The link was created, but the email didn't go out` for an example.com address. Expected on TEST, but the two-line message reads like a failure.

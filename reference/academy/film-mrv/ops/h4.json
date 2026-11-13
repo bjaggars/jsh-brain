@@ -1,0 +1,4 @@
+[["goto","/"],["tapx","Open my checklist"],["wait",2],["shot","check",{"tabs":"css:button:has-text('Buying')","own":"css:button:has-text('Owning')","count":"~of 24 done","stage":"~Get ready","s1":"~Work out what you can afford","open":["btn:Open",0],"done":["Done",0],"later":["btn:Later",0],"skip":["btn:Skip",0],"s2":"~Check your credit","done2":["Done",1]}],
+ ["tap","Done",1],["wait",2],["shot","check_done",{"count":"~of 24 done","s2":"~Check your credit"}],["dump",500],
+ ["wheel",900],["shot","check2"],["wheel",700],["shot","check3"],
+ ["goto","/"],["tap","Do it"],["wait",2],["js","[...document.querySelectorAll('input')].filter(e=>e.offsetParent).map(e=>e.placeholder+'|'+e.type+'|'+e.value)"]]

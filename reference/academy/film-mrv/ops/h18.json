@@ -1,0 +1,6 @@
+[["goto","/"],["css","button:has-text('Ask MRV')",-1],["wait",2],["tapx","Which of my saved homes"],["wait",35],
+ ["js","[...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+40&&getComputedStyle(e).overflowY!='visible'&&e.clientHeight<900).map(e=>{e.scrollTop=0;return e.tagName+e.clientHeight})"],["wait",1],["shot","ask2"],["dump",-1500],
+ ["goto","/"],["into","css:button:has-text('My calendar')","center"],["tap","My calendar"],["wait",2],["shot","cal",{"add":"~+ Add to my calendar","phone":"~Add to my phone","empty":"Nothing coming up"}],["tapx","+ Add to my calendar"],["wait",1.5],
+ ["fill","input[placeholder^='e.g. Open house']","Tour 305 Cypress Hollow Lane"],["fill","input[type=date]","2026-11-14"],["fill","input[type=time]","10:30"],["fill","ph:Address","305 Cypress Hollow Lane, Ocala"],
+ ["shot","cal1",{"kind":"css:select","what":"css:input[placeholder^='e.g. Open house']","date":"css:input[type=date]","time":"css:input[type=time]","addr":"ph:Address","save":"btn:Save"}],
+ ["btn","Save"],["wait",3],["shot","cal2"],["dump",-400]]

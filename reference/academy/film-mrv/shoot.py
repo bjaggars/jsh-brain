@@ -9,11 +9,11 @@ from playwright.async_api import async_playwright
 UA='Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
 BASE='http://127.0.0.1:5173'; TEST='https://myrealtyvault.app'; ALLOW=set(filter(None,os.environ.get('ALLOW_FN','').split(',')))
 MASK=[('Brice Jaggars','Jordan Avery'),('kim@jaggars.com','jordan.avery@example.com'),('Brice','Jordan'),('Jaggars','Avery'),('Synovus','Gulf Coast Lending')]
-NOW=os.environ.get('NOW','2026-11-12T08:40:00')
+CAP=os.environ.get('CAP','cap'); NOW=os.environ.get('NOW','2026-11-12T08:40:00')
 async def main(ops):
     async with async_playwright() as p:
         b=await p.chromium.launch()
-        ctx=await b.new_context(storage_state='state.json', viewport={'width':443,'height':960}, device_scale_factor=3, is_mobile=True, has_touch=True, user_agent=UA, timezone_id='America/New_York', locale='en-US')
+        ctx=await b.new_context(storage_state=os.environ.get('STATE','state.json'), viewport={'width':443,'height':960}, device_scale_factor=3, is_mobile=True, has_touch=True, user_agent=UA, timezone_id='America/New_York', locale='en-US')
         pg=await ctx.new_page(); log=[]
         if NOW!='real': await pg.clock.install(time=NOW)
         async def rest(r):
@@ -65,22 +65,23 @@ async def main(ops):
                 elif k=='wheel': await pg.mouse.move(220,500); await pg.mouse.wheel(0,op[1]); await pg.wait_for_timeout(700)
                 elif k=='into': await loc(op[1]).first.evaluate("(e,o)=>e.scrollIntoView({block:o})", op[2] if len(op)>2 else 'center'); await pg.wait_for_timeout(600)
                 elif k=='file': await pg.locator(op[1]).first.set_input_files(op[2]); await pg.wait_for_timeout(1500)
+                elif k=='xy': await pg.touchscreen.tap(op[1],op[2]); await pg.wait_for_timeout(1500)
                 elif k=='key': await pg.keyboard.press(op[1]); await pg.wait_for_timeout(800)
                 elif k=='wait': await pg.wait_for_timeout(int(op[1]*1000))
                 elif k=='js': print('JS', json.dumps(await pg.evaluate(op[1]))[:3000])
                 elif k=='shot':
                     await pg.evaluate("""()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.nodeValue.includes('127.0.0.1:5173'))n.nodeValue=n.nodeValue.replace(/https?:..127.0.0.1:5173/g,'myrealtyvault.app').replace(/127.0.0.1:5173/g,'myrealtyvault.app')}}""")
-                    await pg.screenshot(path=f'cap/{op[1]}.jpg', quality=92, type='jpeg'); bx={}
+                    await pg.screenshot(path=f'{CAP}/{op[1]}.jpg', quality=92, type='jpeg'); bx={}
                     for key,s in (op[2] if len(op)>2 else {}).items():
                         l=loc(s[0]).nth(s[1]) if isinstance(s,list) else loc(s).first
                         bb=await l.bounding_box() if await l.count() else None
                         if bb: bx[key]=[round(bb['x'],1),round(bb['y'],1),round(bb['width'],1),round(bb['height'],1)]
                         else: print('  NOBOX',op[1],key)
-                    json.dump(bx,open(f'cap/{op[1]}.json','w')); print('SHOT',op[1],bx)
+                    json.dump(bx,open(f'{CAP}/{op[1]}.json','w')); print('SHOT',op[1],bx)
                 elif k=='dump':
                     t=await pg.locator('body').inner_text(); print('DUMP',' | '.join(x.strip() for x in t.split('\n') if x.strip())[(op[1] if len(op)>1 and op[1]<0 else 0):(op[1] if len(op)>1 and op[1]>0 else (None if len(op)>1 else 1500))])
                     els=await pg.evaluate("""()=>[...document.querySelectorAll('input,textarea,select,button')].filter(e=>e.offsetParent&&e.getBoundingClientRect().top<960&&e.getBoundingClientRect().bottom>0).map(e=>e.tagName[0]+':'+(e.placeholder||e.getAttribute('aria-label')||e.name||e.textContent||'').trim().slice(0,28)+(e.type&&e.tagName=='INPUT'?'('+e.type+')':''))""")
                     print('  ELS',' ¦ '.join(els)[-900:])
             except Exception as e: print('ERR',op[:2],str(e)[:240]); break
-        print('URL',pg.url.replace(BASE,''),'LOG',log[-14:]); await ctx.storage_state(path='state.json'); await b.close()
+        print('URL',pg.url.replace(BASE,''),'LOG',log[-14:]); await ctx.storage_state(path=os.environ.get('STATE','state.json')); await b.close()
 asyncio.run(main(json.load(open(sys.argv[1]))))

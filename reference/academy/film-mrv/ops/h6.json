@@ -1,0 +1,6 @@
+[["goto","/"],["tap","Home search"],["wait",2],["fill","ph:$ any","325,000",0],["fill","ph:$ any","400,000",1],["fill","input[placeholder='any']","3",0],["fill","input[placeholder='any']","2",1],["fill","input[placeholder^='Ocala FL']","Ocala FL; 34471"],["fill","input[placeholder^='Pool, garage']","Fenced yard, home office"],
+ ["shot","search",{"low":["ph:$ any",0],"high":["ph:$ any",1],"beds":["css:input[placeholder='any']",0],"baths":["css:input[placeholder='any']",1],"where":"css:input[placeholder^='Ocala FL']","must":"css:input[placeholder^='Pool, garage']"}],
+ ["into","btn:Start my search"],["shot","search2",{"zillow":"btn:Zillow","realtor":"btn:Realtor.com","redfin":"btn:Redfin","start":"btn:Start my search","tip":"~Found one you like","paste":"~Already have a home"}],
+ ["tapx","Already have a home"],["wait",1.2],["js","[...document.querySelectorAll('input')].filter(e=>e.offsetParent).map(e=>e.placeholder).slice(-3)"],
+ ["fill","input >> nth=-1","https://myrealtyvault.app/l/305-cypress-hollow-lane"],["shot","search3",{"link":"css:input >> nth=-1","find":"btn:Find it"}],
+ ["btn","Find it"],["wait",8],["shot","search4"],["dump",-900]]

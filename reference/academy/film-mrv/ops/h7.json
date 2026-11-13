@@ -1,0 +1,1 @@
+[["goto","/"],["tap","Home search"],["wait",2.5],["into","~All ·","start"],["wait",1],["shot","saved"],["dump",-900],["wheel",500],["shot","saved2"]]

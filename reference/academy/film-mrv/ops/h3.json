@@ -1,0 +1,8 @@
+[["goto","/"],["btn","Buying"],["wait",2.5],["goto","/"],
+ ["shot","home",{"title":"Jordan's vault","profile":"btn:Profile","focus":"btn:Buying","selling":"btn:Selling","myhome":"btn:My home","chips":"btn:My checklist","hero":"~find your next home","next":"~Work out what you can afford","doit":"btn:Do it","later":"btn:Later","skip":"~Skip — doesn","check":"~Your buying checklist","open":"~Open my checklist","ask":["css:button:has-text('Ask MRV')",-1]}],
+ ["wheel",640],["shot","home2",{"search":"css:button:has-text('Your search, then')","docs":"css:button:has-text('Pay stubs')","afford":"css:button:has-text('How much can I afford?')","mort":"css:button:has-text('Mortgage calculator')","credit":"css:button:has-text('Check my credit')","pre":"css:button:has-text('Get pre-approved')"}],
+ ["wheel",900],["shot","home3",{"askmrv":"css:button:has-text('Your virtual agent')","check":"css:button:has-text('Every step, any order')","cal":"css:button:has-text('My calendar')","agent":"css:button:has-text('Add your agent')"}],
+ ["goto","/"],["tapx","Open my checklist"],["wait",2],["shot","check",{"tabs":"css:button:has-text('Buying')","own":"css:button:has-text('Owning')","count":"~of 24 done","stage":"~Get ready","s1":"~Work out what you can afford","open":["btn:Open",0],"done":["btn:Done",0],"later":["btn:Later",0],"skip":["btn:Skip",0]}],
+ ["btn","Done",1],["wait",2],["shot","check_done",{"count":"~of 24 done"}],
+ ["wheel",900],["shot","check2"],
+ ["goto","/"],["tap","Do it"],["wait",2],["js","[...document.querySelectorAll('input')].filter(e=>e.offsetParent).map(e=>e.placeholder+'|'+e.type+'|'+e.value)"]]

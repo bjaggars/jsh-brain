@@ -1,0 +1,6 @@
+[["goto","/"],["tap","Do it"],["wait",2],["fill","ph:$","92,000",0],["fill","ph:car, student loans, cards","650"],["fill","ph:$","45,000",1],["wait",1.5],
+ ["shot","afford",{"income":["ph:$",0],"debt":"ph:car, student loans, cards","cash":["ph:$",1],"rate":"css:input >> nth=3","back":"Your vault"}],["dump",-700],["wheel",420],["shot","afford2"],
+ ["goto","/"],["tap","Mortgage calculator"],["wait",2],["fill","ph:$","389,000",0],["wait",1.5],["shot","mort",{"price":["ph:$",0]}],["dump",-600],["wheel",520],["shot","mort2"],
+ ["goto","/"],["tap","Home search"],["wait",2],["fill","ph:$ any","325,000",0],["fill","ph:$ any","400,000",1],["fill","ph:any","3",0],["fill","ph:any","2",1],["fill","input[placeholder^='Ocala FL']","Ocala FL; 34471"],["fill","input[placeholder^='Pool, garage']","Fenced yard, home office"],
+ ["shot","search",{"low":["ph:$ any",0],"high":["ph:$ any",1],"beds":["ph:any",0],"baths":["ph:any",1],"where":"css:input[placeholder^='Ocala FL']","must":"css:input[placeholder^='Pool, garage']","zillow":"btn:Zillow","start":"btn:Start my search"}],
+ ["wheel",600],["shot","search2",{"paste":"~Already have a home","tip":"~Found one you like"}],["tapx","Already have a home"],["wait",1.2],["shot","search3"],["dump",-700]]

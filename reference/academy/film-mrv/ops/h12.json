@@ -1,0 +1,4 @@
+[["goto","/"],["tap","Get pre-approved"],["wait",3],["shot","lender_links",{"links":"Your links"}],["dump",-500],
+ ["goto","/"],["btn","Selling"],["wait",2.5],["goto","/"],["shot","sell",{"focus":"btn:Selling","hero":"~best price","next":"~Know your home","check":"~Your selling checklist"}],
+ ["into","css:button:has-text('What’s my home worth?')","start"],["shot","sell2",{"worth":"css:button:has-text('What’s my home worth?')","opinion":"css:button:has-text('Free price opinion')","walk":"css:button:has-text('What will I walk away with?')","offers":"css:button:has-text('Compare offers')","ready":"css:button:has-text('Get my home ready')","disc":"css:button:has-text('Seller disclosures')"}],
+ ["tapx","What will I walk away with?"],["wait",2],["js","[...document.querySelectorAll('input')].filter(e=>e.offsetParent).map(e=>e.placeholder+'|'+e.value)"],["shot","walk0"],["dump",-500]]

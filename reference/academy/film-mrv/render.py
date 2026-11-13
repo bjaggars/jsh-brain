@@ -16,12 +16,13 @@ def cmix(c,a,bg=None):
 PX,PY,PW,PH=118,60,443,960            # phone screen on canvas (1 css px = 1 px)
 ZX,ZY,ZW,ZH=650,236,1150,736          # zoom window
 os.makedirs('vo',exist_ok=True); os.makedirs('out',exist_ok=True)
-from films import FILMS, PATH
+import importlib
+FS=importlib.import_module(os.environ.get('FILMS','films')); FILMS,PATH=FS.FILMS,FS.PATH; CAPD=getattr(FS,'CAP','cap'); PRE=getattr(FS,'PREFIX','')
 _s={}; _b={}
 def S(n):
     if n not in _s:
-        im=Image.open(f'cap/{n}.jpg').convert('RGB'); _s[n]=(im, im.resize((PW,PH),Image.LANCZOS))
-        _b[n]=json.load(open(f'cap/{n}.json')) if os.path.exists(f'cap/{n}.json') else {}
+        im=Image.open(f'{CAPD}/{n}.jpg').convert('RGB'); _s[n]=(im, im.resize((PW,PH),Image.LANCZOS))
+        _b[n]=json.load(open(f'{CAPD}/{n}.json')) if os.path.exists(f'{CAPD}/{n}.json') else {}
     return _s[n]
 def box(shot,k):
     S(shot)
@@ -128,7 +129,7 @@ def build(fid, stills=False):
                     yy=(ry*1.3-0.3+p*0.9)*H; xx=rx*W+math.sin(p*9+k)*26; col=[BRASS,BLUE,(232,237,241),(120,200,150)][k%4]
                     d.rectangle((xx,yy,xx+12,yy+20),fill=col)
             return im
-        c0,c1=b['cam']; k=ease((p-0.05)/0.5); cx,cy,cw=(c0[j]+(c1[j]-c0[j])*k for j in range(3)); ch=cw*ZH/ZW; sc=hi.width/PW
+        c0,c1=b['cam']; k=ease((p-0.05)/0.5); cx,cy,cw=(c0[j]+(c1[j]-c0[j])*k for j in range(3)); ch=cw*ZH/ZW; cx=min(max(cx,0),PW-cw); cy=min(max(cy,0),PH-ch-0.01); sc=hi.width/PW
         z=hi.resize((ZW,ZH),Image.BICUBIC,box=(cx*sc,cy*sc,(cx+cw)*sc,(cy+ch)*sc))
         if q>0: z=Image.blend(z,hi2.resize((ZW,ZH),Image.BICUBIC,box=(cx*sc,cy*sc,(cx+cw)*sc,(cy+ch)*sc)),q)
         # phone with the part outside the zoom region dimmed
@@ -189,7 +190,7 @@ def build(fid, stills=False):
     ff=subprocess.Popen(['ffmpeg','-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-c:v','libx264','-crf','23','-preset','medium','-pix_fmt','yuv420p',f'out/{fid}.tmp.mp4'],stdin=subprocess.PIPE)
     for k in range(int(DUR*FPS)): ff.stdin.write(frame(k/FPS).tobytes())
     ff.stdin.close(); assert ff.wait()==0
-    out=f"out/MRV_{L['file']}.mp4"
+    out=f"out/MRV_{PRE}{L['file']}.mp4"
     subprocess.run(['ffmpeg','-y','-loglevel','error','-i',f'out/{fid}.tmp.mp4','-i',f'out/{fid}.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart',out],check=True)
     os.remove(f'out/{fid}.tmp.mp4'); os.remove(f'out/{fid}.wav'); print('ok',fid,round(DUR,1),os.path.getsize(out)//1024,'KB',flush=True)
 if __name__=='__main__':

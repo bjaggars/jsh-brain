@@ -1,0 +1,6 @@
+[["goto","/"],["into","css:button:has-text('The home you own')","start"],["tapx","The home you own"],["wait",2.5],["css","button:has-text('Add a home you own')"],["wait",1.5],
+ ["fill","ph:Street address","2714 Laurel Run Drive"],["fill","ph:City","Ocala"],["fill","ph:State","FL"],["fill","ph:ZIP","34471"],["fill","input[type=date]","2019-06-14"],["fill","ph:$","274,000"],
+ ["shot","myhome1",{"addr":"ph:Street address","city":"ph:City","zip":"ph:ZIP","date":"css:input[type=date]","paid":"ph:$","save":"btn:Save"}],
+ ["btn","Save"],["wait",4],["shot","myhome2"],["dump",-900],["wheel",500],["shot","myhome3"],
+ ["goto","/"],["into","css:button:has-text('Property taxes')","start"],["tapx","Property taxes & homestead"],["wait",3],["shot","tax"],["dump",-500],
+ ["goto","/"],["into","css:button:has-text('Home maintenance')","center"],["tapx","Home maintenance"],["wait",3],["shot","maint"],["dump",-500]]
