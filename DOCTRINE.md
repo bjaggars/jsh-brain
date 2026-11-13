@@ -539,3 +539,12 @@ the paths. Bulk data entry, migrations, anything a test or SQL does better — n
 - Multi-step walks → record a GIF (named for the walk) so he can replay it.
 - Report: what was seen, where (prod/TEST, which persona), the screenshot, and any console
   error — then the fix, ring, and the same walk again after the release.
+
+## §21 · Every release states its Academy impact (Brice, 11/12/26, all products)
+
+Training that no longer matches the product is worse than no training. Every release note carries one
+line: `Academy impact: none` or `Academy impact: <lesson ids>` with what changed. Find the lessons from
+the campus's lesson map (lesson → screens and source files). Flagged lessons are re-recorded from their
+scripts with the release; a new screen or task files its lesson in the same breath. The session-open
+sweep on any product with a campus includes "lessons flagged and not yet re-recorded." Full rule,
+training modes and filming rules: `ACADEMY.md`.

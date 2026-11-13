@@ -175,6 +175,12 @@ main{padding:28px clamp(16px,4vw,44px) 60px;min-width:0}
 .pwrow{display:flex;gap:8px;max-width:420px}
 .pwrow input{min-width:0}
 .pwrow input{flex:1;font-family:ui-monospace,monospace}
+.vwrap{position:relative}
+.upnext{position:absolute;inset:0;background:rgba(11,16,21,.93);display:grid;place-items:center;text-align:center;z-index:3;padding:20px}
+.upnext[hidden]{display:none}
+.upnext small{display:block;color:var(--soft);letter-spacing:.1em;text-transform:uppercase;font-size:12px}
+.upnext b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(22px,3vw,32px);line-height:1.15;margin:6px 0 16px}
+.vbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 14px;border-top:1px solid var(--line);font-size:14px;color:var(--soft)}
 .crumbs{display:flex;gap:8px;align-items:center;color:var(--soft);font-size:14px;margin-bottom:8px;flex-wrap:wrap}
 .crumbs button{background:none;border:0;color:var(--blue);padding:0}
 .rowx{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -424,6 +430,17 @@ function wrapup(){
    </div>
   </div>`;
 }
+
+// ---------- watch-through order: each module's intro, then its lessons, then the wrap-up ----------
+const SEQ = []; M.forEach(m => { SEQ.push('intro-'+m.id); m.L.forEach(l => SEQ.push('lesson-'+l.id)); }); SEQ.push('wrap');
+const seqTitle = h => h==='wrap' ? 'Wrap-up: congratulations' : h.startsWith('intro-') ? `Module ${M.findIndex(m=>m.id===h.slice(6))+1} intro: ${M.find(m=>m.id===h.slice(6)).t}` : ALL.find(l=>l.id===h.slice(7)).t;
+let autoplayNext = false;
+function upnext(cur){ const i = SEQ.indexOf(cur), nx = SEQ[i+1]; if (!nx) return {over:'', bar:''};
+  return {over:`<div class="upnext" id="upnext" hidden><div><small>Up next</small><b>${esc(seqTitle(nx))}</b><div class="rowx" style="justify-content:center"><button class="btn" data-next="${nx}">Play next</button><button class="btn ghost" id="replay">Replay</button></div></div></div>`,
+          bar:`<div class="vbar"><span>${i+1} of ${SEQ.length} in the path</span><button class="btn quiet" data-next="${nx}" style="padding:2px 0">Next: ${esc(seqTitle(nx))} ▸</button></div>`}; }
+function wireNext(){ const v = $('.vwrap video'), o = $('#upnext'); if (!v) return;
+  if (o) { v.addEventListener('ended', () => { o.hidden = false; }); const r = $('#replay'); if (r) r.onclick = () => { o.hidden = true; v.currentTime = 0; v.play().catch(()=>{}); }; }
+  if (autoplayNext) { autoplayNext = false; v.play().catch(()=>{}); } }
 const INTRO_D = {m1:'0:32', m2:'0:30', m3:'0:50', m4:'0:36', m5:'0:33', m6:'0:35', m7:'0:34'};
 function intro(mid){
   const i = M.findIndex(m=>m.id===mid); if (i<0) return path(); const m = M[i], first = m.L.find(l=>!done.has(l.id) && !l.lock) || m.L[0];
@@ -431,7 +448,7 @@ function intro(mid){
   <div class="crumbs"><button data-go="path">Facilitator path</button><span>/</span><span>Module ${i+1}</span><span class="pill">Optional intro</span></div>
   <h1 class="h1" style="font-size:clamp(28px,4vw,38px)">${esc(m.t)}</h1>
   <div class="lesson" style="margin-top:16px">
-   <div class="player"><video controls playsinline preload="none" poster="intro-${m.id}.jpg" src="intro-${m.id}.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>
+   <div class="player"><div class="vwrap"><video controls playsinline preload="none" poster="intro-${m.id}.jpg" src="intro-${m.id}.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>${upnext('intro-'+m.id).over}</div>${upnext('intro-'+m.id).bar}
     <div class="note">What this module is for, where it fits, and what you'll be able to do by the end. Skip it any time; intros don't count toward completion.</div></div>
    <div class="side">
     <div class="box"><h2>In this module</h2><ul class="les" style="margin:0;padding:0;list-style:none">${m.L.map(l=>`<li><button data-go="lesson-${l.id}"><span class="chk ${done.has(l.id)?'done':''}">${done.has(l.id)?'✓':''}</span><span class="t">${esc(l.t)}</span><span class="d">${l.d}</span></button></li>`).join('')}</ul></div>
@@ -467,7 +484,7 @@ function lesson(id){
   if (curLesson !== id) { curLesson = id; mode = 'watch'; P = newP(); }
   const practice = mode === 'practice';
   const stage = (l.pilot || l.vid)
-   ? `<video controls playsinline preload="metadata" ${l.vid?`poster="lesson-${l.id}.jpg"`:''} src="lesson-${l.id}.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>
+   ? `<div class="vwrap"><video controls playsinline preload="metadata" ${l.vid?`poster="lesson-${l.id}.jpg"`:''} src="lesson-${l.id}.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>${upnext('lesson-'+l.id).over}</div>${upnext('lesson-'+l.id).bar}
       <div class="note">Recorded from the Workshop Platform itself, on the Demo engagement, with the Academy narration voice. Other clients' names in the list are replaced with made-up ones.</div>`
    : `<div class="stage"><div class="awp" style="display:grid;place-items:center;text-align:center"><div><div class="t">${esc(l.t)}</div><div style="color:var(--soft);margin-top:.6em">Lesson video · ${l.d} · scripted from the steps on the right</div></div></div></div>
       <div class="note">Not recorded yet. Recorded so far: Create a new engagement, Present to client, Ask the next questions, Mark Workshop 1 complete.</div>`;
@@ -680,6 +697,7 @@ function render(){
   const v = h.startsWith('lesson-') ? lesson(h.slice(7)) : h.startsWith('intro-') ? intro(h.slice(6)) : h==='wrap' ? wrapup() : ({home, path, team, how, 'in-app':inapp}[h] || home)();
   $('#view').innerHTML = v; nav();
   if (h.startsWith('lesson-')) wireLesson(h.slice(7));
+  wireNext();
   const f = $('#inv');
   if (f) f.onsubmit = e => { e.preventDefault();
     const cs = [...f.querySelectorAll('[name=camp]:checked')].map(x=>x.value); if (!cs.length) { $('#iv-msg').style.color='var(--bad)'; $('#iv-msg').textContent='Pick at least one campus.'; return; }
@@ -688,6 +706,7 @@ function render(){
   window.scrollTo(0,0);
 }
 document.addEventListener('click', e => {
+  const nb = e.target.closest('[data-next]'); if (nb) { autoplayNext = true; go(nb.dataset.next); return; }
   const mb = e.target.closest('[data-mode]'); if (mb) { mode = mb.dataset.mode; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const sb = e.target.closest('[data-screen]'); if (sb) { inScreen = sb.dataset.screen; render(); return; }
   if (e.target.closest('#iv-gen')) { $('#iv-pw').value = tempPw(); return; }

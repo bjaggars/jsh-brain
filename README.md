@@ -21,6 +21,8 @@ product BRAIN wins, always. Conversation memory loses to both.
   comms rail, identity layering, capture loops, Mission Control, render
   engine.
 - `STACK.md` — the standard kit and its configuration wisdom.
+- `ACADEMY.md` — the JSH Training Academy: what a campus is, the Academy law
+  (every release states its Academy impact), training modes, filming rules.
 
 ## Inheritance rule (the Rule of Three)
 New products COPY the reference implementations from MyRealtyVault

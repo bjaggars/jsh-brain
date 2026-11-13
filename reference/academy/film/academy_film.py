@@ -44,8 +44,6 @@ BEATS=[
       vo="The goal is simple. Faster onboarding, fewer support calls, and customers who stay."),
  dict(kind='card', lines=[('Most AI-first firms focus on building the product.',SOFT,'SemiBold',58,0.0),('JSH builds the product,',INK,'Bold',92,0.42),('and makes sure people can use it.',BRASS,'Bold',92,0.62)],
       vo="Most AI-first software firms focus on building the product. JSH builds the product, and makes sure people can use it."),
- dict(shot='intro', cam=((0,0,1440),(250,90,1000)), hl=[], cap='First campus recorded: 35 videos',
-      vo="The first campus is recorded: the JSH AI Workshop Platform. Thirty-five videos, from sign-in to hand-off. MyRealtyVault is next."),
  dict(kind='close', vo="The JSH Training Academy. Because software only works when people use it."),
 ]
 meta_p='vo/acf.json'; texts=[b['vo'] for b in BEATS]
