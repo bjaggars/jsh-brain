@@ -1,0 +1,11 @@
+[["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tap","Your card"],["wait",2],
+ ["fill","input >> nth=1","Ava Marshall"],["fill","input >> nth=2","ava@harborandoak.example.com"],["fill","input >> nth=3","(352) 555-0100"],["fill","input >> nth=4","https://harborandoak.example.com"],
+ ["shot","card0",{"agency":"css:input >> nth=0","name":"css:input >> nth=1","email":"css:input >> nth=2","phone":"css:input >> nth=3","web":"css:input >> nth=4"}],
+ ["fill","input >> nth=11","friendly, upbeat, short sentences"],["into","css:input >> nth=11"],["shot","card1",{"tone":"css:input >> nth=11","social":"~Social links show","logo":"~Upload logo","save":"btn:Save profile"}],
+ ["btn","Save profile"],["wait",2.5],["shot","card2"],["dump",-300],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tap","Look and logo"],["wait",2],
+ ["shot","look",{"white":"btn:White","dark":"btn:Dark","blue":"btn:Blue","green":"btn:Green","gold":"btn:Gold","violet":"btn:Violet","logo":"~Upload brokerage logo","bg":"i:BEHIND YOUR HOME SCREEN","save":"btn:Save profile"}],
+ ["btn","Dark"],["wait",1.5],["btn","Gold"],["wait",1.5],["shot","look_dark"],["goto","/work"],["wait",1],["shot","home_dark"],
+ ["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tap","Look and logo"],["wait",2],["btn","White"],["wait",1],["btn","Blue"],["wait",1.5],["shot","look_back"],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tap","Connections"],["wait",2],["shot","conn",{"head":"Connect your calendar","copy":"btn:Copy link","steps":"~Outlook: Calendar","new":"~Get a new link"}],["wheel",600],["shot","conn2"],["dump",-600],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tap","Weekly summary"],["wait",2],["btn","Monday"],["wait",1.5],["shot","weekly",{"head":"Weekly summary email","off":"btn:Off","mon":"btn:Monday"}],["dump",-300]]

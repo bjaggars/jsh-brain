@@ -70,7 +70,7 @@ async def main(ops):
                 elif k=='wait': await pg.wait_for_timeout(int(op[1]*1000))
                 elif k=='js': print('JS', json.dumps(await pg.evaluate(op[1]))[:3000])
                 elif k=='shot':
-                    await pg.evaluate("""()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.nodeValue.includes('127.0.0.1:5173'))n.nodeValue=n.nodeValue.replace(/https?:..127.0.0.1:5173/g,'myrealtyvault.app').replace(/127.0.0.1:5173/g,'myrealtyvault.app')}}""")
+                    await pg.evaluate("""()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);document.querySelectorAll('input,textarea').forEach(e=>{if(e.value&&e.value.includes('127.0.0.1:5173'))e.value=e.value.replace(/https?:..127.0.0.1:5173/g,'https://myrealtyvault.app')});let n;while(n=w.nextNode()){if(n.nodeValue.includes('127.0.0.1:5173'))n.nodeValue=n.nodeValue.replace(/https?:..127.0.0.1:5173/g,'myrealtyvault.app').replace(/127.0.0.1:5173/g,'myrealtyvault.app')}}""")
                     await pg.screenshot(path=f'{CAP}/{op[1]}.jpg', quality=92, type='jpeg'); bx={}
                     for key,s in (op[2] if len(op)>2 else {}).items():
                         l=loc(s[0]).nth(s[1]) if isinstance(s,list) else loc(s).first

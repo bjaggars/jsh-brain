@@ -1,0 +1,7 @@
+[["goto","/work"],["dump",300],["btn","Office"],["tapx","Reports"],["wait",2.5],["shot","x_reports"],["dump",1500],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tapx","Your card"],["wait",2],["shot","x_card"],["dump",1200],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tapx","Look and logo"],["wait",2],["shot","x_look"],["dump",900],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tapx","Connections"],["wait",2],["shot","x_conn"],["dump",1200],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tapx","Assistant and partners"],["wait",2],["shot","x_asst"],["dump",900],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tapx","Weekly summary"],["wait",2],["shot","x_weekly"],["dump",700],
+ ["goto","/work"],["btn","Office"],["tap","Help"],["wait",2],["shot","x_help"],["dump",700]]

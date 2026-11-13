@@ -1,0 +1,10 @@
+[["goto","/work"],["tap","Clients"],["tap","Your book"],["tap","Maya Ellis"],["wait",1.2],["tap","i:EMAIL",-1],["wait",1.2],
+ ["shot","mail0",{"chip":["i:EMAIL",-1],"box":"css:textarea","write":"css:button:has-text('Write it myself')","ai":"css:button:has-text('Draft with AI')","via":"~Sends via MyRealtyVault"}],
+ ["css","button:has-text('Write it myself')"],["wait",1.5],["fill","ph:Subject","Second look at 88 Heron Bend this Saturday?"],["fill","textarea","Hi Maya,\n\nI can get us back into 88 Heron Bend on Saturday at 10. Bring your sister, and we'll take a close look at the kitchen.\n\nAva"],
+ ["shot","mail1",{"subj":"ph:Subject","body":"css:textarea","send":"btn:Send & log","back":"btn:Back","discard":"btn:Discard"}],
+ ["btn","Discard"],["wait",1],["tap","i:TEXT",-1],["wait",1.2],["css","button:has-text('Write it myself')"],["wait",1.5],["js","[...document.querySelectorAll('input,select,textarea,button')].filter(e=>e.offsetParent&&e.getBoundingClientRect().top>400&&e.getBoundingClientRect().top<960).map(e=>e.tagName[0]+'|'+(e.placeholder||e.textContent||'').trim().slice(0,34)).slice(-8)"],
+ ["fill","textarea","Hi Maya, Saturday at 10 works for a second look at Heron Bend. See you there! Ava"],["shot","text1",{"body":"css:textarea"}],["dump",-300],
+ ["goto","/work"],["btn","Office"],["tapx","Reports"],["wait",1.5],["shot","reports",{"week":"css:button:has-text('Your week')","comm":"css:button:has-text('Commission')","year":"css:button:has-text('Your year')"}],
+ ["tap","Your week"],["wait",2.5],["shot","week",{"tabs":"btn:This week","calls":"i:CALLS MADE","appts":"i:APPOINTMENTS SET","opps":"i:OPPORTUNITIES CREATED","ratio":"~of calls became"}],
+ ["goto","/work"],["btn","Office"],["tapx","Reports"],["wait",1.5],["tap","Commission"],["wait",2.5],["shot","comm",{"earned":"~EARNED · CLOSED","proj":"~PROJECTED · COMMITTED","deal":"~Grace Whitfield — 517","hint":"Tap a deal to add its numbers."}],
+ ["tapx","Grace Whitfield — 517"],["wait",2],["shot","comm2"],["dump",-700]]

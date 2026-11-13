@@ -1,0 +1,5 @@
+[["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tap","Assistant and partners"],["wait",2],["btn","Lender"],["wait",1],
+ ["fill","ph:Name *","Dana Whitlock"],["fill","ph:Company","Gulf Coast Lending"],["fill","ph:Phone","(352) 555-0188"],["fill","ph:Email","dana@gulfcoastlending.example.com"],
+ ["shot","bench1",{"roles":"btn:Lender","name":"ph:Name *","co":"ph:Company","phone":"ph:Phone","email":"ph:Email","add":"btn:Add to the bench"}],
+ ["btn","Add to the bench"],["wait",3],["shot","bench2",{"bench":"Your bench"}],["dump",-500],
+ ["goto","/work"],["btn","Office"],["tapx","Profile, look and logo"],["wait",1.5],["tap","Weekly summary"],["wait",2],["select","select","Off"],["wait",1.5],["dump",-120]]

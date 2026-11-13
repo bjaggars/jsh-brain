@@ -1,0 +1,11 @@
+[["goto","/work"],["tap","Buyers"],["tap","Active buyers"],["wait",1.5],["tap","Elena Park"],["wait",1.5],
+ ["shot","bp",{"pre":"btn:Update pre-approval","tour":"btn:Log tour","offer":["btn:Log offer",0],"mls":"btn:Search the MLS","suggest":"btn:+ Suggest a home","watch":"~Email Elena a daily digest","start":"btn:Start the search","matches":"~MATCHES ("}],
+ ["btn","+ Suggest a home"],["wait",1.2],["fill","ph:Address *","418 SE Wenona Avenue, Ocala",0],["fill","ph:List price (optional)","372,000",0],
+ ["shot","suggest",{"addr":["ph:Address *",0],"price":["ph:List price (optional)",0],"link":["ph:Listing link (optional)",0],"add":"btn:Add to matches"}],
+ ["btn","Add to matches"],["wait",3],["into","~MATCHES (","start"],["shot","suggest_done",{"matches":"~MATCHES ("}],["dump",-900],
+ ["into","btn:Edit search brief","start"],["btn","Log offer",0],["wait",1.5],["select","select >> nth=0",1],["fill","ph:450,000","382,000"],["fill","ph:5,000","5,000"],["fill","input[type=date] >> nth=0","2026-12-18"],["fill","input[type=date] >> nth=1","2026-11-16"],
+ ["css","input[type=checkbox]",0],["css","input[type=checkbox]",1],["css","input[type=checkbox]",2],
+ ["fill","textarea","Seller wants a quick close. Asking for the washer and dryer."],
+ ["into","~LOG AN OFFER","start"],["shot","offer1",{"home":"css:select >> nth=0","amt":"ph:450,000","fin":"css:select >> nth=1","down":"ph:20","close":"css:input[type=date] >> nth=0"}],
+ ["into","btn:Save the draft offer","center"],["shot","offer2",{"earnest":"ph:5,000","expires":"css:input[type=date] >> nth=1","insp":"Inspection","fin":"Financing","appr":"Appraisal","note":"css:textarea","save":"btn:Save the draft offer"}],
+ ["btn","Save the draft offer"],["wait",3.5],["shot","offer3"],["dump",-900],["into","btn:Edit search brief","start"],["shot","offer4"]]

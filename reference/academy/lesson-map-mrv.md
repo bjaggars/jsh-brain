@@ -97,3 +97,24 @@ Scripts in `film-mrv/films_home.py`, captures in `caph/`. Filmed as the film-set
 10. My home: a purchase date entered as Jun 14 shows as Jun 13 (time-zone shift on a date-only field).
 11. The buying checklist says `1 of 24` on its own page and `1 of 25` on the vault home.
 12. Share with a lender on TEST: `The link was created, but the email didn't go out` for an example.com address. Expected on TEST, but the two-line message reads like a failure.
+
+## Agent path, second batch (recorded 2026-11-13)
+
+Scripts in `film-mrv/films_agent2.py`, captures in `capa/`. Render with `FILMS=films_agent2 python3 render.py all`. Adds one lesson to Module 2, two to Module 3, and a new Module 8 (Your office) with its intro.
+
+| Module | Film | Captures it depends on |
+|---|---|---|
+| Module 2 · Clients | Email or text a client (`a_msg`) | mail0, mail1, text1 |
+| Module 3 · Buyers | Suggest a home to your buyer (`a_suggest`) | bp, suggest, suggest_done |
+| Module 3 · Buyers | Draft an offer (`a_offer`) | bp, offer1, offer2, offer3, offer5, offer4 |
+| Module 8 · Your office | Read your reports (`a_reports`) | reports, week, comm, comm2, comm3 |
+| Module 8 · Your office | Set up your card (`a_card`) | profile, card0, card1 |
+| Module 8 · Your office | Choose your look (`a_look`) | profile, look, look_dark, home_dark |
+| Module 8 · Your office | Put your showings on your own calendar (`a_connect`) | profile, conn, weekly0, weekly |
+| Module 8 · Your office | Build your bench (`a_bench`) | profile, bench0, bench1, bench2 |
+| Module 8 · Your office | Get help and send feedback (`a_help`) | help, help2 |
+| Module 8 · Your office | Your office (`intro8`) | reports, look, bench2 |
+
+Film-set changes (TEST): one suggested home and one draft offer on Elena Park; profile card filled in for Ava Marshall; Grace Whitfield's commission percent corrected from 0.03 to 3 through the app; Dana Whitlock (Gulf Coast Lending) added to the bench. Weekly summary was switched to Monday for the capture and switched back to Off. Dark and Gold were previewed and not saved.
+Not filmed on purpose: MLS search results (TEST holds real MLS listings and photos; founder ruling 10/1 keeps other brokerages' MLS photos out of our films). Still not covered: Outlook and SkySlope connections, sign-in and security, tab order, team and broker features.
+Defects from all three batches are logged in the MRV Brain: `myhomevault/docs/BRAIN/BOARD.md` → Academy film-set findings (AF-1 to AF-16).
