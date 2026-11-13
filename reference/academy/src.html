@@ -315,7 +315,7 @@ function art(k){
 // ---------- views ----------
 function nav(){
   const h = (location.hash||'#home').slice(1);
-  const is = k => (k==='path' ? (h==='path'||h.startsWith('lesson-')||h.startsWith('intro-')) : h===k) ? 'on' : '';
+  const is = k => (k==='path' ? (h==='path'||h==='wrap'||h.startsWith('lesson-')||h.startsWith('intro-')) : h===k) ? 'on' : '';
   if (who==='agent') { $('#nav').innerHTML = `
    <button class="on" data-go="home">My campus</button>
    <div class="lbl">Campus</div>
@@ -399,7 +399,7 @@ function path(){
     <div class="body">
      <div class="rowx" style="justify-content:space-between"><span class="n">Module ${i+1}</span><span class="pill ${m.L.every(l=>done.has(l.id))?'good':''}">${m.L.filter(l=>done.has(l.id)).length}/${m.L.length}</span></div>
      <h3>${esc(m.t)}</h3>
-     <ul class="les"><li><button data-go="intro-${m.id}"><span class="chk" style="border-color:var(--brass);color:var(--brass);font-size:9px">▶</span><span class="t">Module intro <span class="pill">optional</span></span><span class="d">${INTRO_D[m.id]}</span></button></li>${m.L.map(l=>`<li><button data-go="lesson-${l.id}"><span class="chk ${done.has(l.id)?'done':(n&&n.id===l.id?'next':'')}">${done.has(l.id)?'✓':''}</span><span class="t">${esc(l.t)}${l.lock?` <span class="pill">${l.lock}</span>`:''}</span><span class="d">${l.d}</span></button></li>`).join('')}</ul>
+     <ul class="les"><li><button data-go="intro-${m.id}"><span class="chk" style="border-color:var(--brass);color:var(--brass);font-size:9px">▶</span><span class="t">Module intro <span class="pill">optional</span></span><span class="d">${INTRO_D[m.id]}</span></button></li>${m.L.map(l=>`<li><button data-go="lesson-${l.id}"><span class="chk ${done.has(l.id)?'done':(n&&n.id===l.id?'next':'')}">${done.has(l.id)?'✓':''}</span><span class="t">${esc(l.t)}${l.lock?` <span class="pill">${l.lock}</span>`:''}</span><span class="d">${l.d}</span></button></li>`).join('')}${i===M.length-1?`<li><button data-go="wrap"><span class="chk" style="border-color:var(--good);color:var(--good);font-size:9px">▶</span><span class="t">Wrap-up: congratulations</span><span class="d">0:18</span></button></li>`:''}</ul>
     </div>
    </section>`).join('')}</div>
   <div class="box" style="margin-top:18px"><h2>Certification: AWP Certified Facilitator</h2>
@@ -407,6 +407,19 @@ function path(){
    <div><b>2. Do a practice run</b><span>Run the Tidewater demo engagement from a new engagement to a shared prototype.</span></div>
    <div><b>3. Get signed off</b><span>Your faculty lead reviews the practice run and signs you off. Product users on self-study get a completion certificate with no sign-off.</span></div>
    <div><b>Staying current</b><span>When a release changes a screen, only the lessons that changed need retaking. Your certificate shows the release it covers.</span></div></div></div>`;
+}
+function wrapup(){
+  return `
+  <div class="crumbs"><button data-go="path">Facilitator path</button><span>/</span><span>Module 7</span><span class="pill good">Wrap-up</span></div>
+  <h1 class="h1" style="font-size:clamp(28px,4vw,38px)">Congratulations</h1>
+  <div class="lesson" style="margin-top:16px">
+   <div class="player"><video controls playsinline preload="none" poster="wrap.jpg" src="wrap.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>
+    <div class="note">Plays after the last lesson of the path.</div></div>
+   <div class="side">
+    <div class="box"><h2>Your client's app is now in the build stage</h2><p style="margin:0;color:var(--soft)">The Product Engineering team will be in touch with progress updates. From here, the build package carries everything the workshop captured.</p></div>
+    <div class="box"><h2>What's next for you</h2><p style="margin:0 0 12px;color:var(--soft)">${done.size>=TOTAL-1 ? 'Every lesson is complete. Book your practice run to finish certification.' : `You have ${TOTAL-done.size} lessons left on the path.`}</p><button class="btn" data-go="path">Back to the path</button></div>
+   </div>
+  </div>`;
 }
 const INTRO_D = {m1:'0:32', m2:'0:30', m3:'0:50', m4:'0:36', m5:'0:33', m6:'0:35', m7:'0:34'};
 function intro(mid){
@@ -464,7 +477,7 @@ function lesson(id){
     <div class="box${practice && l.pilot ? ' sticky' : ''}"><h2>${practice && l.pilot ? 'Follow along' : 'Steps'}</h2>${practice && l.pilot ? `<ol class="steps live" id="steps">${l.s.map((s,k)=>`<li data-k="${k}"><span class="n">${k+1}</span><span>${esc(s)}</span></li>`).join('')}</ol><p id="pstat" class="mut" style="margin:12px 0 0;font-size:14px;color:var(--soft)"></p>` : `<ol class="steps">${l.s.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`}</div>
     ${practice ? '' : `<div class="box"><h2>Try it</h2><p style="margin:0 0 12px;color:var(--soft)">Practice right here, with the steps beside you. Each step ticks off as you do it, and nothing is saved or sent.</p><button class="btn ghost" data-mode="practice">Practice this lesson</button></div>`}
     ${l.q ? `<div class="box" id="quiz"><h2>Quick check</h2><div>${esc(l.q.q)}</div><div class="opts">${l.q.o.map((o,k)=>`<button data-opt="${k}">${esc(o)}</button>`).join('')}</div><p id="why" style="margin:10px 0 0;color:var(--soft)"></p></div>` : ''}
-    <div class="rowx">${l.q ? (done.has(l.id) ? `<span class="pill good" style="font-size:14px;padding:6px 14px">Completed ✓</span>` : `<span style="color:var(--soft);font-size:14px">Answer the quick check to complete this lesson.</span>`) : `<button class="btn ${done.has(l.id)?'ghost':'brass'}" id="mark">${done.has(l.id)?'Completed ✓':'Mark complete'}</button>`}${nx?`<button class="btn quiet" data-go="lesson-${nx.id}">Next: ${esc(nx.t)}</button>`:`<button class="btn quiet" data-go="path">Back to the path</button>`}</div>
+    <div class="rowx">${l.q ? (done.has(l.id) ? `<span class="pill good" style="font-size:14px;padding:6px 14px">Completed ✓</span>` : `<span style="color:var(--soft);font-size:14px">Answer the quick check to complete this lesson.</span>`) : `<button class="btn ${done.has(l.id)?'ghost':'brass'}" id="mark">${done.has(l.id)?'Completed ✓':'Mark complete'}</button>`}${nx?`<button class="btn quiet" data-go="lesson-${nx.id}">Next: ${esc(nx.t)}</button>`:`<button class="btn quiet" data-go="wrap">Finish: watch the wrap-up</button>`}</div>
    </div>
   </div>`;
 }
@@ -661,7 +674,7 @@ function render(){
   let h = (location.hash||'#home').slice(1);
   if (h==='team' && who!=='brice') h = 'home';
   if (who==='agent') h = 'home';
-  const v = h.startsWith('lesson-') ? lesson(h.slice(7)) : h.startsWith('intro-') ? intro(h.slice(6)) : ({home, path, team, how, 'in-app':inapp}[h] || home)();
+  const v = h.startsWith('lesson-') ? lesson(h.slice(7)) : h.startsWith('intro-') ? intro(h.slice(6)) : h==='wrap' ? wrapup() : ({home, path, team, how, 'in-app':inapp}[h] || home)();
   $('#view').innerHTML = v; nav();
   if (h.startsWith('lesson-')) wireLesson(h.slice(7));
   const f = $('#inv');

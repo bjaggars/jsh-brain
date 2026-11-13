@@ -61,7 +61,7 @@ MODS={
    shots=[('PHONE',None,'On the client’s own phone, no sign-in',"A share link puts the prototype in the client's hands, on their own phone, with no sign-in."),
           ('readiness2',((0,0,1440),(130,40,1000)),'Every gap becomes a question',"The build-readiness check scores every section against what the build needs, and turns each gap into a question."),
           ('top2',((0,0,1440),(100,180,1240)),'Build-ready at ninety percent',"At ninety percent, with nothing left to confirm with the client, the engagement is build-ready, and a Product Engineer exports the build package for the JSH build team.")],
-   end="By the end, you'll share a link, run the check, and know what happens at export."),
+   end="By the end, you'll share a link, run the check, and see your client's app ready for the build stage."),
 }
 shots={}
 def S(n):
@@ -167,6 +167,79 @@ def build(mid, stills=False):
     out=f"out/AWP_Module{M['n']}_Intro.mp4"
     subprocess.run(['ffmpeg','-y','-loglevel','error','-i',f'out/in_{mid}.tmp.mp4','-i',f'out/in_{mid}.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart',out],check=True)
     os.remove(f'out/in_{mid}.tmp.mp4'); print('ok',mid,round(DUR,2),os.path.getsize(out)//1024,'KB',flush=True)
+
+def build_wrap():
+    import random
+    beats=[dict(shot='q_round',cam=((0,0,1440),(130,90,1180)),vo="That's the whole journey. From a first conversation,"),
+           dict(shot='bp_full',cam=((0,0,1440),(120,60,1200)),vo="to a Blueprint,"),
+           dict(shot='PHONE',cam=None,vo="to a prototype your client has clicked through."),
+           dict(kind='congrats',vo="Congratulations! Your client's app is now in the build stage. The Product Engineering team will be in touch with progress updates.")]
+    meta_p='vo/wrap.json'; texts=[b['vo'] for b in beats]
+    if not os.path.exists(meta_p) or json.load(open(meta_p))['texts']!=texts:
+        from kokoro_onnx import Kokoro
+        KO=Kokoro('/home/claude/jsh-brain/reference/studio/models/kokoro-v1.0.onnx','/home/claude/jsh-brain/reference/studio/models/voices-v1.0.bin'); durs=[]
+        for i,b in enumerate(beats):
+            a,sr=KO.create(b['vo'],voice='af_heart',speed=1.04,lang='en-us'); sf.write(f'vo/wrap_{i}.wav',a,sr); durs.append(len(a)/sr)
+        json.dump({'texts':texts,'durs':durs},open(meta_p,'w'))
+    durs=json.load(open(meta_p))['durs']; LEAD=0.4; t=LEAD
+    for b,dd in zip(beats,durs): b['s']=t; b['e']=t+dd+(2.6 if b.get('kind') else 0.25); t=b['e']
+    DUR=t+0.6; C=beats[-1]
+    rnd=random.Random(11); cols=[BRASS,BLUE,INK,(63,174,122),(217,178,95)]
+    parts=[(rnd.uniform(0,W),rnd.uniform(-H*0.9,-20),rnd.uniform(260,520),rnd.uniform(-60,60),rnd.uniform(0,6.28),rnd.uniform(2,7),rnd.choice(cols),rnd.uniform(9,20),rnd.uniform(0,0.9)) for _ in range(190)]
+    def congrats(tt):
+        p=tt/(C['e']-C['s']); im=Image.new('RGB',(W,H),PAPER); d=ImageDraw.Draw(im)
+        for x0,y0,vy,vx,ph,sp,col,sz,dl in parts:
+            u=tt-dl
+            if u<0: continue
+            x=x0+vx*u+28*math.sin(ph+u*2.1); y=y0+vy*u+60*u*u
+            if y>H+30: continue
+            ang=ph+u*sp; w2=sz*abs(math.cos(ang*0.9))+2; h2=sz*0.55; c,s_=math.cos(ang),math.sin(ang)
+            pts=[(x+dx*c-dy*s_,y+dx*s_+dy*c) for dx,dy in ((-w2,-h2),(w2,-h2),(w2,h2),(-w2,h2))]; d.polygon(pts,fill=col)
+        a=eout(tt/0.5); sc=0.92+0.08*a
+        f=font('Bold',int(150*sc)); tx='Congratulations!'; tw=d.textlength(tx,font=f); d.text((W/2-tw/2,300),tx,font=f,fill=cmix(INK,a))
+        b1=ease((tt-1.3)/0.5); f2=font('SemiBold',62); t2='Your client’s app is now in the build stage.'; d.text((W/2-d.textlength(t2,font=f2)/2,520),t2,font=f2,fill=cmix(BRASS,b1))
+        b2=ease((tt-3.6)/0.5); f3=font('Medium',42); t3='The Product Engineering team will be in touch with progress updates.'; d.text((W/2-d.textlength(t3,font=f3)/2,640),t3,font=f3,fill=cmix(SOFT,b2))
+        b3=ease((tt-5.2)/0.5); f4=font('SemiBold',30); t4='JSH AI Workshop Platform  ·  Facilitator path'; d.text((W/2-d.textlength(t4,font=f4)/2,800),t4,font=f4,fill=cmix((111,125,138),b3))
+        return im
+    def scene(i,t):
+        b=beats[i]; p=(t-b['s'])/(b['e']-b['s'])
+        if b.get('kind'): return congrats(t-b['s'])
+        if b['shot']=='PHONE': return phone(min(1,p*1.6))
+        c0,c1=b['cam']; k=ease(p); return view(b['shot'],tuple(c0[j]+(c1[j]-c0[j])*k for j in range(3)))
+    prev={}
+    def frame(t):
+        if t<beats[0]['s']: return Image.blend(Image.new('RGB',(W,H),(0,0,0)),scene(0,beats[0]['s']),ease(t/LEAD))
+        i=max(j for j,b in enumerate(beats) if t>=b['s']); im=scene(i,min(t,beats[-1]['e']-1e-3) if not beats[i].get('kind') else t)
+        if i>0 and t-beats[i]['s']<0.3:
+            if i not in prev: prev[i]=scene(i-1,beats[i-1]['e']-1e-3)
+            im=Image.blend(prev[i],im,ease((t-beats[i]['s'])/0.3))
+        f=ease((t-(DUR-0.5))/0.5)
+        return Image.blend(im,Image.new('RGB',(W,H),(0,0,0)),f) if f>0 else im
+    if len(sys.argv)>2:
+        ts=[beats[0]['s']+1,beats[1]['s']+0.6,beats[2]['e']-0.1,C['s']+0.8,C['s']+2.5,C['e']-0.4]; sh=Image.new('RGB',(480*6,270))
+        [sh.paste(frame(x).resize((480,270)),(480*k,0)) for k,x in enumerate(ts)]; sh.save('shots/wrap_sheet.jpg',quality=85); print(round(DUR,1)); return
+    SR=48000; n=int(DUR*SR); vo=np.zeros(n)
+    for i,b in enumerate(beats):
+        a,sr=sf.read(f'vo/wrap_{i}.wav'); a=np.interp(np.arange(int(len(a)*SR/sr))*sr/SR,np.arange(len(a)),a); s=int((b['s']+(0.35 if b.get('kind') else 0))*SR); a=a[:n-s]; vo[s:s+len(a)]+=a/(abs(a).max()+1e-9)*0.9
+    def nf(m): return 440*2**((m-69)/12)
+    mus=np.zeros(n); beat=60/116; prog=[[48,52,55,60],[53,57,60,65],[55,59,62,67],[48,55,60,64]]; k=0; t0=0.0
+    while t0<DUR:
+        ch=prog[(k//8)%4]; lift=1.0 if t0<C['s'] else 1.5; note=ch[[0,2,1,3,2,1,3,2][k%8]]+(12 if t0>=C['s'] else 0)
+        L=int(0.5*SR); x=np.arange(L)/SR; pl=(np.sin(2*np.pi*nf(note+12)*x)+0.4*np.sin(2*np.pi*nf(note+24)*x))*np.exp(-x*7)*0.10*lift; s=int(t0*SR); pl=pl[:n-s]; mus[s:s+len(pl)]+=pl
+        if k%8==0:
+            L2=min(int(beat*4.4*SR),n-s); x2=np.arange(L2)/SR; env=np.clip(np.minimum(x2/0.4,1)*np.minimum((beat*4.4-x2)/0.5,1),0,1); mus[s:s+L2]+=sum(np.sin(2*np.pi*nf(m)*x2)+0.4*np.sin(2*np.pi*nf(m)*2*x2) for m in ch)/4*env*0.12*lift
+        if t0>=C['s'] and k%2==0:
+            L3=int(0.16*SR); x3=np.arange(L3)/SR; kd=np.sin(2*np.pi*(55+80*np.exp(-x3*30))*x3)*np.exp(-x3*14)*0.22; kd=kd[:n-s]; mus[s:s+len(kd)]+=kd
+        t0+=beat/2; k+=1
+    cs=int(C['s']*SR); x=np.arange(int(1.6*SR))/SR; sw=sum(np.sin(2*np.pi*nf(m)*x) for m in (72,76,79,84))/4*np.exp(-x*2.2)*0.22; sw=sw[:n-cs]; mus[cs:cs+len(sw)]+=sw
+    ev=np.abs(vo); w=int(0.25*SR); ev=np.convolve(ev,np.ones(w)/w,'same'); mus*=1-0.5*np.clip(ev/0.08,0,1); mus[:int(0.4*SR)]*=np.linspace(0,1,int(0.4*SR)); mus[-int(1.0*SR):]*=np.linspace(1,0,int(1.0*SR))
+    mixd=vo+mus; mixd=mixd/max(1.0,abs(mixd).max())*0.95; sf.write('out/wrap.wav',np.stack([mixd,mixd],1),SR)
+    ff=subprocess.Popen(['ffmpeg','-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-c:v','libx264','-crf','23','-preset','medium','-pix_fmt','yuv420p','out/wrap.tmp.mp4'],stdin=subprocess.PIPE)
+    for k in range(int(DUR*FPS)): ff.stdin.write(frame(k/FPS).tobytes())
+    ff.stdin.close(); assert ff.wait()==0
+    subprocess.run(['ffmpeg','-y','-loglevel','error','-i','out/wrap.tmp.mp4','-i','out/wrap.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart','out/AWP_Path_WrapUp.mp4'],check=True)
+    os.remove('out/wrap.tmp.mp4'); print('ok wrap',round(DUR,2),os.path.getsize('out/AWP_Path_WrapUp.mp4')//1024,'KB')
+if sys.argv[1]=='wrap': build_wrap(); sys.exit()
 ids=list(MODS) if sys.argv[1]=='all' else [sys.argv[1]]
 if len(sys.argv)>2:
     rows=[];
