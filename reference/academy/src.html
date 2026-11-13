@@ -254,12 +254,12 @@ const M = [
    q:{q:'Where do the client\'s current tools land?', o:['Today\'s setup','The JSH chamber','Recommendations'], a:0, why:'Their tools go into Today\'s setup, and the meeting plan draws on them.'}},
   {id:'tools', t:'Know their tools before the meeting', d:'1:25', s:['Every tool the client named is looked up from public sources.','Each profile says what it holds, whether software can connect to it, and what users complain about.','If the client gave a generic name, check which product it was taken to be.']}]},
  {id:'m4', t:'Run Workshop 1', art:'people', L:[
-  {id:'present', t:'Present to client: the client-safe view', d:'1:20', flag:'R6', s:['Choose Present to client under the client line before you share your screen.','The client sees the dashboards, the progress bar and the client questions only.','Back to JSH view returns to normal.'],
+  {id:'present', t:'Present to client: the client-safe view', d:'0:32', vid:true, flag:'R6', s:['Choose Present to client under the client line before you share your screen.','The client sees the dashboards, the progress bar and the client questions only.','Back to JSH view returns to normal.'],
    q:{q:'Which of these stays visible in Present to client?', o:['The JSH chamber','The Blueprint dashboard','Expert voices'], a:1, why:'The Blueprint and Workshop record dashboards stay. Everything JSH-only is hidden.'}},
   {id:'open', t:'Work the Open-with checklist', d:'1:05', s:['The meeting plan\'s opening points sit at the top of the Client workshop tab.','Tick each one as you cover it.','Add a note saves what they said into the Blueprint and ticks it off.']},
-  {id:'ask', t:'Ask the next questions', d:'1:40', s:['Ask the next questions brings 5 at a time, from the biggest Blueprint gaps.','Type the answer and choose Save answer.','I don\'t know offers the industry-typical answer, or logs an assumption.']},
+  {id:'ask', t:'Ask the next questions', d:'0:42', vid:true, s:['Ask the next questions brings 5 at a time, from the biggest Blueprint gaps.','Type the answer and choose Save answer.','I don\'t know offers the industry-typical answer, or logs an assumption.']},
   {id:'chamber', t:'Use the JSH chamber and import call notes', d:'1:20', s:['The JSH chamber holds technical questions the client never sees.','Import notes from a call with the client straight into the Blueprint.','Assume the rest answers what a prototype still needs, each logged as an assumption.']},
-  {id:'ready', t:'Mark Workshop 1 complete', d:'1:10', s:['The readiness panel is a checklist at the top of the engagement.','Add closing comments for the client side and for JSH.','When every required line is ticked, choose Mark Workshop 1 complete.']}]},
+  {id:'ready', t:'Mark Workshop 1 complete', d:'0:39', vid:true, s:['The readiness panel, called Before the prototype, is a checklist on the engagement.','Add closing comments for the client side and for JSH.','When every required line is ticked, choose Mark Workshop 1 complete.']}]},
  {id:'m5', t:'Read and shape the Blueprint', art:'grid', L:[
   {id:'bp', t:'Read a Blueprint card', d:'1:15', s:['Each card shows a section\'s facts and where each came from.','Sources are Client said, JSH decided, Industry default, or Recommended and adopted.','Each card carries a prototype score and a build score.']},
   {id:'recs', t:'Adopt, rework or decline a recommendation', d:'1:20', s:['Adopt takes the recommendation into the Blueprint.','Feedback asks the expert to rework it. History is kept.','Decline needs a reason.']},
@@ -463,11 +463,11 @@ function lesson(id){
   const i = ALL.indexOf(l), nx = ALL[i+1];
   if (curLesson !== id) { curLesson = id; mode = 'watch'; P = newP(); }
   const practice = mode === 'practice';
-  const stage = l.pilot
-   ? `<video controls playsinline preload="metadata" src="lesson-new.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>
+  const stage = (l.pilot || l.vid)
+   ? `<video controls playsinline preload="metadata" ${l.vid?`poster="lesson-${l.id}.jpg"`:''} src="lesson-${l.id}.mp4" style="display:block;width:100%;aspect-ratio:16/9;background:#0b1015"></video>
       <div class="note">Recorded from the Workshop Platform itself, on the Demo engagement, with the Academy narration voice. Other clients' names in the list are replaced with made-up ones.</div>`
    : `<div class="stage"><div class="awp" style="display:grid;place-items:center;text-align:center"><div><div class="t">${esc(l.t)}</div><div style="color:var(--soft);margin-top:.6em">Lesson video · ${l.d} · scripted from the steps on the right</div></div></div></div>
-      <div class="note">"Create a new engagement" is the first lesson recorded so far.</div>`;
+      <div class="note">Not recorded yet. Recorded so far: Create a new engagement, Present to client, Ask the next questions, Mark Workshop 1 complete.</div>`;
   return `
   <div class="crumbs"><button data-go="path">Facilitator path</button><span>/</span><span>${esc(l.m.t)}</span>${l.flag?`<span class="pill warn">Screen changed in ${l.flag} · re-record queued</span>`:''}</div>
   <h1 class="h1" style="font-size:clamp(28px,4vw,38px)">${esc(l.t)}</h1>

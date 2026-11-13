@@ -1,0 +1,4 @@
+[["full","eng_full2"],["box","e2.present","Present to client"],
+["click","Present to client"],["wait",1.5],["full","present_full2"],["box","pf.pill","Back to JSH view"],["box","pf.view","Client view"],
+["box","pf.bp","","section:has(h2:text-is('Blueprint'))"],["box","pf.rec","","section:has(h2:text-is('Workshop record'))"],["box","pf.bar","Blueprint 88% complete"],
+["dump","main",2500],["click","Back to JSH view"]]

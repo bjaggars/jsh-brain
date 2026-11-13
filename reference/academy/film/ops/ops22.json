@@ -1,0 +1,5 @@
+[["scroll","Client files",140],["shot","jv_hidden"],["box","jv.files","Client files"],["box","jv.w1","Workshop 1 is complete"],["box","jv.br","Build readiness"],
+["scroll","JSH AI Workshop Platform",0],["click","Present to client"],["wait",1.5],
+["scroll","Workshop record",120],["shot","pv_rec"],["box","pv.rec","Workshop record"],["box","pv.wq","Workshop questions"],
+["scroll","Workshop questions",110],["shot","pv_q"],["box","pv.q0","The 20 core questions are done."],
+["click","Back to JSH view"]]
