@@ -213,10 +213,10 @@ FILMS.update({
   T('vaults','Every document in the client’s vault',"And you will add documents to a client's vault, shared with them or kept private to you.",['Upload a file or scan with your camera','Kind and status on every document']),
 ]),
 'intro7':I(7,'Marketing',[
-  T('mkt_panel','Marketing, built in',"The last module is marketing. It lives in the same app as your clients and listings, so nothing is typed twice.",['Emails, workflows, forms, results']),
-  T('form_live','Capture every lead',"You will create an open house sign-in form that puts every visitor into your book.",['Start with the moment','Live with a link in a minute']),
-  T('camp_made','Email in your brand',"You will build a just listed email from a listing, and review it before anything sends.",['Photo, price, and details pulled in','Nothing sends until you tap Send']),
-  T('results','Know what is working',"And you will set up emails that send themselves, and check your results.",['Workflows','The last thirty days, in plain words']),
+  T('mkt_panel','Marketing, built in',"This module is marketing. It lives in the same app as your clients and listings, so nothing is typed twice.",['Emails, workflows, forms, results']),
+  T('form_live','Capture every lead',"You can create an open house sign-in form that puts every visitor into your book.",['Start with the moment','Live with a link in a minute']),
+  T('camp_made','Email in your brand',"You can build a just listed email from a listing, and review it before anything sends.",['Photo, price, and details pulled in','Nothing sends until you tap Send']),
+  T('results','Know what is working',"And you can set up emails that send themselves, and check your results.",['Workflows','The last thirty days, in plain words']),
 ]),
 'overview':dict(kind='overview',module='Start here',title='MyRealtyVault for agents',sub='Every home. Every deal. One vault.',file='Agent_Overview',m=0,
   outro=('MyRealtyVault','Every home. Every deal. One vault.','Start with Module 1: your day on one screen.'),beats=[
