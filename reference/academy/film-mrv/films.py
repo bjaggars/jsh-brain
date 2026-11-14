@@ -220,7 +220,7 @@ FILMS.update({
 ]),
 'overview':dict(kind='overview',module='Start here',title='MyRealtyVault for agents',sub='Every home. Every deal. One vault.',file='Agent_Overview',m=0,
   outro=('MyRealtyVault','Every home. Every deal. One vault.','Start with Module 1: your day on one screen.'),beats=[
-  T('home','Your whole business, on your phone',"MyRealtyVault runs your whole real estate business from your phone. This short film shows you what is inside.",['Built for agents who work from the car','One screen. Eight tiles.'],kicker='MyRealtyVault · Agent path'),
+  T('home','Your whole business, on your phone',"MyRealtyVault runs your whole real estate business from your phone. This short video shows you what is inside.",['Built for agents who work from the car','One screen. Eight tiles.'],kicker='MyRealtyVault · Agent path'),
   T('attention','It tells you what needs you',"Every morning it tells you what needs you, most urgent first, with a suggested next move on each item.",['Showing requests','Deadlines and overdue follow ups'],kicker='Your day'),
   T('card','Every client, one card',"Every client has one card: call, text, email, notes, history, and their documents.",['Your book, hot to cold','Every conversation remembered'],kicker='Clients'),
   T('bp','Buyers, from first call to closed',"Buyers get a profile that follows them from the first conversation to closing: budget, pre-approval, the homes they like, and every tour.",['Pre-approvals','Tracked homes and tours'],kicker='Buyers'),
