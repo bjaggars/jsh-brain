@@ -1,0 +1,11 @@
+[["goto","/"],["tap","Documents"],["wait",3],["into","css:[data-e2e=hv-doc-share] >> nth=0"],
+ ["shot","sd_docs",{"row":"Homeowners insurance policy","share":["css:[data-e2e=hv-doc-share]",0]}],
+ ["css","[data-e2e=hv-doc-share]",0],["wait",1.5],
+ ["shot","sd_menu",{"agent":"css:[data-e2e=share-agent]","lender":"css:[data-e2e=share-send-lender]","title":"css:[data-e2e=share-send-title]","ins":"css:[data-e2e=share-send-insurance]","other":"css:[data-e2e=share-send-other]"}],
+ ["css","[data-e2e=share-send-title]"],["wait",2],["fill","ph:Their name","Morgan Reed"],["fill","ph:Their email","morgan.reed@example.com"],
+ ["fill","textarea","Here is our homeowners policy for the closing file."],
+ ["shot","sd_sheet",{"head":"~Send “Homeowners","roles":"btn:Title company","name":"ph:Their name","email":"ph:Their email","days":"css:[data-e2e=share-days-30]","until":"~Works until","note":"css:textarea","send":"css:[data-e2e=share-send]","fine":"~View-only. They can"}],
+ ["css","[data-e2e=share-send]"],["wait",6],["shot","sd_sent"],["dump",-500],
+ ["goto","/"],["tap","Documents"],["wait",3],["into","css:[data-e2e=hv-doc-share] >> nth=0"],["shot","sd_after",{"row":"~Shared with"}],
+ ["css","[data-e2e=hv-doc-share]",0],["wait",1.5],["shot","sd_menu2"],["dump",-400],
+ ["goto","/"],["tapx","Lender, title company"],["wait",3],["shot","sd_links",{"lead":"~Send your lender","share":"btn:Share documents","links":"Your links"}],["dump",-500]]

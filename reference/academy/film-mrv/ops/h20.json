@@ -1,0 +1,4 @@
+[["goto","/"],["tap","Documents"],["wait",3],["into","css:[data-e2e=hv-doc-share] >> nth=0"],["css","[data-e2e=hv-doc-share]",0],["wait",1.5],["shot","x_menu"],
+ ["js","[...document.querySelectorAll('[role=menu] *, .hv-menu *, body > div *')].filter(e=>e.offsetParent&&e.children.length==0&&e.textContent.trim()).map(e=>e.tagName[0]+'|'+(e.closest('button')?.getAttribute('data-e2e')||'')+'|'+e.textContent.trim().slice(0,50)+'|'+Math.round(e.getBoundingClientRect().top)).slice(-30)"],
+ ["tapx","the title company"],["wait",2],["shot","x_sheet"],["dump",-900],
+ ["js","[...document.querySelectorAll('input,select,button,textarea')].filter(e=>e.offsetParent&&e.getBoundingClientRect().top>0&&e.getBoundingClientRect().top<960).map(e=>e.tagName[0]+'|'+(e.getAttribute('data-e2e')||'')+'|'+e.type+'|'+(e.placeholder||e.textContent||'').trim().slice(0,30)+'|'+Math.round(e.getBoundingClientRect().top)).slice(-25)"]]

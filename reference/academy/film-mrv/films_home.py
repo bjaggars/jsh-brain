@@ -57,14 +57,15 @@ FILMS={
   B('doc_add','Save to my vault',"Tap Save to my vault. It is private to you until you choose to share it.",['save'],click='save',shot2='doc_saved'),
   B('doc_saved','It is in your vault',"The document is in its folder, marked Private. From here you can move it, share it, or delete it.",[[228,342,199,134],[16,850,411,100]],cam=((0,330,443),(0,677,443))),
 ]),
-'h_lender':L(3,'Share documents with a lender','Share_documents_with_a_lender',[
-  B('home2','Open Get pre-approved',"A lender will ask for your income and bank documents. From your vault, tap Get pre-approved.",['pre'],click='pre',shot2='lender'),
-  B('lender','One secure link',"You send exactly the documents they need, in one secure link. Tap Share documents.",['intro','share'],click='share',shot2='lender2'),
-  B('lender2','Tick the documents',"Tick the documents to share.",['d1','d2','d3']),
-  B('lender2','Say who it is for',"Enter who it is for, and their email.",['who','email']),
-  B('lender3','Choose how long the link lasts',"Choose how long the link works: three, seven, fourteen, or thirty days. It is view-only.",['days','note']),
-  B('lender3','Send securely',"Tap Send securely.",['send'],click='send',shot2='lender_links'),
-  B('lender_links','See every time it is opened',"Your link is listed with its end date and how many times it has been opened. Tap Turn off to stop it at any time.",[[16,455,411,90]]),
+'h_lender':L(3,'Send documents to anyone who needs them','Send_documents_to_anyone_who_needs_them',[
+  B('sd_docs','Find the document and tap Share',"Your lender, your title company, your insurance agent. Sooner or later, someone needs one of your documents. In Documents, find it and tap Share.",['row','share'],click='share',shot2='sd_menu'),
+  B('sd_menu','Choose who it is for',"Choose who it is for: your agent, your lender or bank, the title company, your insurance agent, or someone else.",['agent','lender','title','ins','other']),
+  B('sd_menu','Tap the title company',"This policy is for the closing, so tap With the title company.",['title'],click='title',shot2='sd_sheet'),
+  B('sd_sheet','Say who gets it',"Enter their name and their email.",['name','email']),
+  B('sd_sheet','Choose how long the link lasts',"Choose how long the link lasts. You can stop it sooner, at any time.",['days','until']),
+  B('sd_sheet','Send secure link',"Add a note if you like, then tap Send secure link.",['note','send'],click='send',shot2='sd_after'),
+  B('sd_after','Your document never leaves your vault',"Your document is not emailed as an attachment. It stays in your vault, and they get a secure link to it.",['row']),
+  B('sd_menu2','See who has it, and stop it',"Tap Share again to see who has a link and whether they have opened it. Tap Stop, and the link stops working right away.",['has','who','state','stop']),
 ]),
 'h_sell':L(4,'Thinking of selling','Thinking_of_selling',[
   B('home','Switch your focus to Selling',"If you are thinking of selling, tap Selling at the top of your vault.",['selling'],click='selling',shot2='sell'),
@@ -121,7 +122,7 @@ FILMS.update({
 ]),
 'h_intro3':I(3,'Your documents',[
   T('doc_saved','Private until you share',"This module is about your documents. Pay stubs, statements, contracts: they stay private until you choose to share.",['Snap a photo or choose a file','Folders keep it tidy']),
-  T('lender_links','Share with a lender, safely',"You will send a lender exactly what they ask for, in one secure link that expires.",['View-only','See every time it is opened','Turn it off any time']),
+  T('sd_menu','Send them to anyone, securely',"You will send anyone who needs them, your lender, your title company, or your insurance agent, exactly the documents they ask for, in one secure link that expires.",['Lender, title, insurance, your agent','See when it is opened','Stop a link any time']),
 ]),
 'h_intro4':I(4,'Selling and owning',[
   T('walk','Selling: know what you keep',"This module covers selling, and looking after the home you own. If you sell, you will see what you walk away with.",['Price, commission, payoff','Compare offers side by side']),
@@ -138,14 +139,14 @@ FILMS.update({
   T('check','It walks you through each step',"A checklist walks you through each step in plain words. Nothing is rushed, and you can skip what doesn't apply.",['Know your next step','Do them in any order'],kicker='Your checklist'),
   T('afford','Know your number',"If you are buying, start by knowing what you can comfortably afford, and what a home really costs each month.",['What can I afford?','Mortgage calculator'],kicker='Buying'),
   T('rate_done','Save the homes you love',"Search on the sites you already use, save the homes you like, and rate them with your own notes.",['Rate and add notes','Check any neighborhood'],kicker='Buying'),
-  T('lender2','Send documents to anyone who needs them',"When someone needs your documents, send them straight from your vault. Your lender, your title company, your insurance company, your agent, or anyone else.",['Lender, title, insurance, your agent','Only the documents you choose'],kicker='Documents'),
-  T('lender_links','A secure space for your documents',"Your vault is a secure space. Your documents are never emailed around as attachments. They stay in your vault, and each person gets a view-only link that expires, and that you can turn off at any time.",['Never sent as email attachments','View-only links that expire','Turn a link off any time'],kicker='Security'),
+  T('sd_menu','Send documents to anyone who needs them',"When someone needs your documents, send them straight from your vault. Your lender, your title company, your insurance company, your agent, or anyone else.",['Lender, title, insurance, your agent','Only the documents you choose'],kicker='Documents'),
+  T('sd_menu2','A secure space for your documents',"Your vault is a secure space. Your documents are never emailed around as attachments. They stay in your vault, and each person gets a view-only link that expires, and that you can turn off at any time.",['Never sent as email attachments','View-only links that expire','Turn a link off any time'],kicker='Security'),
   T('walk','Selling or owning',"If you are selling, see what you would walk away with. If you own, keep your home's records, taxes, and upkeep in one place.",['What will I walk away with?','Your home and its records'],kicker='Selling and owning'),
   T('ask2','Help whenever you want it',"And whenever you have a question, ask MRV. It knows your search and your homes.",['Your virtual agent','Add your own agent any time'],kicker='Help'),
 ]),
 'h_wrap':dict(kind='wrap',module='Homeowner path complete',title='Your vault is ready',file='Path_WrapUp',m=6,
   outro=('Congratulations!','You have finished the Homeowner path','Your vault is yours for life. Open it whenever you need it.'),beats=[
-  T('home','Congratulations!',"Congratulations! You have finished the MyRealtyVault Homeowner path.",['Your vault and your checklist','Buying with a clear number','Documents, shared safely','Selling and owning'],kicker='Homeowner path complete',confetti=True),
+  T('home','Congratulations!',"Congratulations! You have finished the MyRealtyVault Homeowner path.",['Your vault and your checklist','Buying with a clear number','Documents, sent securely','Selling and owning'],kicker='Homeowner path complete',confetti=True),
   T('check_done','Your next step is waiting',"Open your vault, look at your next step, and tap Do it. Your vault will be here for every home that follows.",['Open your vault','Tap Do it'],kicker='What to do now',confetti=True),
 ]),
 })

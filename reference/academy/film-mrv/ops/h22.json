@@ -1,0 +1,2 @@
+[["goto","/"],["tap","Documents"],["wait",3],["into","css:[data-e2e=hv-doc-share] >> nth=0"],["shot","sd_after",{"row":"~Shared with","share":["css:[data-e2e=hv-doc-share]",0]}],
+ ["css","[data-e2e=hv-doc-share]",0],["wait",1.5],["shot","sd_menu2",{"has":"~HAS A LINK NOW","who":"Morgan Reed","state":"~Not opened yet","stop":"btn:Stop","private":"css:button:has-text('Make private')"}]]
