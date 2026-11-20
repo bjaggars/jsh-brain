@@ -23,6 +23,62 @@ Both are measured against an **inventory generated from the product's code** (ev
 action, grouped into areas by kind of user). Coverage is reported per area as: not walked, part, full —
 separately for computer size, phone size and iPhone.
 
+## The Walker is many people, and looks along many lines
+
+The Walker is not one tester running one script. It is **each kind of person who uses the product**, and for
+each of them it looks along **several lines at once**. A walk that only asks "did it crash?" is the ring's
+job done twice. The lines below are what make it worth having.
+
+### It walks as each role — and each role cares about different things
+
+| Walking as | What that person cares about | What the Walker found walking as them (MRV) |
+|---|---|---|
+| **The professional (agent)** on a busy day | Speed, the right number, not typing things twice, nothing lost | "425k" read as $425; an offer refused with a database message; two meanings of "showings this week"; a deadline listed twice; the search that timed out |
+| **Their client (buyer, seller)** who did not choose this app | Do I understand this? Is it about me? What do I do next? Can I trust the number? | "In your pocket $400,125" with no mortgage in it; "No tours booked yet" above last week's tour; the assistant telling a client with an agent that she has none; an appointment the agent booked that never reached her |
+| **The homeowner** with no professional | Plain words, no jargon, honest about what the app cannot do | "No FEMA flood map here" for an address the map could not find; a calculator that misread what was typed |
+| **A member of the public** arriving from a link, on a phone | Does the page load, does it say something true, can I act with a thumb? | A cancelled listing still "For sale" and taking showing requests; a main button wrapped to three lines |
+| **The office manager (broker)** | Are the totals right, who needs me, can I add and remove people safely? | "jamie@" accepted as an email; a start date shown as a missed deadline; counts that disagreed between two screens |
+| **The outsider let in for one job** (lender, title company, guest) | Did I get what I was promised, and nothing else? | Wrong-link pages; the document request that opened on the wrong kind of person |
+| **Staff (Mission Control)** | Can I see and fix what a customer reports? | Read-only pass; the release sign-off is never touched |
+
+Two rules follow. **A change is followed to the other side:** after acting as one role, sign in as the role
+on the receiving end and look. And **each role gets its own saved login on the film set**, so the Walker
+sees exactly what that person sees — never an admin's view of it.
+
+### The lines it looks along (every screen, every role)
+
+1. **Does it work?** Fill it the way people type. Empty, half-typed, too many, the wrong kind of file.
+2. **Is it true?** Every number and every sentence. Add the parts up. Compare it with the screen before.
+3. **Does it make sense to this person?** Our words or theirs? Would a new user know what this is and what
+   to do next? A sentence that needs our vocabulary ("the pencil's Merge door", "monitor the funnel") is a
+   finding.
+4. **Do the screens agree with each other?** The same fact in two places, the same word for the same
+   thing, the same count on the tile and on the page it opens.
+5. **What does the other person see?** Privacy and promises: what reached the client, what should not
+   have, what was promised and never arrived.
+6. **Is it fast enough, as the real user?** Time it signed in as that person, not as the owner. Count the
+   taps. Notice the wait.
+7. **Does it fit the device?** Computer, phone, iPhone. Off the edge, too small for a thumb, cut off.
+8. **Can everyone use it?** Every box and button has a name a screen reader can say.
+9. **Is the help right?** Ask the assistants what a customer would ask; check the answer against the screen.
+10. **Could it be better?** This is not optional. The Walker steps back and asks what would make this
+    screen do its job with less effort or less doubt for the person using it — a default that is usually
+    right, a question asked at the moment it matters, a name where there was a count, one row where there
+    were two. It **recommends**, with the reason, in the customer's terms. Founder, 11/19: *"I really like
+    how you are taking a step back to make the app better."* and *"The walker needs to be
+    multi-dimensional."*
+
+**Examples of line 10 on MRV, each proposed by the Walker and approved by the founder:** the import
+preview names who is added and who is skipped instead of showing the file's first three rows; a spouse
+who shares a phone number is added, not skipped as a duplicate; accepting an offer asks whether the
+public page should now say "Sale pending"; "Ask for documents" opens on Lender in the Pre-approval folder;
+an appointment can be shown in the client's vault with one tick; an email that still shows an old price
+offers "Update this email" before it is sent; two phone numbers are labelled Office and Mobile.
+
+A walk report therefore has three kinds of entry: **defects** (fixed), **questions for a ruling**
+(held), and **recommendations** (why this would serve the person better). A walk that returns only
+defects was not a full walk.
+
 ## What the Walker does
 
 1. **Signs in as each kind of user** on the TEST site (never production): the professional, their client,

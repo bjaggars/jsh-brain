@@ -567,6 +567,13 @@ set-up only he can do. The customer's own reports are the scorecard.
    ruling. Every choice goes on `docs/BRAIN/uat/DECISIONS-FOR-REVIEW.md`.
 5. **Never production, never a real send to a real person, never the founder's sign-off screens.**
 6. **Every defect a customer finds adds the check that would have caught it.**
+7. **The Walker is many people and looks along many lines.** It walks as each role with that role's own
+   login — the professional, their client, the homeowner, the public, the office manager, the outsider let
+   in for one job, staff — and follows every change to the person on the receiving end. On every screen it
+   asks not only "does it work" but: is it true, does it make sense to this person, do the screens agree,
+   what does the other person see, is it fast enough as the real user, does it fit the device, can
+   everyone use it, is the help right — and **could it be better**. Recommendations that make the product
+   perform better or make more sense to the end user are part of every walk report, not an extra.
 
 The full role, the lessons, and how a product adopts it: `UAT-WALKER.md`.
 
