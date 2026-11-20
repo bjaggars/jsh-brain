@@ -548,3 +548,25 @@ the campus's lesson map (lesson → screens and source files). Flagged lessons a
 scripts with the release; a new screen or task files its lesson in the same breath. The session-open
 sweep on any product with a campus includes "lessons flagged and not yet re-recorded." Full rule,
 training modes and filming rules: `ACADEMY.md`.
+
+## §22 · The UAT Walker: SIT is the ring, UAT is the walk (Brice, 11/19/26, all products)
+
+**Testing has two names.** SIT is the automatic ring: does it work. UAT is the walk: a session uses the
+product as a new customer would and reads every screen, the way a How To film is made. The founder cannot
+do user acceptance testing at scale; the Walker carries it. His part is rulings, a spot check, and the
+set-up only he can do. The customer's own reports are the scorecard.
+
+1. Both are measured against an **inventory generated from the product's code**, by kind of user.
+   Coverage is stated per area — not walked, part, full — for computer, phone and iPhone.
+2. **Two rounds per release:** the areas a change touches are walked before it ships; the rest of the
+   product is walked in the background. One full ring at the end, the founder's OK, one release.
+3. **The session that walks is never the session that built.**
+4. **The Walker fixes plain defects on the development branch and opens the screen again.** It may decide
+   wording, labels, layout and bug fixes alone. Anything that changes what a customer receives or sees is
+   built the safer way and listed first. Anything that would overturn a founder decision is held for a
+   ruling. Every choice goes on `docs/BRAIN/uat/DECISIONS-FOR-REVIEW.md`.
+5. **Never production, never a real send to a real person, never the founder's sign-off screens.**
+6. **Every defect a customer finds adds the check that would have caught it.**
+
+The full role, the lessons, and how a product adopts it: `UAT-WALKER.md`.
+

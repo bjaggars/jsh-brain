@@ -21,6 +21,9 @@ product BRAIN wins, always. Conversation memory loses to both.
   comms rail, identity layering, capture loops, Mission Control, render
   engine.
 - `STACK.md` — the standard kit and its configuration wisdom.
+- `UAT-WALKER.md` — the UAT Walker: the session that uses a product as a new customer
+  would and reads every screen, so the founder does not test at scale. What it does, what
+  it may decide alone, the lessons, and how a product adopts it (DOCTRINE §22).
 - `ACADEMY.md` — the JSH Training Academy: what a campus is, the Academy law
   (every release states its Academy impact), training modes, filming rules.
 
